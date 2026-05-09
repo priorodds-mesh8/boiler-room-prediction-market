@@ -104,7 +104,7 @@ async function submitActions(body) {
     agentActions = prepared.agentActions;
   }
 
-  await store.saveProgress(session, deals, turn, fngActions.concat(agentActions));
+  await store.saveProgress(session, deals, session.status === "settled" ? null : turn, fngActions.concat(agentActions));
   return safePayload(session, deals, turn, fngActions.concat(agentActions), results);
 }
 
