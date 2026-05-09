@@ -796,7 +796,7 @@
       dashboard: ["Forecast dashboard", "Current quarter signal from synthetic opportunity markets"],
       markets: ["Opportunity markets", "Search, filter, and inspect the private deal book"],
       detail: ["Market detail", "Trade the outcome and review CRM context"],
-      simulation: ["Agent trading session", "Held-out deals, private intelligence, live autonomous trading"],
+      simulation: ["Revenue War Room", "Thirty-day FNG forecasting runs against agent markets"],
       leaderboard: ["Calibration leaderboard", "Accuracy, Brier score, and trading discipline"],
       admin: ["Admin console", "Create markets from synthetic CRM opportunities"]
     };
@@ -1149,44 +1149,249 @@
   }
 
   function renderSimulation() {
-    var sim = state.simulation;
-    var selected = getSimSelectedDeal();
-    var results = sim.settled ? simulationResults() : null;
-    var activeDeals = activeSimDeals(sim);
+    return renderGameWarRoom();
+  }
+
+  function renderGameWarRoom() {
+    var game = state.game && state.game.session ? state.game.session : null;
+    if (!game) return renderGameSetup();
+    return renderGameSession(game);
+  }
+
+  function renderGameSetup() {
+    var modes = [
+      ["team", "Team", "Selective deal-team agents act before the FNG responds."],
+      ["focus", "Agent Focus", "One highlighted role frames each deal's daily read."],
+      ["silent", "Silent Market", "Agent moves are compressed into market movement."]
+    ];
     return [
-      '<section class="sim-hero">',
-      '<div><div class="sim-eyebrow">Held-out synthetic deal arena | ' + escapeHtml(sim.source === "supabase" ? "Supabase live pool" : "Local demo pool") + '</div><h2 class="sim-title">Autonomous sales agents trade fragmented private intelligence</h2><div class="sim-subtitle">Public baseline is blind to the sealed outcome. Agents only see public fields, public news, and their own private signals.</div></div>',
-      '<div class="sim-controls">',
-      '<button class="primary-button" data-action="sim-start">' + (sim.running ? "Running" : "Start live session") + '</button>',
-      '<button class="secondary-button" data-action="sim-step">Step</button>',
-      '<button class="secondary-button" data-action="sim-pause">Pause</button>',
-      '<button class="danger-button" data-action="sim-settle" ' + (sim.source === "supabase" ? "disabled" : "") + '>Settle</button>',
-      '<button class="secondary-button" data-action="sim-reset">Reset session</button>',
-      '<button class="secondary-button" data-action="sim-load-supabase">' + (ui.sim.loadingSupabase ? "Loading..." : "Load From Supabase") + '</button>',
-      '<label class="sim-toggle"><input type="checkbox" data-sim="llmMode" ' + (ui.sim.llmMode ? "checked" : "") + ' /> Remote LLM</label>',
-      '<div class="deal-count-control">' + [1, 3, 5, 10].map(function (count) { return '<button class="deal-count-button ' + (sim.activeDealCount === count ? "active" : "") + '" data-action="sim-count" data-count="' + count + '">' + count + '</button>'; }).join("") + '</div>',
+      '<section class="war-room-setup">',
+      '<div class="war-room-copy"><div class="sim-eyebrow">Revenue War Room</div><h2 class="sim-title">Thirty days to beat the market read</h2><div class="sim-subtitle">The server assigns high-disagreement live deals, deals each day of intel, and makes FNG call buy, hold, or sell before the next turn.</div></div>',
+      '<div class="setup-board">',
+      '<div class="setup-group"><div class="setup-label">Gameplay</div><div class="mode-grid">',
+      modes.map(function (mode) {
+        return '<button class="mode-card ' + (ui.game.mode === mode[0] ? "active" : "") + '" data-action="game-mode" data-mode="' + mode[0] + '"><strong>' + mode[1] + '</strong><span>' + mode[2] + '</span></button>';
+      }).join(""),
+      '</div></div>',
+      '<div class="setup-group"><div class="setup-label">Deal count</div><div class="deal-count-control war-count">' + [1, 3, 5, 10].map(function (count) {
+        return '<button class="deal-count-button ' + (Number(ui.game.dealCount) === count ? "active" : "") + '" data-action="game-count" data-count="' + count + '">' + count + '</button>';
+      }).join("") + '</div></div>',
+      '<button class="primary-button war-start" data-action="game-start" ' + (ui.game.loading ? "disabled" : "") + '>' + (ui.game.loading ? "Assigning run..." : "Start 30-day run") + '</button>',
+      ui.game.error ? '<div class="war-error">' + escapeHtml(ui.game.error) + '</div>' : '',
       '</div>',
-      '</section>',
-      '<div class="metrics-grid">',
-      metricCard("Clock", sim.tick + " / " + sim.maxTicks, sim.status),
-      metricCard("Agents", String(sim.agents.length), "3 AEs, BDR, SE, VP"),
-      metricCard("Deal markets", String(activeDeals.length), sim.source === "supabase" ? "Loaded from Supabase" : "Active from 20 held-out deals"),
-      metricCard("Session volume", formatNumber(simulationVolume()), "Virtual credits traded"),
-      metricCard("Market wins", results ? results.marketWins + " / " + activeDeals.length : "Sealed", results ? "Closer than baseline" : "Revealed at settlement"),
-      metricCard("Player wallet", formatNumber(sim.playerWallet), "Human can trade too"),
-      '</div>',
-      '<div class="sim-layout">',
-      '<div style="display:grid;gap:18px">',
-      '<section class="panel"><div class="panel-header"><div><div class="panel-title">Deal board</div><div class="panel-subtitle">Baseline vs. live market price across the active session</div></div><span class="pill ' + (sim.settled ? "green" : "amber") + '">' + (sim.settled ? "Outcomes revealed" : "Outcomes hidden") + '</span></div><div class="sim-deal-table">' + renderSimDealTable() + '</div></section>',
-      '<section class="panel"><div class="panel-header"><div><div class="panel-title">Selected market</div><div class="panel-subtitle">' + escapeHtml(selected ? selected.question : "No deal selected") + '</div></div></div><div class="panel-body">' + renderSimSelectedDeal(selected) + '</div></section>',
-      '<section class="panel"><div class="panel-header"><div><div class="panel-title">Live tape</div><div class="panel-subtitle">New information, agent decisions, bets, and thought bubbles</div></div></div><div class="panel-body">' + renderSimEventTape() + '</div></section>',
-      '</div>',
-      '<aside style="display:grid;gap:18px">',
-      '<section class="panel"><div class="panel-header"><div><div class="panel-title">Agent roster</div><div class="panel-subtitle">Distinct motives, knowledge coverage, and influence</div></div></div><div class="panel-body">' + renderSimAgents() + '</div></section>',
-      '<section class="trade-panel"><div><div class="panel-title">Player trading desk</div><div class="panel-subtitle">Trade alongside the agents</div></div>' + renderPlayerDesk(selected) + '</section>',
-      '</aside>',
-      '</div>'
+      '</section>'
     ].join("");
+  }
+
+  function renderGameSession(game) {
+    var session = game.session;
+    var deals = game.deals || [];
+    var turn = game.turn || { cards: [] };
+    var results = game.results;
+    var allReady = gameActionsReady(deals);
+    return [
+      '<section class="war-room">',
+      '<div class="war-top">',
+      '<div><div class="sim-eyebrow">Revenue War Room | ' + escapeHtml(modeLabel(session.mode)) + ' | ' + escapeHtml(game.source || "local") + '</div><h2 class="sim-title">Day ' + session.currentDay + ' / ' + session.maxDays + '</h2><div class="sim-subtitle">' + escapeHtml(turn.summary || "Review the stack and make every FNG call.") + '</div></div>',
+      '<div class="war-actions"><button class="secondary-button" data-action="game-refresh">Refresh</button><button class="secondary-button" data-action="game-new">New run</button></div>',
+      '</div>',
+      '<div class="war-metrics">',
+      metricCard("FNG wallet", formatNumber(session.fngWallet), "Shared run wallet"),
+      metricCard("FNG P&L", formatSignedNumber(session.pnl || 0), "Prominent, not the winner metric"),
+      metricCard("Forecast leader", leaderLabel(session.forecastLeader), session.status === "settled" ? "Final aggregate" : "Live proxy"),
+      metricCard("Deals", String(session.dealCount), "All require daily action"),
+      '</div>',
+      session.status === "settled" && results ? renderGameResults(results) : '',
+      '<div class="war-grid">',
+      '<div class="priority-column"><section class="war-panel"><div class="panel-header"><div><div class="panel-title">Priority Stack</div><div class="panel-subtitle">Ranked by ML, market, and FNG disagreement</div></div><span class="pill amber">' + (turn.cards || []).length + ' cards</span></div><div class="intel-stack">' + renderIntelCards(turn.cards || []) + '</div></section></div>',
+      '<div class="deal-column"><section class="war-panel"><div class="panel-header"><div><div class="panel-title">Deal Forecasts</div><div class="panel-subtitle">Baseline stays visible; FNG signal updates from actions</div></div></div><div class="deal-forecast-list">' + deals.map(renderGameDealPanel).join("") + '</div></section>',
+      session.status === "active" ? '<section class="war-panel"><div class="panel-header"><div><div class="panel-title">FNG Orders</div><div class="panel-subtitle">Choose buy, hold, or sell plus confidence for every deal</div></div><span class="pill ' + (allReady ? "green" : "amber") + '">' + readyCount(deals) + ' / ' + deals.length + ' ready</span></div><div class="fng-actions">' + deals.map(renderFngActionPanel).join("") + '</div><button class="primary-button submit-day" data-action="game-submit-day" ' + (!allReady || ui.game.loading ? "disabled" : "") + '>' + (ui.game.loading ? "Submitting..." : "Submit day and advance") + '</button></section>' : '',
+      '</div>',
+      '</div>',
+      '</section>'
+    ].join("");
+  }
+
+  function renderIntelCards(cards) {
+    if (!cards.length) return '<div class="empty-state">No cards for this day yet.</div>';
+    return cards.map(function (card) {
+      return [
+        '<article class="intel-card ' + escapeAttr(card.tone || "blue") + '">',
+        '<div class="intel-head"><span class="intel-badge">' + escapeHtml(card.badge || card.kind) + '</span><span>' + escapeHtml(card.account_name || "") + '</span></div>',
+        '<div class="intel-title">' + escapeHtml(card.title) + '</div>',
+        '<div class="intel-body">' + escapeHtml(card.body) + '</div>',
+        '<div class="intel-foot"><span>' + escapeHtml(card.target_label || "") + '</span><strong>' + formatSignedPercent(Number(card.impact || 0)) + '</strong></div>',
+        '</article>'
+      ].join("");
+    }).join("");
+  }
+
+  function renderGameDealPanel(deal) {
+    var move = Number(deal.marketProbability) - Number(deal.baselineProbability);
+    return [
+      '<article class="forecast-card">',
+      '<div class="forecast-head"><div><div class="deal-title">' + escapeHtml(deal.accountName) + '</div><div class="deal-meta">' + escapeHtml(deal.targetLabel) + ' | ' + escapeHtml(deal.context.stage || "Unknown") + ' | ' + formatCurrency(Number(deal.context.amount || 0)) + '</div></div><span class="pill ' + (deal.actualOutcome === null || deal.actualOutcome === undefined ? "amber" : deal.actualOutcome ? "green" : "red") + '">' + (deal.actualOutcome === null || deal.actualOutcome === undefined ? "Sealed" : deal.actualOutcome ? "Won" : "Lost") + '</span></div>',
+      '<div class="forecast-bars">',
+      forecastStat("ML", deal.baselineProbability),
+      forecastStat("Market", deal.marketProbability),
+      forecastStat("FNG", deal.fngProbability),
+      '</div>',
+      '<div class="forecast-footer"><span class="delta ' + (move >= 0 ? "up" : "down") + '">' + formatSignedPercent(move) + ' vs ML</span><span>FNG P&L <strong class="' + (deal.fngPnl >= 0 ? "delta up" : "delta down") + '">' + formatSignedNumber(deal.fngPnl || 0) + '</strong></span></div>',
+      '</article>'
+    ].join("");
+  }
+
+  function forecastStat(label, value) {
+    return '<div class="forecast-stat"><span>' + label + '</span><strong>' + formatPercent(Number(value || 0)) + '</strong><div class="mini-bar"><i style="width:' + Math.round(Number(value || 0) * 100) + '%"></i></div></div>';
+  }
+
+  function renderFngActionPanel(deal) {
+    var pending = getPendingGameAction(deal.sessionDealId);
+    return [
+      '<article class="fng-card">',
+      '<div><div class="deal-title">' + escapeHtml(deal.accountName) + '</div><div class="deal-meta">' + escapeHtml(deal.marketQuestion) + '</div></div>',
+      '<div class="order-row">',
+      ["BUY", "HOLD", "SELL"].map(function (choice) {
+        return '<button class="order-button ' + choice.toLowerCase() + ' ' + (pending.action === choice ? "active" : "") + '" data-action="game-set-action" data-deal="' + escapeAttr(deal.sessionDealId) + '" data-choice="' + choice + '">' + choice + '</button>';
+      }).join(""),
+      '</div>',
+      '<div class="confidence-row"><span>Confidence</span>' + [1, 2, 3, 4, 5].map(function (level) {
+        return '<button class="confidence-button ' + (Number(pending.confidence) === level ? "active" : "") + '" data-action="game-set-confidence" data-deal="' + escapeAttr(deal.sessionDealId) + '" data-confidence="' + level + '">' + level + '</button>';
+      }).join("") + '</div>',
+      '</article>'
+    ].join("");
+  }
+
+  function renderGameResults(results) {
+    return [
+      '<section class="war-panel results-panel"><div class="panel-header"><div><div class="panel-title">Final Probability Read</div><div class="panel-subtitle">Winner is closest probability; P&L remains visible</div></div><span class="pill green">Forecast winner: ' + leaderLabel(results.forecastWinner) + '</span></div>',
+      '<div class="results-grid">',
+      metricCard("ML error", formatPercent(results.aggregateErrors.ml), "Average absolute error"),
+      metricCard("Market error", formatPercent(results.aggregateErrors.market), "Average absolute error"),
+      metricCard("FNG error", formatPercent(results.aggregateErrors.fng), "Average absolute error"),
+      metricCard("FNG P&L", formatSignedNumber(results.fngPnl), "Trading outcome"),
+      '</div>',
+      '<div class="result-table-shell"><table class="data-table"><thead><tr><th>Deal</th><th>Target</th><th>Actual</th><th>ML</th><th>Market</th><th>FNG</th><th>Winner</th><th>FNG P&L</th></tr></thead><tbody>',
+      results.perDeal.map(function (item) {
+        return '<tr><td>' + escapeHtml(item.accountName) + '</td><td>' + escapeHtml(item.targetLabel) + '</td><td>' + (item.actualOutcome ? "Yes" : "No") + '</td><td>' + formatPercent(item.baselineProbability) + '</td><td>' + formatPercent(item.marketProbability) + '</td><td>' + formatPercent(item.fngProbability) + '</td><td>' + leaderLabel(item.forecastWinner) + '</td><td class="delta ' + (item.fngPnl >= 0 ? "up" : "down") + '">' + formatSignedNumber(item.fngPnl) + '</td></tr>';
+      }).join(""),
+      '</tbody></table></div></section>'
+    ].join("");
+  }
+
+  function modeLabel(mode) {
+    return { team: "Team", focus: "Agent Focus", silent: "Silent Market" }[mode] || "Team";
+  }
+
+  function leaderLabel(value) {
+    return { ml: "ML baseline", market: "Agent market", fng: "FNG" }[value] || "Pending";
+  }
+
+  function getPendingGameAction(sessionDealId) {
+    if (!ui.game.pendingActions[sessionDealId]) ui.game.pendingActions[sessionDealId] = { action: "", confidence: 3 };
+    return ui.game.pendingActions[sessionDealId];
+  }
+
+  function gameActionsReady(deals) {
+    return deals.length > 0 && deals.every(function (deal) {
+      var pending = ui.game.pendingActions[deal.sessionDealId];
+      return pending && pending.action && pending.confidence;
+    });
+  }
+
+  function readyCount(deals) {
+    return deals.filter(function (deal) {
+      var pending = ui.game.pendingActions[deal.sessionDealId];
+      return pending && pending.action && pending.confidence;
+    }).length;
+  }
+
+  function resetPendingGameActions(game) {
+    ui.game.pendingActions = {};
+    if (!game || !game.deals) return;
+    game.deals.forEach(function (deal) {
+      ui.game.pendingActions[deal.sessionDealId] = { action: "", confidence: 3 };
+    });
+  }
+
+  function gameApi(path, options) {
+    if (!window.fetch || window.location.protocol === "file:") {
+      return Promise.reject(new Error("Run node server.js and open http://127.0.0.1:4173 to use the War Room APIs."));
+    }
+    return window.fetch(path, options).then(function (response) {
+      return response.json().catch(function () { return {}; }).then(function (body) {
+        if (!response.ok) throw new Error(body.error || "Game API request failed");
+        return body;
+      });
+    });
+  }
+
+  function startGameRun() {
+    ui.game.loading = true;
+    ui.game.error = "";
+    render();
+    gameApi("/api/game/start", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ mode: ui.game.mode, dealCount: Number(ui.game.dealCount) })
+    }).then(function (payload) {
+      state.game.session = payload;
+      resetPendingGameActions(payload);
+      saveState();
+      showToast("War Room run started: " + payload.session.dealCount + " deal" + (payload.session.dealCount === 1 ? "" : "s") + ".");
+    }).catch(function (error) {
+      ui.game.error = error.message || "Unable to start War Room run.";
+      showToast(ui.game.error);
+    }).finally(function () {
+      ui.game.loading = false;
+      render();
+    });
+  }
+
+  function refreshGameRun() {
+    var game = state.game && state.game.session;
+    if (!game || !game.session) return;
+    ui.game.loading = true;
+    render();
+    gameApi("/api/game/session?sessionId=" + encodeURIComponent(game.session.sessionId))
+      .then(function (payload) {
+        state.game.session = payload;
+        resetPendingGameActions(payload);
+        saveState();
+      })
+      .catch(function (error) {
+        showToast(error.message || "Unable to refresh run.");
+      })
+      .finally(function () {
+        ui.game.loading = false;
+        render();
+      });
+  }
+
+  function submitGameDay() {
+    var game = state.game && state.game.session;
+    if (!game || !game.session || !gameActionsReady(game.deals || [])) return;
+    var actions = game.deals.map(function (deal) {
+      var pending = getPendingGameAction(deal.sessionDealId);
+      return { sessionDealId: deal.sessionDealId, action: pending.action, confidence: Number(pending.confidence) };
+    });
+    ui.game.loading = true;
+    render();
+    gameApi("/api/game/actions", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ sessionId: game.session.sessionId, day: game.session.currentDay, actions: actions })
+    }).then(function (payload) {
+      state.game.session = payload;
+      resetPendingGameActions(payload);
+      saveState();
+      showToast(payload.session.status === "settled" ? "Run settled. Forecast results are live." : "Advanced to Day " + payload.session.currentDay + " / " + payload.session.maxDays + ".");
+    }).catch(function (error) {
+      showToast(error.message || "Unable to submit FNG actions.");
+    }).finally(function () {
+      ui.game.loading = false;
+      render();
+    });
   }
 
   function renderSimDealTable() {
@@ -2255,8 +2460,10 @@
       console.warn(error);
     }
     state = seedState();
+    ensureStateShape();
     ui.selectedMarketId = state.markets[0].id;
     ui.sim.selectedDealId = state.simulation.deals[0].id;
+    ui.game.pendingActions = {};
     ui.view = "dashboard";
     saveState();
     showToast("Demo data reset.");
@@ -2386,6 +2593,47 @@
     if (action === "create-market") createMarket();
     if (action === "prefill-rule") prefillDefaultRule();
     if (action === "reset-demo") resetDemo();
+    if (action === "game-mode") {
+      ui.game.mode = actionTarget.getAttribute("data-mode") || "team";
+      render();
+      return;
+    }
+    if (action === "game-count") {
+      ui.game.dealCount = Number(actionTarget.getAttribute("data-count")) || 3;
+      render();
+      return;
+    }
+    if (action === "game-start") {
+      startGameRun();
+      return;
+    }
+    if (action === "game-new") {
+      state.game.session = null;
+      resetPendingGameActions(null);
+      saveState();
+      render();
+      return;
+    }
+    if (action === "game-refresh") {
+      refreshGameRun();
+      return;
+    }
+    if (action === "game-set-action") {
+      var dealId = actionTarget.getAttribute("data-deal");
+      getPendingGameAction(dealId).action = actionTarget.getAttribute("data-choice");
+      render();
+      return;
+    }
+    if (action === "game-set-confidence") {
+      var confidenceDealId = actionTarget.getAttribute("data-deal");
+      getPendingGameAction(confidenceDealId).confidence = Number(actionTarget.getAttribute("data-confidence")) || 3;
+      render();
+      return;
+    }
+    if (action === "game-submit-day") {
+      submitGameDay();
+      return;
+    }
     if (action === "sim-start") startSimulation();
     if (action === "sim-pause") pauseSimulation();
     if (action === "sim-step") runSimulationRound();
