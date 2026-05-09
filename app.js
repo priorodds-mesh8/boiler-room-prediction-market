@@ -45,6 +45,13 @@
       llmMode: false,
       loadingSupabase: false
     },
+    game: {
+      mode: "team",
+      dealCount: 3,
+      loading: false,
+      pendingActions: {},
+      error: ""
+    },
     toast: ""
   };
 
@@ -95,6 +102,7 @@
     if (!state.simulation.activeDealCount) state.simulation.activeDealCount = 5;
     if (!state.simulation.source) state.simulation.source = "local";
     state.simulation.maxTicks = simTicksForCount(state.simulation.activeDealCount);
+    if (!state.game) state.game = { session: null };
   }
 
   function seedState() {

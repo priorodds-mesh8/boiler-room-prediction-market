@@ -5,6 +5,10 @@ const path = require("path");
 const root = __dirname;
 const port = Number(process.env.PORT || 4173);
 const defaultEnvPath = "/Users/joellang/.env";
+const gameStartHandler = require("./api/game/start");
+const gameSessionHandler = require("./api/game/session");
+const gameActionsHandler = require("./api/game/actions");
+const gameResultsHandler = require("./api/game/results");
 
 const mimeTypes = {
   ".html": "text/html; charset=utf-8",
@@ -24,6 +28,26 @@ const server = http.createServer(async (req, res) => {
 
     if (req.method === "GET" && url.pathname === "/api/live-deals") {
       await handleLiveDeals(req, res, url);
+      return;
+    }
+
+    if (url.pathname === "/api/game/start") {
+      await gameStartHandler(req, res);
+      return;
+    }
+
+    if (url.pathname === "/api/game/session") {
+      await gameSessionHandler(req, res);
+      return;
+    }
+
+    if (url.pathname === "/api/game/actions") {
+      await gameActionsHandler(req, res);
+      return;
+    }
+
+    if (url.pathname === "/api/game/results") {
+      await gameResultsHandler(req, res);
       return;
     }
 

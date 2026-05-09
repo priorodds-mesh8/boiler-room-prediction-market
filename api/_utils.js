@@ -1,3 +1,7 @@
+const fs = require("fs");
+
+const DEFAULT_ENV_PATH = "/Users/joellang/.env";
+
 function sendJson(res, status, payload) {
   res.statusCode = status;
   res.setHeader("Content-Type", "application/json; charset=utf-8");
@@ -10,19 +14,54 @@ function clampInteger(value, min, max) {
 }
 
 function supabaseConfig() {
+  const values = loadEnv(DEFAULT_ENV_PATH);
   const url = (
-    process.env.SUPABASE_URL ||
-    process.env.NEXT_PUBLIC_SUPABASE_URL ||
-    process.env.VITE_SUPABASE_URL ||
+    values.supabase_url ||
+    values.next_public_supabase_url ||
+    values.vite_supabase_url ||
+    values.project_url ||
+    values.proj_url ||
     ""
   ).replace(/\/$/, "");
   const key = (
-    process.env.SUPABASE_SERVICE_ROLE_KEY ||
-    process.env.SUPABASE_SECRET_KEY ||
-    process.env.SUPABASE_ANON_KEY ||
+    values.supabase_service_role_key ||
+    values.service_role_key ||
+    values.api_secret_key ||
+    values.supabase_secret_key ||
+    values.supabase_anon_key ||
+    values.api_key ||
     ""
   );
   return { url, key };
+}
+
+function loadEnv(filePath) {
+  const values = {};
+  if (fs.existsSync(filePath)) {
+    const lines = fs.readFileSync(filePath, "utf8").split(/\r?\n/);
+    for (const rawLine of lines) {
+      const line = rawLine.trim();
+      if (!line || line.startsWith("#")) continue;
+      const separator = line.includes("=") ? "=" : line.includes(":") ? ":" : null;
+      if (!separator) continue;
+      const index = line.indexOf(separator);
+      const key = normalizeEnvKey(line.slice(0, index));
+      const value = line.slice(index + 1).trim().replace(/^['"]|['"]$/g, "");
+      if (key && value) values[key] = value;
+    }
+  }
+  for (const [key, value] of Object.entries(process.env)) {
+    values[normalizeEnvKey(key)] = value;
+  }
+  return values;
+}
+
+function normalizeEnvKey(key) {
+  return String(key)
+    .trim()
+    .replace(/^export\s+/i, "")
+    .toLowerCase()
+    .replace(/\s+/g, "_");
 }
 
 function safeLiveDeal(row) {
@@ -73,6 +112,7 @@ function findOutputText(response) {
 module.exports = {
   clampInteger,
   findOutputText,
+  loadEnv,
   readJson,
   safeLiveDeal,
   sendJson,

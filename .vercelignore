@@ -1,0 +1,14 @@
+.git/
+.env
+.env.*
+
+data/
+models/
+synthetic_pipeline/
+schema/
+docs/
+plan_view.html
+requirements.txt
+
+README.md
+*.md
