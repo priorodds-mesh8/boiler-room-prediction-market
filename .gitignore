@@ -1,0 +1,24 @@
+.DS_Store
+
+# Local secrets
+.env
+.env.*
+!.env.example
+
+# Local installs and Vercel metadata
+node_modules/
+.vercel/
+
+# Generated dataset/model artifacts are reproducible and too large for GitHub.
+data/generated/
+models/
+
+# Python cache files
+__pycache__/
+*.py[cod]
+*$py.class
+synthetic_pipeline/__pycache__/
+
+# Misc local output
+*.log
+/tmp/

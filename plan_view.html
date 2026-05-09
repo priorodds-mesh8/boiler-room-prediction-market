@@ -1,0 +1,449 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Internal Sales Prediction Market Plan</title>
+<style>
+:root{--bg:#f4f7f5;--ink:#172019;--muted:#59675d;--panel:#fff;--line:#d7dfd8;--line-strong:#b8c6bb;--accent:#126c5a;--accent-2:#244f8f;--accent-soft:#e3f2ed;--warn:#a35b00;--code:#102018;--shadow:0 18px 48px rgba(30,48,34,.09);font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--bg);color:var(--ink);line-height:1.55}.shell{display:grid;grid-template-columns:280px minmax(0,1fr);min-height:100vh}.sidebar{position:sticky;top:0;height:100vh;overflow:auto;padding:24px 18px;background:#15211b;color:#f8fbf8;border-right:1px solid rgba(255,255,255,.1)}.brand{padding-bottom:18px;border-bottom:1px solid rgba(255,255,255,.14)}.brand-mark{width:38px;height:38px;border-radius:8px;display:grid;place-items:center;background:linear-gradient(135deg,#20a37a,#315fb4);font-weight:800;margin-bottom:12px}.brand h1{font-size:18px;line-height:1.15;margin:0}.brand p{color:#b9c7bd;margin:7px 0 0;font-size:13px}.toc{display:grid;gap:4px;margin-top:18px}.toc a{color:#dce7df;text-decoration:none;border-radius:7px;padding:7px 8px;font-size:13px;line-height:1.25}.toc a:hover{background:rgba(255,255,255,.09);color:white}.toc-level-1{font-weight:750}.toc-level-2{margin-left:8px}.toc-level-3{margin-left:18px;color:#b9c7bd!important}.content{min-width:0}.hero{padding:42px 44px 30px;border-bottom:1px solid var(--line);background:linear-gradient(180deg,#ffffff 0%,#edf5f1 100%)}.eyebrow{text-transform:uppercase;letter-spacing:.08em;color:var(--accent);font-size:12px;font-weight:800}.hero h2{font-size:42px;line-height:1.05;margin:10px 0 14px;max-width:900px}.hero p{font-size:17px;color:var(--muted);max-width:920px;margin:0}.stats{display:flex;gap:10px;flex-wrap:wrap;margin-top:22px}.stat{background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:9px 12px;box-shadow:0 8px 24px rgba(30,48,34,.05);font-size:13px}.stat strong{color:var(--accent)}main{max-width:1080px;padding:30px 44px 70px}.doc{background:var(--panel);border:1px solid var(--line);border-radius:8px;box-shadow:var(--shadow);padding:34px 42px}.doc h1{display:none}.doc h2{font-size:28px;line-height:1.2;margin:36px 0 12px;padding-top:18px;border-top:1px solid var(--line)}.doc h2:first-of-type{margin-top:0;border-top:0;padding-top:0}.doc h3{font-size:21px;margin:28px 0 10px}.doc h4{font-size:16px;margin:22px 0 8px;color:#243528}.anchor{opacity:0;text-decoration:none;margin-left:8px;color:var(--accent)}h2:hover .anchor,h3:hover .anchor,h4:hover .anchor{opacity:1}.doc p{margin:10px 0;color:#243528}.doc a{color:var(--accent-2);font-weight:650}.doc ul,.doc ol{padding-left:24px;margin:10px 0 16px}.doc li{margin:6px 0}.doc blockquote{margin:0 0 24px;padding:14px 16px;border-left:4px solid var(--accent);background:var(--accent-soft);border-radius:0 8px 8px 0;color:#20372d}.table-wrap{overflow:auto;border:1px solid var(--line);border-radius:8px;margin:16px 0 22px}table{width:100%;border-collapse:collapse;min-width:680px}th,td{padding:10px 12px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top;font-size:14px}th{background:#eef5f1;color:#1a3127;font-size:12px;text-transform:uppercase;letter-spacing:.04em}tr:last-child td{border-bottom:0}code{font-family:"SFMono-Regular",Consolas,"Liberation Mono",monospace;background:#edf2ee;border:1px solid #d8e2da;border-radius:5px;padding:1px 5px;font-size:.9em}pre{overflow:auto;background:var(--code);color:#e7f2ea;border-radius:8px;padding:16px 18px;margin:16px 0 22px;line-height:1.45}pre code{background:transparent;border:0;color:inherit;padding:0}.top-link{position:fixed;right:20px;bottom:20px;background:#15211b;color:#fff;text-decoration:none;border-radius:8px;padding:10px 12px;font-weight:750;box-shadow:var(--shadow)}@media(max-width:900px){.shell{display:block}.sidebar{position:relative;height:auto;max-height:42vh}.hero{padding:30px 22px}.hero h2{font-size:32px}main{padding:20px 14px 60px}.doc{padding:24px 18px}.doc h2{font-size:24px}.top-link{display:none}}@media print{.sidebar,.top-link{display:none}.shell{display:block}.hero{padding:0 0 20px;background:#fff}main{padding:0;max-width:none}.doc{box-shadow:none;border:0;padding:0}a{color:inherit!important}}
+</style>
+</head>
+<body>
+<div class="shell" id="top">
+  <aside class="sidebar">
+    <div class="brand"><div class="brand-mark">P</div><h1>Prism Plan Viewer</h1><p>Internal Sales Prediction Market</p></div>
+    <nav class="toc" aria-label="Table of contents"><a class="toc-level-1" href="#internal-sales-prediction-market-plan">Internal Sales Prediction Market - Plan</a>
+<a class="toc-level-2" href="#1-executive-summary">1. Executive Summary</a>
+<a class="toc-level-2" href="#2-product-description-synthesized">2. Product Description (synthesized)</a>
+<a class="toc-level-2" href="#3-use-cases-coherent-summary">3. Use Cases - coherent summary</a>
+<a class="toc-level-2" href="#4-detailed-design">4. Detailed Design</a>
+<a class="toc-level-3" href="#4-1-market-design">4.1 Market design</a>
+<a class="toc-level-3" href="#4-2-participant-model">4.2 Participant model</a>
+<a class="toc-level-3" href="#4-3-incentive-system">4.3 Incentive system</a>
+<a class="toc-level-3" href="#4-4-market-rules">4.4 Market rules</a>
+<a class="toc-level-3" href="#4-5-data-integration">4.5 Data integration</a>
+<a class="toc-level-3" href="#4-6-user-experience">4.6 User experience</a>
+<a class="toc-level-3" href="#4-7-operating-model">4.7 Operating model</a>
+<a class="toc-level-3" href="#4-8-metrics-of-success">4.8 Metrics of success</a>
+<a class="toc-level-2" href="#5-system-architecture">5. System Architecture</a>
+<a class="toc-level-2" href="#6-technical-design-document">6. Technical Design Document</a>
+<a class="toc-level-3" href="#6-1-tech-stack-repo-layout">6.1 Tech stack &amp; repo layout</a>
+<a class="toc-level-3" href="#6-2-data-models-drizzle-postgres">6.2 Data models (Drizzle / Postgres)</a>
+<a class="toc-level-3" href="#6-3-api-schemas-zod-validated">6.3 API schemas (Zod-validated)</a>
+<a class="toc-level-3" href="#6-4-core-logic-flows">6.4 Core logic flows</a>
+<a class="toc-level-3" href="#6-5-statistical-ml-mathematical-models-in-depth">6.5 Statistical / ML / mathematical models - in depth</a>
+<a class="toc-level-3" href="#6-6-permissions-autonomy-notes">6.6 Permissions / autonomy notes</a>
+<a class="toc-level-3" href="#6-7-synthetic-data-generation-100-deals-5-hardcoded-demo">6.7 Synthetic data generation (100 deals + 5 hardcoded demo)</a>
+<a class="toc-level-2" href="#7-ai-model-orchestration">7. AI Model Orchestration</a>
+<a class="toc-level-2" href="#8-risks-failure-modes">8. Risks &amp; Failure Modes</a>
+<a class="toc-level-2" href="#9-phased-rollout">9. Phased Rollout</a>
+<a class="toc-level-2" href="#10-recommended-mvp-scope-2-weeks">10. Recommended MVP Scope (2 weeks)</a>
+<a class="toc-level-2" href="#11-adversarial-analysis-prompt-paste-into-chatgpt">11. Adversarial Analysis Prompt (paste into ChatGPT)</a>
+<a class="toc-level-2" href="#12-locked-decisions">12. Locked Decisions</a>
+<a class="toc-level-3" href="#implications-worth-flagging">Implications worth flagging</a>
+<a class="toc-level-3" href="#locked-synthetic-team-is-ai-piloted">Locked: synthetic team is AI-piloted</a></nav>
+  </aside>
+  <div class="content">
+    <section class="hero">
+      <div class="eyebrow">Generated from PLAN_prediction_markets.md</div>
+      <h2>Internal Sales Prediction Market Plan</h2>
+      <p>A structured, readable version of the Prism product plan, including product design, operating model, LMSR architecture, TDD, synthetic data, and adversarial review prompts.</p>
+      <div class="stats"><div class="stat"><strong>12</strong> major sections</div><div class="stat"><strong>42</strong> table rows</div><div class="stat"><strong>13</strong> code blocks</div></div>
+    </section>
+    <main><article class="doc"><h1 id="internal-sales-prediction-market-plan">Internal Sales Prediction Market - Plan<a class="anchor" href="#internal-sales-prediction-market-plan" aria-label="Link to section">#</a></h1>
+<blockquote>Mode: <code>/plan</code>. Synthesis of <code>CONTEXT_prediction_markets.txt</code> into a deployable design, TDD, architecture, model-orchestration strategy, and adversarial-review prompt. MVP target: 2 weeks, local-first React/Vite, Supabase + Vercel for hosted phase.</blockquote>
+<p>---</p>
+<h2 id="1-executive-summary">1. Executive Summary<a class="anchor" href="#1-executive-summary" aria-label="Link to section">#</a></h2>
+<p><strong>What it is.</strong> An internal, play-money prediction market layered on top of Salesforce that lets sales reps, managers, SEs, CSMs, finance, and legal trade contracts on the outcomes of pipeline deals — close-won by date, slip risk, stage transitions, and milestone events. Market prices are published back to the CRM as an independent, crowd-derived probability that sits alongside the rep forecast and any model-driven score (e.g., Einstein, Clari).</p>
+<p><strong>Why it works.</strong> The corporate-PM literature (HP, Intel, Ford, Google) shows that markets reliably surface latent information that hierarchical forecasting hides — optimism bias, sandbagging, champion risk, procurement reality. Ford's vehicle-sales market beat experts by ~25% on MSE; the simulated DGP in the context file shows market prices absorb the CRM probability in a joint logistic regression (LR test χ² = 4.84, p ≈ 0.028 at n=30). This is decision support, not entertainment.</p>
+<p><strong>Design stance.</strong> Kalshi-style <strong>contract clarity</strong> (objective settlement from CRM/finance fields), Polymarket-style <strong>distribution</strong> (embedded in Slack and Salesforce, fast trades). LMSR automated market maker for liquidity at low participation. Reputation-weighted, role-scoped markets to reward calibration over volume. Play money + recognition + perks. No real-money wagering — sidesteps gambling/HR risk and ends the &quot;betting on coworkers&quot; framing.</p>
+<p><strong>The one thing that makes or breaks it.</strong> AE dominance of price discovery. If the deal owner can move price, the market just recapitulates the CRM number. Mitigated by position limits per role, AE non-trading on own deals (or limited side only), and reputation weighting from prior calibration.</p>
+<p><strong>MVP in 2 weeks.</strong> 5 hardcoded demo deals + 100 synthetic Salesforce deals, LMSR market on each, role-scoped trading, Brier-based leaderboard, single-page React/Vite dashboard, local Postgres → Supabase, manual settlement. No Slack/Salesforce write-back in MVP.</p>
+<p>---</p>
+<h2 id="2-product-description-synthesized">2. Product Description (synthesized)<a class="anchor" href="#2-product-description-synthesized" aria-label="Link to section">#</a></h2>
+<p>The Internal Sales Prediction Market (&quot;<strong>Prism</strong>&quot; working name) is a decision-support layer for revenue organizations. For every qualifying open opportunity, the system instantiates one or more <strong>prediction contracts</strong> that pay out 1 if a clearly-defined event occurs (deal closes-won by close date; deal slips past quarter; stage advances by Friday) and 0 otherwise. Eligible employees trade those contracts using a play-money budget; an LMSR automated market maker provides continuous liquidity even with thin participation. The last-trade price is interpreted as the crowd's probability and is rendered in three places:</p>
+<ol><li>The market's own dashboard (rep, manager, leadership views).</li><li>A Salesforce custom field on the Opportunity (<code>Prism_Probability__c</code>) and a sidebar component on the Opp page.</li><li>A Slack digest in the deal channel, posted on price-move thresholds and on stage changes.</li></ol>
+<p>The product is explicitly framed as <strong>&quot;collective deal intelligence,&quot;</strong> not as betting. The output is a <strong>three-layer forecast view</strong> — rep forecast, manager forecast, market forecast — and the operating-rhythm payoff is that forecast calls move from &quot;what do you think?&quot; to &quot;why is the market pricing this deal down?&quot;</p>
+<p><strong>Primary forecast targets.</strong> Close-won-by-date, win/loss, slip risk, deal-confidence band, and event milestones (economic-buyer attendance, redlines arrival, stage transition, discount &gt; 10%, mutual-action-plan completion).</p>
+<p><strong>Settlement.</strong> Resolved deterministically from canonical Salesforce fields (<code>StageName</code>, <code>IsClosed</code>, <code>IsWon</code>, <code>CloseDate</code>) plus a small set of Prism-managed event flags written by deal owners or managers and dual-confirmed.</p>
+<p>---</p>
+<h2 id="3-use-cases-coherent-summary">3. Use Cases - coherent summary<a class="anchor" href="#3-use-cases-coherent-summary" aria-label="Link to section">#</a></h2>
+<p>The market becomes valuable when it is wired into existing operating rhythms, not bolted on as a side product. Five tightly-coupled use cases:</p>
+<ol><li><strong>Pre-forecast-call deal triage.</strong> On Monday, RevOps pulls the deals where market price diverges from the rep's stage-implied probability by more than 25 percentage points. Those deals get the 30 minutes of airtime; the rest are accepted on autopilot. The market replaces the &quot;stare at every deal&quot; forecast call.</li></ol>
+<ol><li><strong>Slip-risk early warning.</strong> A binary market on &quot;Will this deal slip past quarter-end?&quot; tightens 10–14 days before quarter close as SEs, finance, and legal trade on what they're seeing. Spikes in slip probability page the deal owner and the regional VP.</li></ol>
+<ol><li><strong>Sandbagging / overconfidence detection.</strong> Market lower than rep + manager forecast by a large margin → leadership review for hidden risk. Market higher than internal forecast → potential under-recognized momentum (executive sponsorship, signature pending) the rep hasn't logged.</li></ol>
+<ol><li><strong>Event-milestone decomposition.</strong> Instead of one binary on close-won, a deal has 4–8 micro-markets on next-step events. The product of those micro-probabilities (with a calibration adjustment) yields a more predictive composite than the close-won market alone, and produces a structured trail of <em>why</em> the deal is moving.</li></ol>
+<ol><li><strong>Cross-functional intelligence capture.</strong> SEs price technical-validation risk; legal prices contract friction; finance prices pricing/discount risk; marketing prices intent. Role-scoped markets let each function trade where they have edge, and reputation weighting compounds that into who is good at predicting <em>what</em>.</li></ol>
+<p>---</p>
+<h2 id="4-detailed-design">4. Detailed Design<a class="anchor" href="#4-detailed-design" aria-label="Link to section">#</a></h2>
+<h3 id="4-1-market-design">4.1 Market design<a class="anchor" href="#4-1-market-design" aria-label="Link to section">#</a></h3>
+<p><strong>Contract types (MVP).</strong></p>
+<div class="table-wrap"><table><thead><tr><th>Contract</th><th>Resolution event</th><th>Settlement source</th><th>Window</th></tr></thead><tbody><tr><td><code>CLOSE_WON_BY_DATE</code></td><td><code>IsWon == true</code> AND <code>CloseDate &lt;= target</code></td><td>SFDC native</td><td>Opens at Stage 2; closes 24h before CloseDate</td></tr><tr><td><code>SLIP_PAST_QUARTER</code></td><td><code>CloseDate</code> rolls past quarter end OR not closed by quarter end</td><td>SFDC native + cron</td><td>Opens 30d before QE; closes at QE</td></tr><tr><td><code>STAGE_ADVANCE_BY</code></td><td><code>StageName</code> reaches target stage by date</td><td>SFDC native</td><td>Opens on stage entry; closes at target date</td></tr><tr><td><code>MILESTONE_EVENT</code></td><td>Boolean flag set by deal owner + manager confirmation</td><td>Prism event ledger</td><td>Defined per deal</td></tr></tbody></table></div>
+<p><strong>Mechanism.</strong> <strong>Logarithmic Market Scoring Rule (LMSR)</strong> automated market maker. Cost function <code>C(q) = b · ln(Σ exp(q_i / b))</code>; price <code>p_i = exp(q_i / b) / Σ exp(q_j / b)</code>. <code>b</code> is the liquidity parameter — bigger <code>b</code> = more liquidity, more capital at risk for the market maker. Pick <code>b</code> per market based on (a) expected number of traders and (b) maximum acceptable subsidy if the market resolves wrong-way. Default: <code>b = 50</code> for deal-level markets, <code>b = 20</code> for milestone markets.</p>
+<p><strong>Why LMSR over order book.</strong> With &lt;50 traders per market, an order book has terrible liquidity — bid-ask spreads are wide, prices stale. LMSR provides continuous prices, bounds the market maker's loss, and is the standard in corporate PM literature (HP, Intel used scoring-rule mechanisms).</p>
+<p><strong>Settlement.</strong> A <code>resolver</code> job runs nightly and on-demand at quarter-end. For SFDC-native contracts, the resolver reads canonical fields and pays out <code>1</code> or <code>0</code>. For milestone contracts, the deal owner submits the event flag and a second party (manager, SE, or RevOps) confirms; the audit trail is immutable.</p>
+<p><strong>Partial information / slippage / deal updates.</strong></p>
+<ul><li><strong>Stage change</strong> while a market is open: market continues; the new stage is data the crowd can trade on.</li><li><strong>CloseDate change</strong>: the original <code>CLOSE_WON_BY_DATE</code> contract resolves on the <em>original</em> date (otherwise the rep can move the goalposts); a new market can be opened for the new date.</li><li><strong>Deal merged / split</strong>: original markets resolve based on the surviving record's outcome, with manual tie-breaking by RevOps logged in the audit.</li><li><strong>Deal closed-lost early</strong>: market resolves immediately, no waiting for the date.</li></ul>
+<h3 id="4-2-participant-model">4.2 Participant model<a class="anchor" href="#4-2-participant-model" aria-label="Link to section">#</a></h3>
+<div class="table-wrap"><table><thead><tr><th>Role</th><th>Can trade</th><th>Can trade own deals</th><th>Position limit per market</th><th>Reputation weight</th></tr></thead><tbody><tr><td>AE (deal owner)</td><td>Yes</td><td><strong>Yes — both sides, position publicly visible</strong></td><td>$50</td><td>1.0×</td></tr><tr><td>AE (other deals)</td><td>Yes</td><td>n/a</td><td>$50</td><td>1.0×</td></tr><tr><td>Manager</td><td>Yes</td><td>Yes (with disclosure flag)</td><td>$100</td><td>1.2×</td></tr><tr><td>SE / CSM</td><td>Yes (deals they touch)</td><td>Yes</td><td>$75</td><td>1.0×</td></tr><tr><td>RevOps</td><td>Yes</td><td>Yes</td><td>$75</td><td>1.0×</td></tr><tr><td>Finance / Legal</td><td>Yes (scope-relevant markets)</td><td>n/a</td><td>$50</td><td>1.1× on pricing/contract markets</td></tr><tr><td>Leadership (VP+)</td><td><strong>No</strong> (read-only)</td><td>n/a</td><td>0</td><td>n/a</td></tr></tbody></table></div>
+<p>Leadership trading is forbidden — it would create reverse pressure and make the price about reading the boss's mind. Leadership consumes the signal; they don't produce it.</p>
+<p><strong>AEs trade their own deals freely, but every trade and standing position is public</strong> — visible on the market page, in the manager dashboard, and in the deal-channel digest. Transparency, not prohibition, is the anti-sandbagging mechanism: if the AE shorts their own deal, the manager sees it the same minute the trade lands. This preserves the AE's first-party signal — the central reason markets beat hierarchies in the HP/Intel/Ford literature — while making manipulation expensive in social capital. The new diagnostic this unlocks is <strong>&quot;rep forecast vs. rep position&quot; divergence</strong>: a rep saying 90% but buying only 5 YES at 0.40 and not adding when price drops is acting against their own stated forecast — itself high-signal. That divergence becomes a column in the manager dashboard.</p>
+<p>Reputation weight is applied to a parallel <strong>calibrated price</strong> that leadership sees in addition to the raw market price; raw price still drives payouts.</p>
+<h3 id="4-3-incentive-system">4.3 Incentive system<a class="anchor" href="#4-3-incentive-system" aria-label="Link to section">#</a></h3>
+<p><strong>Currency.</strong> Play money (&quot;Prism Points&quot;) allocated quarterly: 1,000 points per active participant, plus performance allocation based on prior-quarter Brier score. No real-money wagering — clears legal/HR/compliance and ends the framing problem.</p>
+<p><strong>Scoring.</strong> Two leaderboards, both visible:</p>
+<ol><li><strong>Profit/loss in points</strong> (raw market outcome).</li><li><strong>Brier score</strong> on positions held at market close: <code>BS = (1/N) Σ (p_i − o_i)²</code>. Lower is better.</li></ol>
+<p>The <em>advancement</em> leaderboard for perks/recognition uses a <strong>calibration-adjusted score</strong>: <code>S = α · normalized_PnL + (1 − α) · (1 − BS)</code> with <code>α = 0.4</code>. This explicitly rewards being well-calibrated (40% prediction at 38% realized rate scores well) instead of just picking winners — that is the core anti-gamification lever.</p>
+<p><strong>Perks.</strong> Quarterly: top decile gets recognition + an extra 500-point allocation; team-level Brier wins funds team-discretionary budget. No individual cash payouts.</p>
+<p><strong>Anti-manipulation.</strong></p>
+<ul><li><strong>Position limits</strong> per role per market (table above) make it expensive to push price.</li><li><strong>No anonymous trades</strong> in scope-relevant markets — internal markets, all trades attributed.</li><li><strong>AE position transparency</strong> on own deals — every trade public, every standing position visible in the manager dashboard. Sandbagging is exposed, not blocked.</li><li><strong>Wash-trade detection</strong>: same user round-tripping in &lt;60s is flagged and the trades zeroed.</li><li><strong>Information rights</strong>: notes attached to markets can move trader belief but only post deal-owner verification, preventing rumor-driven swings.</li><li><strong>Reputation decay</strong>: a participant who has traded on &lt;3 markets in 90 days has their weight reset to 1.0×.</li></ul>
+<h3 id="4-4-market-rules">4.4 Market rules<a class="anchor" href="#4-4-market-rules" aria-label="Link to section">#</a></h3>
+<ul><li><strong>Trading windows.</strong> Open at Stage 2 (Qualified Pipeline) entry, close 24h before <code>CloseDate</code> for close-won markets, at QE for slip markets, at target date for stage/milestone markets. No after-hours close — markets run 24×7 to allow async global trading.</li><li><strong>Position limits.</strong> As in 4.2.</li><li><strong>Suspension rules.</strong> Auto-suspend trading on (a) deal-stage change, for 2 hours, to let everyone read the new stage; (b) deal-owner-flagged &quot;material change&quot; event (acquisition, RFP issued, champion left); (c) RevOps-initiated investigation. Suspensions logged.</li><li><strong>Stage / forecast resets.</strong> Stage reverts (Stage 4 → Stage 3) re-open the market for trading but do not unwind prior trades. CloseDate moves do not move existing contracts (see 4.1).</li><li><strong>Anti-gaming.</strong> As in 4.3, plus: a <strong>&quot;cool-off&quot;</strong> prohibition on trading in markets you have written the deal-owner notes for in the last 24h. A <strong>conflict-of-interest</strong> flag for finance/legal traders on deals where they are the assigned reviewer — disclosed but not blocked.</li></ul>
+<h3 id="4-5-data-integration">4.5 Data integration<a class="anchor" href="#4-5-data-integration" aria-label="Link to section">#</a></h3>
+<p><strong>Canonical fields (read from Salesforce).</strong> <code>Opportunity.Id, AccountId, Owner.Id, Amount, CloseDate, StageName, ForecastCategory, IsClosed, IsWon, Probability (CRM), CreatedDate, LastModifiedDate, LastActivityDate</code>. Plus custom: <code>Prism_Probability__c</code> (write-back), <code>Prism_Last_Sync__c</code>.</p>
+<p><strong>Read-from / write-back boundary.</strong> Prism <em>reads</em> SFDC opportunity state; Prism <em>writes</em> <code>Prism_Probability__c</code> and <code>Prism_Last_Sync__c</code> only. Never mutates standard SFDC fields.</p>
+<p><strong>Signal feeds (MVP+1, not in 2-week MVP).</strong></p>
+<ul><li>Activity / engagement (Outreach, Salesloft, Gong) → market context panel only, not auto-traded.</li><li>Intent (6sense, Bombora) → context.</li><li>Email events (open/reply rates) → context.</li></ul>
+<p><strong>Reconciliation.</strong> SFDC <code>Opportunity.Id</code> is the system-of-record key. Prism stores its own <code>internal_deal_id</code> for routing/UX but always re-anchors to <code>sfdc_opportunity_id</code> on every sync.</p>
+<p><strong>Signal-quality checks.</strong></p>
+<ul><li><strong>Stage-vs-CloseDate sanity</strong>: a Stage-2 deal with a CloseDate in 5 days is flagged.</li><li><strong>Stale opportunities</strong>: no activity in 30+ days → market suspended pending owner confirmation.</li><li><strong>Duplicate detection</strong>: same Account + similar Amount + nearby CloseDate → flagged for RevOps merge.</li><li><strong>CloseDate-in-the-past</strong>: blocked from market creation.</li></ul>
+<h3 id="4-6-user-experience">4.6 User experience<a class="anchor" href="#4-6-user-experience" aria-label="Link to section">#</a></h3>
+<p><strong>Trading interface (per market).</strong></p>
+<ul><li>Top: deal name, account, amount, stage, owner, close date, days-to-close.</li><li>Center: price chart (last 30 days), current YES/NO price, last trade.</li><li>Right: trade panel — buy YES / buy NO, slider for amount, computed cost via LMSR cost function, projected payoff, <strong>calibration warning</strong> if user's prior Brier &lt; median.</li><li>Below: deal context panel — recent stage history, recent activities, attached deal-owner notes.</li><li>Bottom: open positions (yours), market history, dispute / flag button.</li></ul>
+<p><strong>Speed.</strong> Sub-1-second trade execution; sub-200ms price refresh on open market. Optimistic UI.</p>
+<p><strong>Forecast-meeting view (manager / leadership).</strong></p>
+<ul><li>Three-column table: deals × (rep forecast %, manager forecast %, market price %, divergence flag).</li><li>Sort by absolute divergence — top 10 are the agenda.</li><li>Click-through to per-deal market with the full context panel.</li></ul>
+<p><strong>Slack integration (post-MVP).</strong> Daily digest in <code>#forecast-{region}</code>: &quot;5 deals where market diverges &gt;25pts from rep forecast.&quot; Per-deal channel pings on price moves &gt;10pts intraday.</p>
+<h3 id="4-7-operating-model">4.7 Operating model<a class="anchor" href="#4-7-operating-model" aria-label="Link to section">#</a></h3>
+<ul><li><strong>Owner.</strong> A single <strong>GTM Engineer</strong> owns Prism end-to-end — sits between RevOps and Engineering so they can both ship code and run the market. Responsibilities: opening markets, suspending on disputes, settling milestone contracts, weekly leaderboard publication, quarterly performance review, and the steering-committee report-out. The GTM Engineer is the named accountable individual; without that name the operating model is decorative.</li><li><strong>Cadence.</strong> Markets open continuously as deals reach Stage 2; close per 4.4. Quarterly: review of market-vs-actual accuracy, calibration plots, leaderboard distribution, any manipulation incidents. Annual: design review (mechanism, incentive structure, perks).</li><li><strong>Governance.</strong> A small steering committee — RevOps, Sales Leadership, Legal, HR — meets quarterly, owns design changes. All design changes require steering committee approval; all incident dispositions are logged and visible to participants.</li><li><strong>Performance review.</strong> Three measures, quarterly:</li></ul>
+<p>- <strong>Forecast accuracy</strong>: market Brier vs. rep Brier vs. manager Brier vs. CRM-stage-implied Brier. - <strong>Incremental information</strong>: logistic regression LR test (CRM + market vs. CRM only) — exactly the test in the context file. - <strong>Behavioral</strong>: count of deal-review interventions triggered by market divergence, and their downstream win/loss.</p>
+<h3 id="4-8-metrics-of-success">4.8 Metrics of success<a class="anchor" href="#4-8-metrics-of-success" aria-label="Link to section">#</a></h3>
+<div class="table-wrap"><table><thead><tr><th>Metric</th><th>Target by Quarter 2</th><th>Why it matters</th></tr></thead><tbody><tr><td>Forecast Brier (market) vs. CRM</td><td>Market Brier ≥10% lower</td><td>The literature benchmark; the reason to bother</td></tr><tr><td>LR-test p-value (market adds info beyond CRM)</td><td>&lt; 0.05 on n ≥ 100 resolved deals</td><td>The decisive test from the context file</td></tr><tr><td>Active participation rate</td><td>≥ 40% of eligible employees trade ≥ 3 markets/month</td><td>Below this, liquidity is too thin and signal is dominated by AEs</td></tr><tr><td>Information freshness</td><td>Median time from CRM stage change to first market trade &lt; 4 hours</td><td>Markets have to absorb new info fast or they're stale</td></tr><tr><td>Market efficiency (no-arbitrage)</td><td>YES + NO prices sum to 1.00 ± 0.02</td><td>Sanity check on AMM and trader rationality</td></tr><tr><td>Behavioral impact</td><td>≥ 25% of forecast-call agenda is divergence-driven by Q2</td><td>The product is about changing how forecast calls run</td></tr><tr><td>Manipulation incidents</td><td>&lt; 2 per quarter, all caught and reversed within 24h</td><td>Trust in the system depends on this being near zero</td></tr></tbody></table></div>
+<p>---</p>
+<h2 id="5-system-architecture">5. System Architecture<a class="anchor" href="#5-system-architecture" aria-label="Link to section">#</a></h2>
+<pre><code>┌──────────────────────────────────────────────────────────────────────┐
+│                         Client (React/Vite)                          │
+│  Trading UI · Manager Dashboard · Leaderboard · Admin Console        │
+└──────────────┬───────────────────────────────────────────────────────┘
+               │ HTTPS (REST + Supabase Realtime WebSocket)
+┌──────────────▼───────────────────────────────────────────────────────┐
+│                        API Layer (Vercel)                            │
+│  Next.js API routes / Vercel Edge Functions                          │
+│  · /api/markets · /api/trades · /api/positions · /api/resolve        │
+│  · /api/admin · /api/sync/sfdc · /api/leaderboard                    │
+└──────────────┬───────────────────────────────────────────────────────┘
+               │
+   ┌───────────┼───────────┬─────────────┬─────────────┐
+   ▼           ▼           ▼             ▼             ▼
+┌──────┐ ┌──────────┐ ┌──────────┐ ┌──────────┐ ┌────────────┐
+│ Auth │ │ Postgres │ │ AMM Core │ │Resolver  │ │ LLM Agents │
+│(Sup..│ │(Supabase)│ │ (LMSR)   │ │(cron job)│ │(Anthropic) │
+└──────┘ └────┬─────┘ └────┬─────┘ └────┬─────┘ └─────┬──────┘
+              │            │            │             │
+              ▼            ▼            ▼             ▼
+         ┌──────────────────────────────────────────────────┐
+         │  Event Ledger (immutable trade + state log)      │
+         └──────────────────────────────────────────────────┘
+                     │
+                     ▼
+         ┌──────────────────────────────────────────────────┐
+         │  Salesforce Sandbox (synthetic 100 deals + 5     │
+         │  hardcoded demo deals) via REST API + Bulk 2.0   │
+         └──────────────────────────────────────────────────┘</code></pre>
+<p><strong>Component responsibilities.</strong></p>
+<ul><li><strong>Client.</strong> React 18 + Vite + TypeScript + TanStack Query + Tailwind + shadcn/ui. Supabase Realtime subscription for price ticks. Recharts or visx for price/calibration charts.</li><li><strong>API layer.</strong> Next.js (App Router) deployed on Vercel; locally <code>pnpm dev</code>. Stateless routes, hit Supabase Postgres for state, AMM core for pricing math, LLM agents for context synthesis.</li><li><strong>Postgres (Supabase).</strong> Authoritative state — markets, positions, trades, ledger, users, reputation, settlements. Row-level security keyed by <code>auth.uid()</code>. The trade endpoint runs all writes inside one transaction with <code>SERIALIZABLE</code> isolation to prevent race conditions on the AMM <code>q</code> vector.</li><li><strong>AMM core.</strong> Pure TypeScript module (<code>packages/amm</code>). LMSR cost &amp; price functions. No I/O. Imported by the trade endpoint and by the resolver. Unit-tested to numerical tolerance against Hanson's original LMSR formulation.</li><li><strong>Resolver.</strong> Vercel cron job, hourly + on-demand. Pulls SFDC opportunities, detects resolved markets, executes payouts inside a single transaction, writes back <code>Prism_Probability__c</code> and the settlement log.</li><li><strong>LLM agents.</strong> Anthropic API. Three roles (see §7): Haiku for context summarization on each market open, Sonnet for code-gen and design-doc work, Opus for strategic / statistical / adversarial review.</li><li><strong>Event ledger.</strong> Append-only <code>events</code> table — every trade, settlement, suspension, admin action. Source of truth for audit and replay.</li><li><strong>Salesforce sandbox.</strong> A Developer-Edition org seeded with 100 synthetic deals (see §6.7) plus 5 hardcoded demo deals. JSForce client for reads; Bulk API 2.0 for the 100-deal load.</li></ul>
+<p><strong>Suggested additional technical assets</strong> (beyond the context file's list):</p>
+<ul><li><strong>Inngest</strong> or <strong>Trigger.dev</strong> for durable background jobs (resolver, sync, LLM batched calls). Vercel cron is fine for MVP; durable runners matter when LLM batches or SFDC bulk loads need retry.</li><li><strong>PostHog</strong> for product analytics + feature flags (used to gate role-scoped markets in early rollout).</li><li><strong>Sentry</strong> for error tracking — non-negotiable since money flows through the AMM.</li><li><strong>Vitest</strong> + <strong>Playwright</strong> for unit + E2E test runners.</li><li><strong>Zod</strong> for schema validation at API boundaries.</li><li><strong>Drizzle ORM</strong> over Supabase Postgres — typed migrations, no raw SQL drift.</li><li><strong>Resend</strong> for transactional email (settlement notifications).</li><li><strong>Slack Bolt SDK</strong> (post-MVP) for deal-channel digests and trade commands.</li></ul>
+<p>---</p>
+<h2 id="6-technical-design-document">6. Technical Design Document<a class="anchor" href="#6-technical-design-document" aria-label="Link to section">#</a></h2>
+<h3 id="6-1-tech-stack-repo-layout">6.1 Tech stack &amp; repo layout<a class="anchor" href="#6-1-tech-stack-repo-layout" aria-label="Link to section">#</a></h3>
+<p>Monorepo (pnpm workspaces). Permissive (MIT) internal license, sub-package autonomy.</p>
+<pre><code>prism/
+├── apps/
+│   ├── web/                  # React/Vite client
+│   └── api/                  # Next.js API (Vercel target)
+├── packages/
+│   ├── amm/                  # LMSR pure-math module
+│   ├── db/                   # Drizzle schemas + migrations
+│   ├── sfdc/                 # JSForce client + sync logic
+│   ├── stats/                # Brier, calibration, LR test
+│   └── agents/               # LLM agent orchestration
+├── supabase/
+│   ├── migrations/
+│   └── seed.sql
+├── scripts/
+│   ├── seed-sfdc.ts          # 100 synthetic deals
+│   └── hardcode-demo.ts      # 5 demo deals
+└── docs/</code></pre>
+<h3 id="6-2-data-models-drizzle-postgres">6.2 Data models (Drizzle / Postgres)<a class="anchor" href="#6-2-data-models-drizzle-postgres" aria-label="Link to section">#</a></h3>
+<pre><code>// packages/db/schema.ts (abbreviated)
+
+export const users = pgTable('users', {
+  id: uuid('id').primaryKey().defaultRandom(),
+  email: text('email').notNull().unique(),
+  role: text('role', { enum: ['AE','MANAGER','SE','CSM','REVOPS','FINANCE','LEGAL','LEADERSHIP','ADMIN'] }).notNull(),
+  reputation: numeric('reputation', { precision: 6, scale: 3 }).default('1.000').notNull(),
+  pointsBalance: integer('points_balance').default(1000).notNull(),
+  createdAt: timestamp('created_at').defaultNow(),
+});
+
+export const deals = pgTable('deals', {
+  id: uuid('id').primaryKey().defaultRandom(),
+  sfdcOpportunityId: text('sfdc_opportunity_id').notNull().unique(),
+  accountName: text('account_name').notNull(),
+  ownerId: uuid('owner_id').references(() =&gt; users.id),
+  amount: numeric('amount', { precision: 14, scale: 2 }),
+  closeDate: date('close_date'),
+  stage: text('stage'),
+  forecastCategory: text('forecast_category'),
+  crmProbability: numeric('crm_probability', { precision: 5, scale: 4 }),
+  isClosed: boolean('is_closed').default(false),
+  isWon: boolean('is_won').default(false),
+  lastSyncAt: timestamp('last_sync_at'),
+});
+
+export const markets = pgTable('markets', {
+  id: uuid('id').primaryKey().defaultRandom(),
+  dealId: uuid('deal_id').references(() =&gt; deals.id).notNull(),
+  contractType: text('contract_type', {
+    enum: ['CLOSE_WON_BY_DATE','SLIP_PAST_QUARTER','STAGE_ADVANCE_BY','MILESTONE_EVENT']
+  }).notNull(),
+  question: text('question').notNull(),
+  resolutionDate: timestamp('resolution_date').notNull(),
+  liquidityB: numeric('liquidity_b', { precision: 8, scale: 2 }).notNull(), // LMSR b
+  qYes: numeric('q_yes', { precision: 14, scale: 6 }).default('0').notNull(),
+  qNo: numeric('q_no', { precision: 14, scale: 6 }).default('0').notNull(),
+  status: text('status', { enum: ['OPEN','SUSPENDED','RESOLVED','CANCELLED'] }).default('OPEN').notNull(),
+  resolvedOutcome: boolean('resolved_outcome'),
+  resolvedAt: timestamp('resolved_at'),
+  createdAt: timestamp('created_at').defaultNow(),
+});
+
+export const positions = pgTable('positions', {
+  id: uuid('id').primaryKey().defaultRandom(),
+  marketId: uuid('market_id').references(() =&gt; markets.id).notNull(),
+  userId: uuid('user_id').references(() =&gt; users.id).notNull(),
+  yesShares: numeric('yes_shares', { precision: 14, scale: 6 }).default('0').notNull(),
+  noShares: numeric('no_shares', { precision: 14, scale: 6 }).default('0').notNull(),
+  pointsSpent: integer('points_spent').default(0).notNull(),
+}, (t) =&gt; ({
+  uniq: uniqueIndex('positions_market_user_uniq').on(t.marketId, t.userId),
+}));
+
+export const trades = pgTable('trades', {
+  id: uuid('id').primaryKey().defaultRandom(),
+  marketId: uuid('market_id').references(() =&gt; markets.id).notNull(),
+  userId: uuid('user_id').references(() =&gt; users.id).notNull(),
+  side: text('side', { enum: ['YES','NO'] }).notNull(),
+  shares: numeric('shares', { precision: 14, scale: 6 }).notNull(), // signed: + buy, - sell
+  costPoints: integer('cost_points').notNull(),                     // signed
+  priceBefore: numeric('price_before', { precision: 6, scale: 4 }).notNull(),
+  priceAfter: numeric('price_after', { precision: 6, scale: 4 }).notNull(),
+  createdAt: timestamp('created_at').defaultNow(),
+});
+
+export const events = pgTable('events', {
+  id: uuid('id').primaryKey().defaultRandom(),
+  type: text('type').notNull(), // TRADE | RESOLVE | SUSPEND | RESUME | SYNC | NOTE | DISPUTE
+  marketId: uuid('market_id'),
+  dealId: uuid('deal_id'),
+  userId: uuid('user_id'),
+  payload: jsonb('payload').notNull(),
+  createdAt: timestamp('created_at').defaultNow(),
+});
+
+export const reputationHistory = pgTable('reputation_history', {
+  id: uuid('id').primaryKey().defaultRandom(),
+  userId: uuid('user_id').references(() =&gt; users.id).notNull(),
+  periodStart: date('period_start').notNull(),
+  periodEnd: date('period_end').notNull(),
+  brier: numeric('brier', { precision: 6, scale: 4 }),
+  pnl: integer('pnl'),
+  marketsTraded: integer('markets_traded'),
+  appliedWeight: numeric('applied_weight', { precision: 6, scale: 3 }),
+});</code></pre>
+<p>Row-level security: every read/write filtered by <code>auth.uid()</code> against <code>users.id</code>. Leadership read access via a <code>LEADERSHIP</code> claim on the JWT, not by trading rights.</p>
+<h3 id="6-3-api-schemas-zod-validated">6.3 API schemas (Zod-validated)<a class="anchor" href="#6-3-api-schemas-zod-validated" aria-label="Link to section">#</a></h3>
+<pre><code>GET    /api/markets?dealId=&amp;status=&amp;contractType=
+GET    /api/markets/:id                         → market + current price + recent trades
+POST   /api/markets                              (RevOps only) → create market
+PATCH  /api/markets/:id                          (RevOps) → suspend / resume
+POST   /api/trades                               → execute trade through AMM
+        body: { marketId, side: 'YES'|'NO', shares: number }
+        returns: { trade, newPrice, position, pointsBalance }
+GET    /api/positions?userId=                    → my open positions
+POST   /api/resolve/:marketId                    (resolver/admin) → settle
+GET    /api/leaderboard?period=                  → ranked users + Brier + PnL
+POST   /api/sync/sfdc                            (cron) → pull latest SFDC state
+GET    /api/stats/calibration?userId=            → calibration plot data
+GET    /api/stats/lr-test                        → CRM vs. market LR test on resolved deals</code></pre>
+<p>Every body validated with Zod; every response typed end-to-end via <code>ts-rest</code> or <code>tRPC</code>. Rate-limited at edge: 30 trades/min/user.</p>
+<h3 id="6-4-core-logic-flows">6.4 Core logic flows<a class="anchor" href="#6-4-core-logic-flows" aria-label="Link to section">#</a></h3>
+<p><strong>Trade flow</strong> (the only complex path):</p>
+<pre><code>client clicks &quot;Buy 10 YES&quot;
+  → POST /api/trades
+    → BEGIN TRANSACTION (SERIALIZABLE)
+      → SELECT market FOR UPDATE
+      → check market.status == 'OPEN'
+      → check position limits for user role
+      → check AE-not-shorting-own-deal rule
+      → cost = lmsrCost(qYes + 10, qNo, b) − lmsrCost(qYes, qNo, b)
+      → check user.points_balance &gt;= cost
+      → UPDATE markets SET q_yes = q_yes + 10
+      → INSERT trades (...)
+      → UPSERT positions (...)
+      → UPDATE users SET points_balance = points_balance − cost
+      → INSERT events (type='TRADE', payload={...})
+    → COMMIT
+  → publish on Supabase Realtime channel `market:{id}`
+  → return { trade, newPrice, position }</code></pre>
+<p>If <code>SERIALIZABLE</code> retries because of a concurrent trade, the API retries up to 3× before returning a 409 to the client. The AMM math is deterministic — the retry is safe.</p>
+<p><strong>Settlement flow.</strong> Cron at top of every hour. For each market where <code>resolution_date &lt;= now()</code>:</p>
+<ol><li>Fetch latest SFDC state for the parent deal.</li><li>Apply contract resolution logic (close-won? slipped? stage advanced?).</li><li>For each position in that market: payout = <code>yesShares × outcome + noShares × (1 − outcome)</code>. Credit user.</li><li>Record Brier contribution = <code>(price_at_close − outcome)²</code> per held share.</li><li>Mark market <code>RESOLVED</code>; write <code>Prism_Probability__c</code> historical.</li><li>Append events.</li></ol>
+<h3 id="6-5-statistical-ml-mathematical-models-in-depth">6.5 Statistical / ML / mathematical models - in depth<a class="anchor" href="#6-5-statistical-ml-mathematical-models-in-depth" aria-label="Link to section">#</a></h3>
+<h4 id="6-5-1-lmsr-the-amm">6.5.1 LMSR (the AMM)<a class="anchor" href="#6-5-1-lmsr-the-amm" aria-label="Link to section">#</a></h4>
+<p>Cost function over outcomes <code>q = (q_yes, q_no)</code>:</p>
+<pre><code>C(q) = b · ln(exp(q_yes / b) + exp(q_no / b))</code></pre>
+<p>Price (instantaneous):</p>
+<pre><code>p_yes = exp(q_yes / b) / (exp(q_yes / b) + exp(q_no / b))
+p_no  = 1 − p_yes</code></pre>
+<p>Cost of buying <code>Δ</code> YES shares: <code>C(q_yes + Δ, q_no) − C(q_yes, q_no)</code>.</p>
+<p>Maximum subsidy (worst-case loss to market maker if all probability resolves on one side): <code>b · ln(2)</code>. Choose <code>b = 50</code> → max subsidy 34.7 points per market. With 100 active markets, max system subsidy is ≈ 3,470 points — comfortably within the play-money budget.</p>
+<h4 id="6-5-2-brier-score-calibration">6.5.2 Brier score &amp; calibration<a class="anchor" href="#6-5-2-brier-score-calibration" aria-label="Link to section">#</a></h4>
+<p>For each user <code>u</code>, period <code>T</code>:</p>
+<pre><code>BS_u = (1 / N_T) · Σ_{trades held to close} (p_at_close − outcome)²</code></pre>
+<p>Calibration: bin trades by predicted probability deciles, plot realized rate per bin. Reliability diagram + ECE (expected calibration error) reported per quarter.</p>
+<h4 id="6-5-3-hypothesis-test-lr-test-on-incremental-information-directly-from-the-conte">6.5.3 Hypothesis test (LR test on incremental information - directly from the context file)<a class="anchor" href="#6-5-3-hypothesis-test-lr-test-on-incremental-information-directly-from-the-conte" aria-label="Link to section">#</a></h4>
+<p>Fit two logistic regressions on resolved deals:</p>
+<ul><li>Model A: <code>outcome ~ logit(crm_probability)</code></li><li>Model C: <code>outcome ~ logit(crm_probability) + logit(market_probability_at_close)</code></li></ul>
+<p>LR statistic: <code>2 · (logL_C − logL_A) ~ χ²(1)</code>. Reject H₀ at p &lt; 0.05 → market carries incremental information. This is the <strong>single quantitative metric</strong> that justifies the product to leadership.</p>
+<p>Implemented in <code>packages/stats</code> via <a href="https://github.com/mljs/"><code>mlr-glm</code></a> or directly with <code>glm-js</code> / a small Newton-Raphson logistic fit. Power analysis: at α = 0.05, power 0.8, expected effect size from the simulated DGP, <strong>n ≈ 80–120 resolved deals</strong> is the minimum for a credible test. Below that, report directionally only.</p>
+<h4 id="6-5-4-reputation-weighting-bayesian">6.5.4 Reputation weighting (Bayesian)<a class="anchor" href="#6-5-4-reputation-weighting-bayesian" aria-label="Link to section">#</a></h4>
+<p>For each user, model their forecasting skill as:</p>
+<pre><code>skill_u ~ Beta(α_u, β_u)</code></pre>
+<p>Update from realized Brier per trade: a held trade with <code>(p, outcome)</code> contributes a likelihood proportional to a Bernoulli with parameter <code>p</code>. Posterior mean of skill → reputation weight, clamped to <code>[0.5, 2.0]</code>.</p>
+<p>Calibrated price (leadership view):</p>
+<pre><code>p_calibrated = Σ_u (w_u · trade_size_u · price_u) / Σ_u (w_u · trade_size_u)</code></pre>
+<p>i.e., a weighted average of trades, weighted by trader reputation × trade size. Raw price still drives payouts; calibrated price is informational only.</p>
+<h4 id="6-5-5-composite-probability-from-milestone-markets">6.5.5 Composite probability from milestone markets<a class="anchor" href="#6-5-5-composite-probability-from-milestone-markets" aria-label="Link to section">#</a></h4>
+<p>For a deal with milestone markets <code>m_1 ... m_k</code> that are individually predictive of close-won, fit a logistic regression on resolved deals:</p>
+<pre><code>P(close_won) = σ(β_0 + Σ β_i · logit(p_i))</code></pre>
+<p>Refit quarterly. The composite is a better predictor than any single market when milestones are conditionally informative; it also produces SHAP-style attributions (which milestone is moving the deal).</p>
+<h3 id="6-6-permissions-autonomy-notes">6.6 Permissions / autonomy notes<a class="anchor" href="#6-6-permissions-autonomy-notes" aria-label="Link to section">#</a></h3>
+<p>The TDD assumes the implementing model has broad autonomy: write code, run migrations, seed data, run tests, deploy to local &amp; Supabase, write to the SFDC sandbox, install dependencies. Human gates at: (a) creating the SFDC sandbox org, (b) Supabase project creation, (c) Vercel deploy, (d) merging to <code>main</code>. Everything else — schema design, seed-data generation, AMM math, statistical packages, UI scaffolding — runs autonomously inside a feature branch.</p>
+<h3 id="6-7-synthetic-data-generation-100-deals-5-hardcoded-demo">6.7 Synthetic data generation (100 deals + 5 hardcoded demo)<a class="anchor" href="#6-7-synthetic-data-generation-100-deals-5-hardcoded-demo" aria-label="Link to section">#</a></h3>
+<p>Synthetic 100 deals — Python <code>scripts/generate-synthetic-deals.py</code>, output JSON loaded into SFDC sandbox via Bulk API:</p>
+<ul><li>Stages drawn from realistic distribution: 30% Stage 2, 25% Stage 3, 20% Stage 4, 15% Stage 5, 10% Closed.</li><li>Amount: log-normal, μ=11, σ=0.7 (median ≈ $60k).</li><li>CloseDate: uniform in the next 90 days.</li><li>True latent probability: <code>σ(stage_effect + signal_effect + noise)</code> per the context-file DGP.</li><li>CRM probability: <code>truth × 0.7 + 0.05</code> (optimism bias) clipped to [0.05, 0.95].</li><li>Time-series: 30 days of stage / activity history per deal.</li><li>Outcomes drawn from truth — used for backtesting the LR test.</li></ul>
+<p>Five hardcoded demo deals (used in the live demo, with curated stories):</p>
+<ol><li><strong>Acme Corp — $250k</strong> — Stage 4, market price 0.82, rep says 0.90, divergence flag (overconfidence story).</li><li><strong>Globex Industries — $140k</strong> — Stage 3, market price 0.45, rep says 0.20, divergence flag (sandbagging story).</li><li><strong>Initech — $95k</strong> — Stage 4, slip market at 0.60, redlines pending (slip-risk story).</li><li><strong>Umbrella Pharma — $1.2M</strong> — Stage 5, market price 0.55, finance pricing risk flag (cross-functional story).</li><li><strong>Hooli — $320k</strong> — Stage 2, milestone market on &quot;Will EB attend next meeting?&quot; at 0.30 (event-decomposition story).</li></ol>
+<p>---</p>
+<h2 id="7-ai-model-orchestration">7. AI Model Orchestration<a class="anchor" href="#7-ai-model-orchestration" aria-label="Link to section">#</a></h2>
+<div class="table-wrap"><table><thead><tr><th>Model</th><th>Best at</th><th>Where it runs in Prism</th><th>Cost pattern</th></tr></thead><tbody><tr><td><strong>Claude Haiku 4.5</strong></td><td>Fast classification, structured extraction, summarization at scale</td><td>(a) Per-market context summarization on every market open + every stage change. (b) Activity-feed signal extraction (Outreach/Salesloft → terse &quot;what changed&quot; lines). (c) Deal-context cards rendered in the trading UI.</td><td>High volume, low per-call cost. Cache on <code>(deal_id, last_modified_at)</code>.</td></tr><tr><td><strong>Claude Sonnet 4.6</strong></td><td>Code generation, refactors, structured-output reasoning, mid-complexity analysis</td><td>(a) The implementation agent — writes code in Cursor / Claude Code from this TDD. (b) Test generation. (c) PR review on routine changes. (d) Schema migration drafting.</td><td>Medium volume during build; sparse during ops.</td></tr><tr><td><strong>Claude Opus 4.7</strong></td><td>Strategic reasoning, statistical / ML modeling, adversarial review, ambiguous design judgment</td><td>(a) The architecture agent — reviews changes against this TDD before merge. (b) The statistical agent — owns <code>packages/stats</code>, runs power analyses, designs the LR test, updates calibration math. (c) The adversarial agent — red-teams every market design change. (d) Quarterly market-performance review.</td><td>Low volume, high per-call cost. Tight prompts; aggressive caching.</td></tr><tr><td><strong>GPT-5 (or current ChatGPT flagship)</strong></td><td>Independent perspective for adversarial cross-check; complementary failure modes</td><td>(a) Adversarial-analysis run on the design (see §10). (b) Quarterly: feed Opus's market review <em>and</em> GPT's review to the steering committee — disagreement is signal.</td><td>Quarterly cadence.</td></tr></tbody></table></div>
+<p><strong>Orchestration tool: Claude Code (recommendation).</strong> Reasons:</p>
+<ul><li>Deepest first-party Anthropic tooling; multi-agent subagent architecture matches the role split (Haiku/Sonnet/Opus).</li><li>Persistent memory (<code>MEMORY.md</code>, project CLAUDE.md) for the long-running build.</li><li>Slash commands &amp; hooks for repeatable rhythms (e.g., a <code>/review-market-design</code> slash command that invokes Opus with the TDD as context).</li><li>File-based skills for things like <code>seed-sfdc</code>, <code>run-lr-test</code>, <code>generate-calibration-plot</code>.</li></ul>
+<p>Claude Code is best for the build-and-operate phase. Cursor is excellent for tight in-file edit loops; use it as the IDE inside Claude Code when you want diff-by-diff control. Codex is unnecessary unless you specifically want OpenAI's tool-use agent — given the Anthropic-first stack here, redundant.</p>
+<p><strong>Suggested orchestration pattern (Claude Code):</strong></p>
+<pre><code>.claude/
+├── CLAUDE.md                         # global project rules
+├── agents/
+│   ├── implementer.md                # Sonnet — feature work
+│   ├── architect.md                  # Opus — design review
+│   ├── statistician.md               # Opus — stats package
+│   ├── context-summarizer.md         # Haiku — runs in-product
+│   └── adversarial-reviewer.md       # Opus — red-team design changes
+├── skills/
+│   ├── seed-sfdc/
+│   ├── run-lr-test/
+│   ├── generate-calibration-plot/
+│   └── deploy-supabase/
+└── commands/
+    ├── /open-market.md               # creates a market for an SFDC opp
+    ├── /review-design.md             # invokes architect agent
+    └── /weekly-report.md             # leaderboard + LR-test + calibration</code></pre>
+<p>---</p>
+<h2 id="8-risks-failure-modes">8. Risks &amp; Failure Modes<a class="anchor" href="#8-risks-failure-modes" aria-label="Link to section">#</a></h2>
+<ol><li><strong>AE price-discovery dominance.</strong> AE knows their deal best; if uncapped, market = AE's hunch. Mitigated by position limits + AE-no-short rule, but verify in pilot.</li><li><strong>Sandbagging.</strong> Rep talks down their deal in market to overperform later. Addressed by AE position transparency (every AE trade on own deal is public), plus the rep-forecast-vs-rep-position divergence diagnostic in the manager dashboard. Residual risk: a manager or peer-AE shorts on the rep's behalf. Detection: monitor for clusters of NO trades from accounts socially adjacent to the rep, and compare market trajectory vs. rep-forecast trajectory for persistent gaps.</li><li><strong>Insider info / fairness.</strong> Finance trader sees a discount memo before it's logged. Mitigation: scope-relevant restrictions, conflict-of-interest disclosures, and audit logs; legal/HR review of incidents.</li><li><strong>Compliance / &quot;betting&quot; framing.</strong> Even with play money, leadership may pattern-match to gambling. Frame relentlessly as &quot;collective deal intelligence&quot; and avoid gambling-adjacent UX (no &quot;wagers&quot;, &quot;odds in betting form&quot; — use probabilities and confidence).</li><li><strong>Liquidity collapse.</strong> Below ~10 trades/market, LMSR price is dominated by the first few traders. Mitigation: subsidize liquidity via larger <code>b</code>; require ≥3 distinct traders before publishing market price to managers.</li><li><strong>Goodhart's law on Brier.</strong> Once Brier drives perks, traders may avoid markets where they can't predict accurately, lowering participation breadth. Mitigation: reward participation breadth in addition to accuracy; calibration-adjusted score.</li><li><strong>Salesforce data drift.</strong> SFDC fields rename / change semantics. Mitigation: nightly schema validation; a single sync module; treat field changes as breaking.</li><li><strong>AMM bugs.</strong> A signed-shares bug can drain the points budget instantly. Mitigation: property-based tests on <code>packages/amm</code> against Hanson's reference; per-trade invariant checks (<code>p_yes + p_no = 1 ± 1e-6</code>).</li><li><strong>Cultural side-effects.</strong> Public leaderboards can demoralize. Mitigation: leaderboards by team, not individual, in early rollout; opt-in for individual public rank.</li><li><strong>Discontinuation risk.</strong> PMs at Google ended when key sponsors left. Mitigation: get explicit RevOps + Sales-Leadership ownership signed in operating model; report quarterly metrics so the value is legible.</li></ol>
+<p>---</p>
+<h2 id="9-phased-rollout">9. Phased Rollout<a class="anchor" href="#9-phased-rollout" aria-label="Link to section">#</a></h2>
+<p><strong>Phase 0 — MVP (Weeks 1–2).</strong> Local React/Vite + Postgres + LMSR + 5 hardcoded deals + 100 synthetic deals (no live SFDC). 5 internal users (engineer, RevOps lead, 1 AE, 1 manager, 1 SE). Goal: prove trading flow + price formation.</p>
+<p><strong>Phase 1 — Closed Pilot (Weeks 3–6).</strong> Supabase + Vercel deploy. Connect real SFDC sandbox. One sales region, ~20 participants, ~30 active deals. Run actual quarterly cycle, settle, compute Brier + LR test (will be underpowered — that's OK). Iterate on UX from forecast-meeting feedback.</p>
+<p><strong>Phase 2 — Full Pilot (Weeks 7–14).</strong> One full sales segment, ≥100 participants, ≥150 deals, full quarter. Slack integration. Salesforce sidebar. First quarterly leaderboard + perks. <strong>This is the phase where the LR-test result becomes credible</strong>.</p>
+<p><strong>Phase 3 — Production (Quarter 2+).</strong> Org-wide. Steering committee operating quarterly. Milestone markets enabled. Reputation weighting active. Calibrated-price view in leadership dashboard.</p>
+<p>---</p>
+<h2 id="10-recommended-mvp-scope-2-weeks">10. Recommended MVP Scope (2 weeks)<a class="anchor" href="#10-recommended-mvp-scope-2-weeks" aria-label="Link to section">#</a></h2>
+<p><strong>In scope.</strong></p>
+<ul><li>Monorepo scaffolded; Postgres locally (Docker) + Drizzle migrations.</li><li><code>packages/amm</code> with LMSR cost/price + property-based tests.</li><li>5 hardcoded demo deals + 100 synthetic deals seeded <strong>into the SFDC sandbox</strong> via Bulk API 2.0; Prism reads through JSForce. <code>MockSFDCClient</code> retained as a test double for unit tests, but the running system talks to the sandbox.</li><li><code>markets</code>, <code>trades</code>, <code>positions</code>, <code>events</code>, <code>users</code> tables.</li><li>Trade endpoint + serializable transactions + position-limit enforcement.</li><li>React/Vite client: market list, trade panel, manager 3-column divergence view, basic leaderboard.</li><li>Settlement script (manual trigger; reads <code>deals.is_won</code> from fixture).</li><li>Brier computation + simple PnL leaderboard.</li></ul>
+<p><strong>Out of scope for MVP</strong> — explicit, to avoid scope creep.</p>
+<ul><li>Slack.</li><li>Supabase / Vercel deploy (local Docker first).</li><li>Reputation weighting (compute it, don't apply it yet).</li><li>LR test (need ≥80 resolved markets — can't get there in 2 weeks; ship calibration plot only).</li><li>Milestone markets.</li><li>Composite probability.</li></ul>
+<p><strong>Success criteria for MVP demo.</strong></p>
+<ol><li>Open trading on the 5 demo deals.</li><li>Three test users execute trades; prices update in real time.</li><li>Manager dashboard renders divergence between rep forecast and market price.</li><li>Manual settlement of one demo deal reads correctly, pays out correctly, leaderboard updates.</li><li>Property tests on AMM pass; trade endpoint passes serializability test under concurrent load (k6 or similar).</li></ol>
+<p>---</p>
+<h2 id="11-adversarial-analysis-prompt-paste-into-chatgpt">11. Adversarial Analysis Prompt (paste into ChatGPT)<a class="anchor" href="#11-adversarial-analysis-prompt-paste-into-chatgpt" aria-label="Link to section">#</a></h2>
+<pre><code>You are an adversarial reviewer. I am proposing an internal play-money
+prediction market for a B2B sales organization, layered on top of
+Salesforce. Below is the design. Your job is to break it.
+
+[PASTE THE FULL &quot;Detailed Design&quot; SECTION (§4) AND THE
+&quot;System Architecture&quot; (§5), &quot;TDD&quot; (§6), AND &quot;Risks&quot; (§8) SECTIONS]
+
+Specifically, do not summarize back what I wrote. Instead, produce:
+
+1. A ranked list of the 10 most likely failure modes — design,
+   incentive, statistical, technical, cultural, legal — that I have
+   either underweighted or missed entirely. For each: the mechanism,
+   the conditions that trigger it, and a concrete instance of how a
+   bad-faith or merely bored employee could exploit it. Be specific:
+   names of fields, exact sequences of trades, exact timing windows.
+
+2. The three load-bearing assumptions in my design that, if wrong,
+   collapse the whole product. State each as a falsifiable claim
+   (&quot;market prices will be ≥10% better-Brier than CRM prob&quot;) and
+   describe what evidence would falsify it inside 90 days of pilot.
+
+3. A red-team scenario: assume you are an AE who wants to game this
+   system to maximize your perks while minimizing accuracy contribution.
+   Walk through your strategy across one quarter, step by step,
+   given the rules I have written. Identify which rules you defeat
+   and which actually constrain you.
+
+4. The statistical claim I am leaning on most heavily — that the
+   logistic-regression LR test (CRM + market vs. CRM only) at p &lt; 0.05
+   on n ≥ 100 resolved deals validates the market — and the most
+   defensible criticisms of using it that way. Specifically:
+   (a) multiple comparisons across quarters and segments,
+   (b) survivorship and stage-selection bias in which deals reach
+   resolution at all,
+   (c) AE dominance making market price a proxy for CRM probability
+   rather than independent information,
+   (d) calibration-vs-discrimination conflation.
+
+5. An alternative product design that achieves the same goal —
+   surfacing latent information about pipeline deals — without using
+   a market mechanism, and a clear-eyed comparison of why that
+   alternative might be a better choice. Don't be diplomatic; if the
+   alternative is better, say so.
+
+6. The single change to my design that would most increase its odds
+   of being trusted by leadership and adopted broadly. Single change.
+   No hedging.
+
+Respond as if you are skeptical, technically deep, have built and
+shipped at least one production market mechanism, and have reviewed
+internal corporate prediction markets at HP / Intel / Ford / Google.
+Be terse. Cite the design's own claims when you attack them.</code></pre>
+<p>---</p>
+<h2 id="12-locked-decisions">12. Locked Decisions<a class="anchor" href="#12-locked-decisions" aria-label="Link to section">#</a></h2>
+<ol><li><strong>AE trading on own deals: yes, both sides, with public positions.</strong> Transparency replaces prohibition. AE first-party signal is preserved; sandbagging is exposed in real time. Adds a new diagnostic — <em>rep-forecast vs. rep-position divergence</em> — to the manager dashboard.</li><li><strong>Currency: play money + perks.</strong> No real money. Sidesteps gambling/HR/legal posture; clears the cultural framing problem.</li><li><strong>SFDC sandbox: available.</strong> MVP loads the 100 synthetic deals + 5 demo deals into the sandbox via Bulk API 2.0; Prism reads through JSForce on a 5-minute sync cadence.</li><li><strong>Owner: GTM Engineer.</strong> Single named role spanning RevOps + Engineering. Ships code, runs the market, owns the steering-committee report-out.</li><li><strong>Pilot population: 10-person synthetic sales team.</strong> Controlled demo population; explicitly <em>not</em> statistically powered.</li></ol>
+<h3 id="implications-worth-flagging">Implications worth flagging<a class="anchor" href="#implications-worth-flagging" aria-label="Link to section">#</a></h3>
+<p><strong>Liquidity at n=10.</strong> Ten traders × ~30 active markets is thin. Compensate by (a) raising LMSR <code>b</code> to 80–100 to keep prices responsive, (b) capping active markets at ~25 instead of all 100, (c) reporting calibration plots and trade-trajectory case studies in lieu of a significance test. <strong>The §6.5.3 LR test belongs to Phase 2</strong> — at n=10 traders and however many deals resolve in the demo window, the test will be underpowered to the point of being meaningless. Don't claim it.</p>
+<p><strong>AE position transparency requires UX support.</strong> Add to the trade panel: a &quot;your trades on this deal will be public&quot; notice for the deal owner. Add to the manager dashboard: a column showing the AE's net position (in shares and cost basis) on each of their deals, alongside their stated forecast.</p>
+<h3 id="locked-synthetic-team-is-ai-piloted">Locked: synthetic team is AI-piloted<a class="anchor" href="#locked-synthetic-team-is-ai-piloted" aria-label="Link to section">#</a></h3>
+<p>10 Claude-driven personas, each with a role-scoped system prompt and an information filter that exposes only the signals that role would realistically see:</p>
+<div class="table-wrap"><table><thead><tr><th>#</th><th>Name</th><th>Role</th><th>Sees</th><th>Trading bias (deliberately heterogeneous)</th></tr></thead><tbody><tr><td>1</td><td>Alice</td><td>AE</td><td>own deals, activity feed, stage history</td><td>mildly optimistic on technical fits</td></tr><tr><td>2</td><td>Bob</td><td>AE</td><td>own deals, activity feed</td><td>well-calibrated on procurement, pessimistic on Stage 5</td></tr><tr><td>3</td><td>Charlie</td><td>AE</td><td>own deals, activity feed</td><td>overconfident on champion strength</td></tr><tr><td>4</td><td>Diana</td><td>AE</td><td>own deals, activity feed</td><td>conservative; trades sparingly</td></tr><tr><td>5</td><td>Erin</td><td>Manager</td><td>full pipeline of 2 AEs</td><td>calibrated; the &quot;good manager&quot; baseline</td></tr><tr><td>6</td><td>Frank</td><td>Manager</td><td>full pipeline of 2 AEs</td><td>optimistic, pushes commit aggressively</td></tr><tr><td>7</td><td>Grace</td><td>SE</td><td>technical validation events on assigned deals</td><td>strong on product fit, weak on commercials</td></tr><tr><td>8</td><td>Henry</td><td>SE</td><td>technical validation events</td><td>overweights demos, underweights security review</td></tr><tr><td>9</td><td>Iris</td><td>Finance</td><td>pricing memos, discount requests</td><td>accurate on pricing risk</td></tr><tr><td>10</td><td>Jack</td><td>Legal</td><td>redlines, MSA status</td><td>accurate on contract friction</td></tr></tbody></table></div>
+<p>Each persona is a Claude agent (Haiku for fast tick-by-tick reactions, Sonnet for the daily trading decision). They run on a 5-minute trade cadence during demo windows, react to event-feed updates, and emit trades through the same <code>/api/trades</code> endpoint a human would use. Implementation lives in <code>packages/agents/personas/</code>.</p>
+<p>This is the stronger MVP demo: self-running, end-to-end stress test of the market mechanism, reproducible across runs, and uses the Anthropic infra already in place. Phase 1 swaps in real humans for the same 10 seats.</p></article></main>
+  </div>
+</div>
+<a class="top-link" href="#top">Top</a>
+</body>
+</html>

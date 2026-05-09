@@ -1,0 +1,14 @@
+{
+  "name": "prism-revenue-market",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Internal prediction market mockup for enterprise sales teams.",
+  "scripts": {
+    "dev": "node server.js",
+    "start": "node server.js",
+    "check": "node --check app.js && node --check server.js && node --check api/live-deals.js && node --check api/agent-decision.js"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}
