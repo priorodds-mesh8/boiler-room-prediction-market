@@ -1149,7 +1149,7 @@
     var selectedMode = modes.find(function (mode) { return mode.id === ui.game.mode; }) || modes[0];
     return [
       '<section class="war-room-setup">',
-      '<div class="war-room-copy"><div class="setup-kicker"><span class="reticle"></span> Boiler Room Agent Sim</div><h2 class="sim-title">Boiler Room</h2><div class="sim-subtitle">Thirty turns, sealed outcomes, and a daily call on every assigned deal. FNG wins by producing the closest probability forecast.</div><div class="setup-contract"><span>Deploy contract</span><strong>' + Number(ui.game.dealCount) + ' deal' + (Number(ui.game.dealCount) === 1 ? "" : "s") + ' | ' + escapeHtml(selectedMode.title) + ' | Day 1 / 30</strong></div></div>',
+      '<div class="war-room-copy"><div class="setup-kicker"><span class="reticle"></span> Boiler Room Agent Sim</div><h2 class="sim-title">Boiler Room</h2><div class="sim-subtitle">Boiler Room is a prediction market for enterprise sales teams, turning live deal signals into a sharper forecast of what will actually close. Agents and users evaluate pipeline risk, trade on deal outcomes, and expose disagreement before it surprises leadership. The result is a faster, more honest read on revenue than CRM probability alone.</div><div class="setup-contract"><span>Deploy contract</span><strong>' + Number(ui.game.dealCount) + ' deal' + (Number(ui.game.dealCount) === 1 ? "" : "s") + ' | ' + escapeHtml(selectedMode.title) + ' | Day 1 / 30</strong></div></div>',
       '<div class="setup-board">',
       '<div class="setup-group"><div class="setup-label">Gameplay mode</div><div class="mode-grid">',
       modes.map(function (mode) {
