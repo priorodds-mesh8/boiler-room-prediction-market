@@ -1106,6 +1106,14 @@ button {
   letter-spacing: 0;
 }
 
+.war-room-copy .sim-subtitle p {
+  margin: 0;
+}
+
+.war-room-copy .sim-subtitle p + p {
+  margin-top: 12px;
+}
+
 .setup-kicker {
   display: inline-flex;
   align-items: center;
