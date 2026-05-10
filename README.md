@@ -12,13 +12,13 @@ A dependency-free local mockup of an internal prediction market for enterprise s
 - Calibration-first leaderboard with synthetic revenue personas
 - Admin flow for creating markets from synthetic CRM opportunities
 - Local state persistence through `localStorage`
-- Supabase-backed, turn-based Agent Sim / Revenue War Room sessions
+- Supabase-backed, turn-based Agent Sim / Boiler Room sessions
 
 ## Run locally
 
 Open `index.html` directly in a browser for the static mockup views.
 
-The Agent Sim / Revenue War Room uses local API routes, so run the Node server for the full experience:
+The Agent Sim / Boiler Room uses local API routes, so run the Node server for the full experience:
 
 ```bash
 node server.js
@@ -42,7 +42,7 @@ Then visit:
 http://localhost:4173
 ```
 
-No package install is required. Supabase loading uses `/Users/joellang/.env` through `server.js`. If Supabase variables are absent, the War Room API falls back to `data/generated/` for local testing.
+No package install is required. Supabase loading uses `/Users/joellang/.env` through `server.js`. If Supabase variables are absent, the Boiler Room API falls back to `data/generated/` for local testing.
 
 ## Deploy to GitHub and Vercel
 
@@ -125,7 +125,7 @@ docs/claude_code_dataset_review_prompt.md
 
 ## Agent simulation
 
-The `Agent Sim` tab is now a turn-based Revenue War Room:
+The `Agent Sim` tab is now a turn-based Boiler Room:
 
 - Human player label: `FNG`
 - 30 daily turns per run, displayed as `Day n / 30`

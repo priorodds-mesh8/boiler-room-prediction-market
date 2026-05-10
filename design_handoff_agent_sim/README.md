@@ -1,7 +1,7 @@
 # Handoff: Boiler Room — Agent Sim
 
 ## Overview
-Agent Sim is a turn-based card-strategy forecasting game embedded inside Boiler Room. The player ("FNG") competes against AI sales-agent personas to produce the closest probability forecast for assigned enterprise sales-deal outcomes. The product is for executives, so it must feel tactical and game-like while remaining credible for enterprise forecasting — a "Revenue War Room", not a generic CRM dashboard.
+Agent Sim is a turn-based card-strategy forecasting game embedded inside Boiler Room. The player ("FNG") competes against AI sales-agent personas to produce the closest probability forecast for assigned enterprise sales-deal outcomes. The product is for executives, so it must feel tactical and game-like while remaining credible for enterprise forecasting — a "Boiler Room", not a generic CRM dashboard.
 
 The bundled HTML in this folder is a **design reference**, not production code. It is a hi-fi wireframe built in React + Babel inline, and includes 5 artboards: Setup, Run-3-deals, Run-10-deals (floor density), Results, and an Intel-card library. Use these as the source of truth for layout, hierarchy, copy, and interaction model when reimplementing in the live Boiler Room codebase against real CRM/pipeline data.
 

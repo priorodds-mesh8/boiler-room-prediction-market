@@ -788,7 +788,7 @@
   function renderTopbar() {
     return [
       '<header class="topbar">',
-      '<div><h1 class="page-title">Revenue War Room</h1><div class="page-kicker">Boiler Room Agent Sim</div></div>',
+      '<div><h1 class="page-title">Boiler Room</h1><div class="page-kicker">Agent Sim</div></div>',
       '<div class="top-actions"><button class="secondary-button" data-action="reset-demo">Reset demo</button></div>',
       '</header>'
     ].join("");
@@ -1149,7 +1149,7 @@
     var selectedMode = modes.find(function (mode) { return mode.id === ui.game.mode; }) || modes[0];
     return [
       '<section class="war-room-setup">',
-      '<div class="war-room-copy"><div class="setup-kicker"><span class="reticle"></span> Boiler Room Agent Sim</div><h2 class="sim-title">Revenue War Room</h2><div class="sim-subtitle">Thirty turns, sealed outcomes, and a daily call on every assigned deal. FNG wins by producing the closest probability forecast.</div><div class="setup-contract"><span>Deploy contract</span><strong>' + Number(ui.game.dealCount) + ' deal' + (Number(ui.game.dealCount) === 1 ? "" : "s") + ' | ' + escapeHtml(selectedMode.title) + ' | Day 1 / 30</strong></div></div>',
+      '<div class="war-room-copy"><div class="setup-kicker"><span class="reticle"></span> Boiler Room Agent Sim</div><h2 class="sim-title">Boiler Room</h2><div class="sim-subtitle">Thirty turns, sealed outcomes, and a daily call on every assigned deal. FNG wins by producing the closest probability forecast.</div><div class="setup-contract"><span>Deploy contract</span><strong>' + Number(ui.game.dealCount) + ' deal' + (Number(ui.game.dealCount) === 1 ? "" : "s") + ' | ' + escapeHtml(selectedMode.title) + ' | Day 1 / 30</strong></div></div>',
       '<div class="setup-board">',
       '<div class="setup-group"><div class="setup-label">Gameplay mode</div><div class="mode-grid">',
       modes.map(function (mode) {
@@ -1178,7 +1178,7 @@
     return [
       '<section class="war-room">',
       '<div class="run-header">',
-      '<div><div class="setup-kicker"><span class="reticle"></span> Revenue War Room | ' + escapeHtml(modeLabel(session.mode)) + ' | ' + escapeHtml(game.source || "local") + '</div><h2 class="sim-title">Day ' + session.currentDay + ' / ' + session.maxDays + '</h2><div class="sim-subtitle">' + escapeHtml(turn.summary || "Review the priority stack and make every FNG call.") + '</div></div>',
+      '<div><div class="setup-kicker"><span class="reticle"></span> Boiler Room | ' + escapeHtml(modeLabel(session.mode)) + ' | ' + escapeHtml(game.source || "local") + '</div><h2 class="sim-title">Day ' + session.currentDay + ' / ' + session.maxDays + '</h2><div class="sim-subtitle">' + escapeHtml(turn.summary || "Review the priority stack and make every FNG call.") + '</div></div>',
       '<div class="war-actions"><button class="secondary-button" data-action="game-refresh">Refresh</button><button class="secondary-button" data-action="game-new">New run</button></div>',
       '</div>',
       renderWarHud(session, deals, allReady, floorMode),
@@ -1462,7 +1462,7 @@
 
   function gameApi(path, options) {
     if (!window.fetch || window.location.protocol === "file:") {
-      return Promise.reject(new Error("Run node server.js and open http://127.0.0.1:4173 to use the War Room APIs."));
+      return Promise.reject(new Error("Run node server.js and open http://127.0.0.1:4173 to use the Boiler Room APIs."));
     }
     return window.fetch(path, options).then(function (response) {
       return response.json().catch(function () { return {}; }).then(function (body) {
@@ -1484,9 +1484,9 @@
       state.game.session = payload;
       resetPendingGameActions(payload);
       saveState();
-      showToast("War Room run started: " + payload.session.dealCount + " deal" + (payload.session.dealCount === 1 ? "" : "s") + ".");
+      showToast("Boiler Room run started: " + payload.session.dealCount + " deal" + (payload.session.dealCount === 1 ? "" : "s") + ".");
     }).catch(function (error) {
-      ui.game.error = error.message || "Unable to start War Room run.";
+      ui.game.error = error.message || "Unable to start Boiler Room run.";
       showToast(ui.game.error);
     }).finally(function () {
       ui.game.loading = false;
