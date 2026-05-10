@@ -55,14 +55,14 @@ Source: `screens.jsx`. Frame: 1440×980. Day 14, Team mode, 3 deals.
   - Right column:
     - `BracketHeading` "ACTIVE DEALS · 03" with ML / MKT / FNG / TARGET legend chips.
     - 3-column grid of `DealCard`s.
-    - `DayTimeline` — full 30-day strip with today marker.
+    - `DayTimeline` — full selected-length strip with today marker.
     - `AgentLeaderboard` — 5 rows (FNG, Closer-09, Pricing-04, SE-12, SDR-Net) with bipolar P&L bars.
 
 **DealCard (default):**
 - Top: `D-NN` + stage tag (`Late` is amber); account name (15px Geist-600); `$ ACV · close Q2-WNN`.
 - Right: large P&L mono number (`+28 pp` in green or red).
 - Hairline divider.
-- Target row: amber `TARGET` text e.g. "Closed-Won by Day 30".
+- Target row: amber `TARGET` text e.g. "Closed-Won by final day".
 - Probability strip (`ProbStrip`):
   - Outer band 0–100 with tick marks every 10, heavier 50% mid line.
   - Amber vertical line at the target probability.
@@ -120,7 +120,7 @@ Below the grid: a `RUMOR LEDGER` strip explaining reliability codes A1 (green) t
 - Card click in Priority Stack should pop a side drawer with full card detail + "pin to deal" action (not in mock; recommended).
 
 ### Settlement
-- When the underlying real-world deal closes (or Day 30 elapses), each deal settles:
+- When the underlying real-world deal closes (or the selected final day elapses), each deal settles:
   - Outcome = boolean (target met / not met).
   - FNG P&L = scoring function over (FNG implied probability, outcome). The mock uses `pp` (probability points) as the unit. Recommend Brier-score-derived points for real implementation.
   - Final aggregate winner = lowest Brier score.
@@ -155,7 +155,7 @@ interface Deal {
   acv: number;           // dollars
   closeDate: string;     // ISO
   stage: "Early" | "Mid" | "Late";
-  target: string;        // human-readable target, e.g. "Closed-Won by Day 30"
+  target: string;        // human-readable target, e.g. "Closed-Won by final day"
   targetProb: number;    // 0..100
   ml: number;            // baseline probability, 0..100
   mkt: number;           // market mid, 0..100

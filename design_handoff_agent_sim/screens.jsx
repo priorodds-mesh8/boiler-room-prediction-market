@@ -35,7 +35,7 @@ const STACK_ITEMS = [
 ];
 
 const DEALS_3 = [
-  { code: "D-01", account: "Atlas Logistics",  acv: "$1.20M", close: "Q2-W11", stage: "Late",  target: "Closed-Won by Day 30",
+  { code: "D-01", account: "Atlas Logistics",  acv: "$1.20M", close: "Q2-W11", stage: "Late",  target: "Closed-Won by final day",
     targetProb: 50, ml: 42, mkt: 58, fng: 64, pnl: +28, stance: "buy",  conf: 4 },
   { code: "D-02", account: "Helix Therapeutics", acv: "$410K", close: "Q2-W9",  stage: "Mid",  target: "ACV ≥ $400K  &  Won",
     targetProb: 50, ml: 71, mkt: 65, fng: 49, pnl: -14, stance: "sell", conf: 3 },
@@ -46,7 +46,7 @@ const DEALS_3 = [
 const DEALS_10 = [
   ...DEALS_3,
   { code: "D-04", account: "Northwind Retail", acv: "$220K", target: "Renewal expand ≥ 15%", targetProb: 50, ml: 62, mkt: 48, fng: 35, pnl: -22, stance: "sell", conf: 5 },
-  { code: "D-05", account: "Polaris Bank",     acv: "$2.10M", target: "Won by Day 30",         targetProb: 50, ml: 30, mkt: 28, fng: 31, pnl: +3,  stance: "hold", conf: 1 },
+  { code: "D-05", account: "Polaris Bank",     acv: "$2.10M", target: "Won by final day",         targetProb: 50, ml: 30, mkt: 28, fng: 31, pnl: +3,  stance: "hold", conf: 1 },
   { code: "D-06", account: "Vector AI",        acv: "$540K",  target: "Multi-yr signed",       targetProb: 50, ml: 52, mkt: 60, fng: 67, pnl: +14, stance: "buy",  conf: 3 },
   { code: "D-07", account: "Quanta Foods",     acv: "$130K",  target: "ACV ≥ $150K",           targetProb: 50, ml: 39, mkt: 44, fng: 42, pnl: -2,  stance: "hold", conf: 2 },
   { code: "D-08", account: "Meridian Power",   acv: "$1.80M", target: "Won  &  on schedule",   targetProb: 50, ml: 48, mkt: 55, fng: 71, pnl: +24, stance: "buy",  conf: 4 },
@@ -292,18 +292,18 @@ function RunHeader({ runLabel }) {
   );
 }
 
-function DayTimeline({ day = 14 }) {
+function DayTimeline({ day = 14, maxDays = 30 }) {
   return (
     <div className="card" style={{ padding: "10px 14px" }}>
       <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
         <div style={{ font: "600 10px/1 var(--mono)", letterSpacing: "0.16em", color: "var(--dim)" }}>RUN TIMELINE</div>
         <div style={{ flex: 1, position: "relative", height: 18 }}>
-          {Array.from({ length: 30 }).map((_, i) => {
+          {Array.from({ length: maxDays }).map((_, i) => {
             const past = i < day;
             const today = i === day - 1;
             return (
               <div key={i} style={{
-                position: "absolute", left: `${(i / 29) * 100}%`,
+                position: "absolute", left: `${(i / Math.max(1, maxDays - 1)) * 100}%`,
                 top: today ? 0 : 4, bottom: today ? 0 : 4,
                 width: today ? 4 : 2,
                 background: today ? "var(--fng)" : past ? "var(--border-2)" : "var(--hairline)",
@@ -311,9 +311,9 @@ function DayTimeline({ day = 14 }) {
               }} />
             );
           })}
-          <div style={{ position: "absolute", left: `${((day - 1) / 29) * 100}%`, top: -16, transform: "translateX(-50%)", font: "600 9px/1 var(--mono)", color: "var(--fng)" }}>D{day}</div>
+          <div style={{ position: "absolute", left: `${((day - 1) / Math.max(1, maxDays - 1)) * 100}%`, top: -16, transform: "translateX(-50%)", font: "600 9px/1 var(--mono)", color: "var(--fng)" }}>D{day}</div>
         </div>
-        <div style={{ font: "500 10px/1 var(--mono)", color: "var(--muted)" }}>D01 → D30</div>
+        <div style={{ font: "500 10px/1 var(--mono)", color: "var(--muted)" }}>D01 → D{maxDays}</div>
       </div>
     </div>
   );
@@ -458,7 +458,7 @@ function ScreenCards() {
 // ─────────────────────────────────────────────
 function ScreenResults() {
   const results = [
-    { code: "D-01", account: "Atlas Logistics",  target: "Closed-Won by Day 30",   ml: 42, mkt: 58, fng: 64, outcome: "win",  fngPnl: +36, mktPnl: +12 },
+    { code: "D-01", account: "Atlas Logistics",  target: "Closed-Won by final day",   ml: 42, mkt: 58, fng: 64, outcome: "win",  fngPnl: +36, mktPnl: +12 },
     { code: "D-02", account: "Helix Therapeutics", target: "ACV ≥ $400K & Won",     ml: 71, mkt: 65, fng: 49, outcome: "loss", fngPnl: +51, mktPnl: -18 },
     { code: "D-03", account: "Beacon Health",    target: "Won & no procurement slip", ml: 55, mkt: 51, fng: 56, outcome: "win",  fngPnl: +6,  mktPnl: -1 },
   ];

@@ -1264,6 +1264,10 @@ button {
   gap: 10px;
 }
 
+.duration-grid {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
 .setup-footer {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));

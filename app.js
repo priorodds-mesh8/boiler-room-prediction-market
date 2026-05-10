@@ -48,6 +48,7 @@
     game: {
       mode: "team",
       dealCount: 3,
+      maxDays: 30,
       loading: false,
       pendingActions: {},
       error: ""
@@ -103,6 +104,7 @@
     if (!state.simulation.source) state.simulation.source = "local";
     state.simulation.maxTicks = simTicksForCount(state.simulation.activeDealCount);
     if (!state.game) state.game = { session: null };
+    if (![5, 15, 30].includes(Number(ui.game.maxDays))) ui.game.maxDays = 30;
   }
 
   function seedState() {
@@ -1146,10 +1148,15 @@
       { count: 5, label: "Bench", body: "Enough spread to compare signals.", meta: "Full cards" },
       { count: 10, label: "Floor", body: "Dense trading-floor mode.", meta: "Auto dense" }
     ];
+    var durations = [
+      { days: 5, label: "Sprint", body: "Fast demo loop.", meta: "Quick settle" },
+      { days: 15, label: "Cycle", body: "Mid-run signal build.", meta: "Balanced" },
+      { days: 30, label: "Quarter", body: "Full campaign arc.", meta: "Default" }
+    ];
     var selectedMode = modes.find(function (mode) { return mode.id === ui.game.mode; }) || modes[0];
     return [
       '<section class="war-room-setup">',
-      '<div class="war-room-copy"><div class="setup-kicker"><span class="reticle"></span> Boiler Room Agent Sim</div><h2 class="sim-title">Boiler Room</h2><div class="sim-subtitle"><p>Boiler Room is a prediction market for enterprise sales teams, turning live deal signals into a sharper forecast of what will actually close. Agents and users evaluate pipeline risk, trade on deal outcomes, and expose disagreement before it surprises leadership. The result is a faster, more honest read on revenue than CRM probability alone.</p><p>Boiler Room works by turning each sales deal into a tradable forecast: users and agents buy, hold, or sell based on whether they think the deal outcome is underpriced or overpriced. As trades and new deal signals come in, the market price becomes a live probability that captures disagreement faster than a static CRM forecast. Internal prediction markets have been used by companies including Google, Hewlett-Packard, Microsoft, Intel, Best Buy, GE, and Eli Lilly to forecast launches, sales, demand, and other business outcomes.</p></div><div class="setup-contract"><span>Deploy contract</span><strong>' + Number(ui.game.dealCount) + ' deal' + (Number(ui.game.dealCount) === 1 ? "" : "s") + ' | ' + escapeHtml(selectedMode.title) + ' | Day 1 / 30</strong></div></div>',
+      '<div class="war-room-copy"><div class="setup-kicker"><span class="reticle"></span> Boiler Room Agent Sim</div><h2 class="sim-title">Boiler Room</h2><div class="sim-subtitle"><p>Boiler Room is a prediction market for enterprise sales teams, turning live deal signals into a sharper forecast of what will actually close. Agents and users evaluate pipeline risk, trade on deal outcomes, and expose disagreement before it surprises leadership. The result is a faster, more honest read on revenue than CRM probability alone.</p><p>Boiler Room works by turning each sales deal into a tradable forecast: users and agents buy, hold, or sell based on whether they think the deal outcome is underpriced or overpriced. As trades and new deal signals come in, the market price becomes a live probability that captures disagreement faster than a static CRM forecast. Internal prediction markets have been used by companies including Google, Hewlett-Packard, Microsoft, Intel, Best Buy, GE, and Eli Lilly to forecast launches, sales, demand, and other business outcomes.</p></div><div class="setup-contract"><span>Deploy contract</span><strong>' + Number(ui.game.dealCount) + ' deal' + (Number(ui.game.dealCount) === 1 ? "" : "s") + ' | ' + escapeHtml(selectedMode.title) + ' | Day 1 / ' + Number(ui.game.maxDays) + '</strong></div></div>',
       '<div class="setup-board">',
       '<div class="setup-group"><div class="setup-label">Gameplay mode</div><div class="mode-grid">',
       modes.map(function (mode) {
@@ -1158,6 +1165,9 @@
       '</div></div>',
       '<div class="setup-group"><div class="setup-label">Deal count</div><div class="count-card-grid">' + counts.map(function (item) {
         return '<button class="count-card ' + (Number(ui.game.dealCount) === item.count ? "active" : "") + '" data-action="game-count" data-count="' + item.count + '"><span>' + item.count + '</span><strong>' + escapeHtml(item.label) + '</strong><small>' + escapeHtml(item.body) + '</small><em>' + escapeHtml(item.meta) + '</em></button>';
+      }).join("") + '</div></div>',
+      '<div class="setup-group"><div class="setup-label">Run length</div><div class="count-card-grid duration-grid">' + durations.map(function (item) {
+        return '<button class="count-card ' + (Number(ui.game.maxDays) === item.days ? "active" : "") + '" data-action="game-days" data-days="' + item.days + '"><span>' + item.days + '</span><strong>' + escapeHtml(item.label) + '</strong><small>' + escapeHtml(item.body) + '</small><em>' + escapeHtml(item.meta) + '</em></button>';
       }).join("") + '</div></div>',
       '<div class="setup-footer"><div><span>FNG wallet</span><strong>1,500</strong></div><div><span>Win condition</span><strong>Lowest forecast error</strong></div></div>',
       '<button class="primary-button war-start" data-action="game-start" ' + (ui.game.loading ? "disabled" : "") + '>' + (ui.game.loading ? "Assigning run..." : "Deploy run") + '</button>',
@@ -1479,7 +1489,7 @@
     gameApi("/api/game/start", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ mode: ui.game.mode, dealCount: Number(ui.game.dealCount) })
+      body: JSON.stringify({ mode: ui.game.mode, dealCount: Number(ui.game.dealCount), maxDays: Number(ui.game.maxDays) })
     }).then(function (payload) {
       state.game.session = payload;
       resetPendingGameActions(payload);
@@ -2746,6 +2756,11 @@
     }
     if (action === "game-count") {
       ui.game.dealCount = Number(actionTarget.getAttribute("data-count")) || 3;
+      render();
+      return;
+    }
+    if (action === "game-days") {
+      ui.game.maxDays = Number(actionTarget.getAttribute("data-days")) || 30;
       render();
       return;
     }

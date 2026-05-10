@@ -5,9 +5,10 @@ const { findOutputText, supabaseConfig } = require("./_utils");
 
 const ROOT = path.resolve(__dirname, "..");
 const DATA_DIR = path.join(ROOT, "data", "generated");
-const MAX_DAYS = 30;
+const DEFAULT_MAX_DAYS = 30;
 const VALID_MODES = new Set(["team", "focus", "silent"]);
 const VALID_COUNTS = new Set([1, 3, 5, 10]);
+const VALID_MAX_DAYS = new Set([5, 15, 30]);
 const TARGETS = [
   "closed_won",
   "closed_won_by_original_date",
@@ -35,6 +36,7 @@ const memoryStore = {
 async function startGame(body) {
   const mode = VALID_MODES.has(body.mode) ? body.mode : "team";
   const dealCount = VALID_COUNTS.has(Number(body.dealCount)) ? Number(body.dealCount) : 3;
+  const maxDays = VALID_MAX_DAYS.has(Number(body.maxDays)) ? Number(body.maxDays) : DEFAULT_MAX_DAYS;
   const store = makeStore();
   const liveRows = await store.fetchLiveDeals(Math.max(50, dealCount * 12));
   if (liveRows.length < dealCount) {
@@ -52,7 +54,7 @@ async function startGame(body) {
     deal_count: dealCount,
     status: "active",
     current_day: 1,
-    max_days: MAX_DAYS,
+    max_days: maxDays,
     fng_wallet: wallet,
     player_label: "FNG",
     source: store.source,
@@ -92,7 +94,7 @@ async function submitActions(body) {
   let agentActions = [];
   let results = null;
 
-  if (Number(session.current_day) >= MAX_DAYS) {
+  if (Number(session.current_day) >= Number(session.max_days || DEFAULT_MAX_DAYS)) {
     await settleSession(session, deals, store);
     results = buildResults(session, deals);
   } else {
@@ -710,8 +712,9 @@ async function buildBriefing(session, deals, cards) {
 function templateBriefing(session, deals, cards) {
   const top = cards[0];
   const spread = deals.reduce((max, deal) => Math.max(max, Math.abs(Number(deal.market_probability) - Number(deal.baseline_probability))), 0);
-  if (!top) return `Day ${session.current_day}/30 is ready. Review the deal stack and submit FNG actions.`;
-  return `Day ${session.current_day}/30: biggest disagreement is ${formatPercent(spread)}. Priority item: ${top.account_name} - ${top.title}.`;
+  const maxDays = Number(session.max_days || DEFAULT_MAX_DAYS);
+  if (!top) return `Day ${session.current_day}/${maxDays} is ready. Review the deal stack and submit FNG actions.`;
+  return `Day ${session.current_day}/${maxDays}: biggest disagreement is ${formatPercent(spread)}. Priority item: ${top.account_name} - ${top.title}.`;
 }
 
 function probabilitySnapshots(deals) {

@@ -128,7 +128,7 @@ docs/claude_code_dataset_review_prompt.md
 The `Agent Sim` tab is now a turn-based Boiler Room:
 
 - Human player label: `FNG`
-- 30 daily turns per run, displayed as `Day n / 30`
+- Selectable 5, 15, or 30 daily turns per run, displayed as `Day n / max`
 - Gameplay modes: Team, Agent Focus, and Silent Market
 - Deal counts: 1, 3, 5, or 10
 - Server-assigned high-disagreement live deals and per-deal ML targets
@@ -136,7 +136,7 @@ The `Agent Sim` tab is now a turn-based Boiler Room:
 - Required FNG buy/hold/sell plus confidence for every deal before the day advances
 - Final probability comparison: ML baseline vs. market vs. FNG, with P&L shown prominently
 
-The game reads safe live-deal fields and model baselines from Supabase. Hidden outcomes remain server-side until a run settles after Day 30.
+The game reads safe live-deal fields and model baselines from Supabase. Hidden outcomes remain server-side until a run settles after the selected final day.
 
 ## OpenAI API key
 
