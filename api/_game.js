@@ -295,9 +295,9 @@ function assignmentScore(row) {
   const payload = row.observable_payload || {};
   const probs = row.baseline_probabilities || {};
   const targetUncertainty = Math.max(...TARGETS.map(target => uncertainty(Number(probs[target]))));
-  const rep = Number(payload.rep_stated_probability);
-  const crm = Number(payload.crm_model_probability);
-  const disagreement = Number.isFinite(rep) && Number.isFinite(crm) ? Math.abs(rep - crm) : 0;
+  const rep = hasNumber(payload.rep_stated_probability) ? Number(payload.rep_stated_probability) : null;
+  const crm = crmScore(payload);
+  const disagreement = rep !== null && Number.isFinite(crm) ? Math.abs(rep - crm) : 0;
   const risk = ["legal_status", "security_review_status", "procurement_status"].reduce((total, key) => {
     return total + Math.abs(statusImpact(payload[key] || "") || 0);
   }, 0);
@@ -409,9 +409,11 @@ function buildDailyCards(deal, events, day, mode) {
 
 function metricCards(deal) {
   const p = deal.observable_payload || {};
+  const crm = crmScore(p);
+  const repCrmImpact = hasNumber(p.rep_stated_probability) ? Number(p.rep_stated_probability) - crm : 0;
   return [
     card("metric", "Model baseline", `${TARGET_LABELS[deal.target]} starts at ${formatPercent(deal.baseline_probability)}.`, 0, "blue", "Metric"),
-    card("metric", "Rep vs CRM read", `Rep probability ${formatMaybePercent(p.rep_stated_probability)} vs CRM model ${formatMaybePercent(p.crm_model_probability)}.`, numeric(p.rep_stated_probability) - numeric(p.crm_model_probability), "violet", "Metric"),
+    card("metric", "Rep vs CRM read", `Rep probability ${formatMaybePercent(p.rep_stated_probability)} vs CRM model ${formatPercent(crm)}${hasNumber(p.crm_model_probability) ? "" : " (simulated)"}.`, repCrmImpact, "violet", "Metric"),
     card("metric", "Pipeline age", `${p.crm_stage || "Unknown stage"} for ${safeValue(p.stage_age_days, "unknown")} days; close has moved ${safeValue(p.close_date_change_count, 0)} time(s).`, -0.02 * numeric(p.close_date_change_count), "amber", "Metric"),
     card("metric", "Buyer sentiment", `Buyer sentiment ${safeValue(p.buyer_sentiment_score, "unknown")} with champion strength ${safeValue(p.champion_strength, "unknown")}/5.`, (numeric(p.buyer_sentiment_score) - 0.5) * 0.16, "green", "Metric")
   ];
@@ -848,15 +850,37 @@ function statusImpact(status) {
 }
 
 function fallbackProbability(payload) {
+  return crmScore(payload);
+}
+
+function crmScore(payload) {
+  if (hasNumber(payload.crm_model_probability)) return clamp(Number(payload.crm_model_probability), 0.03, 0.97);
   const stageMap = {
     Discovery: 0.18,
-    Qualified: 0.31,
+    Qualified: 0.24,
     "Technical Validation": 0.48,
-    "Business Case": 0.58,
-    Negotiation: 0.72,
-    Procurement: 0.81
+    "Business Case": 0.38,
+    Negotiation: 0.62,
+    Procurement: 0.72
   };
-  return Number(payload.crm_model_probability) || stageMap[payload.crm_stage] || 0.5;
+  const categoryAdjustments = {
+    Pipeline: -0.06,
+    "Best Case": 0.04,
+    Commit: 0.12,
+    Omitted: -0.1
+  };
+  const stageBase = stageMap[payload.crm_stage] || 0.5;
+  const forecastAdjustment = categoryAdjustments[payload.forecast_category] || 0;
+  const rep = hasNumber(payload.rep_stated_probability) ? (Number(payload.rep_stated_probability) - 0.5) * 0.18 : 0;
+  const activity = clamp((numeric(payload.activity_count_last_14_days) - 5) * 0.012, -0.08, 0.08);
+  const champion = clamp((numeric(payload.champion_strength) - 3) * 0.035, -0.09, 0.09);
+  const sentiment = hasNumber(payload.buyer_sentiment_score) ? (Number(payload.buyer_sentiment_score) - 0.5) * 0.1 : 0;
+  const processRisk = ["legal_status", "security_review_status", "procurement_status"].reduce((total, key) => {
+    return total + Math.min(0, statusImpact(payload[key])) * 0.45;
+  }, 0);
+  const slippage = -0.025 * clamp(numeric(payload.close_date_change_count), 0, 5);
+  const noise = (hash(`${payload.deal_id || payload.opportunity_id || payload.account_name || ""}:crm`).charCodeAt(0) % 9 - 4) / 100;
+  return clamp(stageBase + forecastAdjustment + rep + activity + champion + sentiment + processRisk + slippage + noise, 0.05, 0.95);
 }
 
 function fngStake(confidence, dealCount) {
@@ -1000,6 +1024,10 @@ function numeric(value) {
   return Number.isFinite(number) ? number : 0;
 }
 
+function hasNumber(value) {
+  return value !== null && value !== undefined && value !== "" && Number.isFinite(Number(value));
+}
+
 function average(values) {
   return values.length ? values.reduce((sum, value) => sum + value, 0) / values.length : 0;
 }
@@ -1009,8 +1037,7 @@ function formatPercent(value) {
 }
 
 function formatMaybePercent(value) {
-  const number = Number(value);
-  return Number.isFinite(number) ? formatPercent(number) : "unknown";
+  return hasNumber(value) ? formatPercent(Number(value)) : "unknown";
 }
 
 function safeValue(value, fallback) {
