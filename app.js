@@ -1345,6 +1345,7 @@
   function renderProbabilityStrip(deal, options) {
     options = options || {};
     var markers = probabilityMarkers(deal);
+    var errorLines = options.showErrors ? renderErrorLines(deal) : "";
     var ticks = [25, 50, 75].map(function (tick) {
       return '<span class="prob-tick" style="left:' + tick + '%"></span>';
     }).join("");
@@ -1352,6 +1353,7 @@
       '<div class="prob-strip-wrap ' + (options.mini ? "mini" : "") + '">',
       '<div class="prob-strip">',
       '<div class="prob-track">' + ticks + '</div>',
+      errorLines,
       markers.map(function (marker) {
         return '<span class="prob-marker ' + escapeAttr(marker.className) + '" style="left:' + marker.lineLeft + '%"></span><span class="prob-marker-label ' + escapeAttr(marker.className) + ' level-' + marker.level + '" style="left:' + marker.labelLeft + '%">' + escapeHtml(marker.label) + ' <strong>' + marker.percent + '</strong></span>';
       }).join(""),
@@ -1362,12 +1364,10 @@
   }
 
   function probabilityMarkers(deal) {
-    var outcomeRevealed = deal.actualOutcome !== null && deal.actualOutcome !== undefined;
     var markers = [
       { label: "ML", className: "ml", value: probabilityValue(deal.baselineProbability, 0.5) },
       { label: "MKT", className: "market", value: probabilityValue(deal.marketProbability, 0.5) },
-      { label: "FNG", className: "fng", value: probabilityValue(deal.fngProbability, probabilityValue(deal.marketProbability, 0.5)) },
-      { label: outcomeRevealed ? (deal.actualOutcome ? "YES" : "NO") : "50", className: "target", value: outcomeRevealed ? (deal.actualOutcome ? 1 : 0) : 0.5 }
+      { label: "FNG", className: "fng", value: probabilityValue(deal.fngProbability, probabilityValue(deal.marketProbability, 0.5)) }
     ].sort(function (a, b) {
       return a.value - b.value;
     });
@@ -1382,6 +1382,20 @@
       marker.percent = Math.round(marker.value * 100);
     });
     return markers;
+  }
+
+  function renderErrorLines(deal) {
+    if (deal.actualOutcome === null || deal.actualOutcome === undefined) return "";
+    var actual = deal.actualOutcome ? 1 : 0;
+    return [
+      { label: "ML", className: "ml", value: probabilityValue(deal.baselineProbability, 0.5) },
+      { label: "MKT", className: "market", value: probabilityValue(deal.marketProbability, 0.5) },
+      { label: "FNG", className: "fng", value: probabilityValue(deal.fngProbability, probabilityValue(deal.marketProbability, 0.5)) }
+    ].map(function (item) {
+      var from = Math.round(Math.min(actual, item.value) * 1000) / 10;
+      var width = Math.round(Math.abs(item.value - actual) * 1000) / 10;
+      return '<span class="error-line ' + escapeAttr(item.className) + '" style="left:' + from + '%;width:' + width + '%"><span>' + escapeHtml(item.label) + ' error ' + Math.round(Math.abs(item.value - actual) * 100) + '</span></span>';
+    }).join("");
   }
 
   function probabilityValue(value, fallback) {
@@ -1420,8 +1434,9 @@
       (results.perDeal || []).map(function (item) {
         return [
           '<article class="settlement-card">',
-          '<div class="deal-card-head"><div><div class="deal-title">' + escapeHtml(item.accountName) + '</div><div class="deal-meta">' + escapeHtml(item.targetLabel) + '</div></div><span class="status-pill ' + (item.actualOutcome ? "won" : "lost") + '">' + (item.actualOutcome ? "Actual YES" : "Actual NO") + '</span></div>',
-          renderProbabilityStrip(item),
+          '<div class="deal-card-head"><div><div class="deal-title">' + escapeHtml(item.accountName) + '</div><div class="deal-meta">' + escapeHtml(item.targetLabel) + '</div></div></div>',
+          '<div class="settlement-outcome ' + (item.actualOutcome ? "yes" : "no") + '"><span>Resolved outcome</span><strong>' + (item.actualOutcome ? "YES" : "NO") + '</strong><small>' + (item.actualOutcome ? "The contract settled at 100." : "The contract settled at 0.") + '</small></div>',
+          renderProbabilityStrip(item, { showErrors: true }),
           '<div class="settlement-footer"><span>Winner <strong>' + leaderLabel(item.forecastWinner) + '</strong></span><span>FNG P&L <strong class="' + (item.fngPnl >= 0 ? "delta up" : "delta down") + '">' + formatSignedNumber(item.fngPnl || 0) + '</strong></span></div>',
           '</article>'
         ].join("");
