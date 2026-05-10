@@ -1,0 +1,1185 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Boiler Room Living Overview</title>
+    <style>
+      :root {
+        --bg: #f5f7fb;
+        --ink: #18212f;
+        --muted: #647084;
+        --surface: #ffffff;
+        --surface-2: #eef3f8;
+        --line: #d8e1ec;
+        --nav: #111827;
+        --blue: #2563eb;
+        --blue-soft: #dbeafe;
+        --green: #15803d;
+        --green-soft: #dcfce7;
+        --amber: #b45309;
+        --amber-soft: #fef3c7;
+        --red: #b91c1c;
+        --red-soft: #fee2e2;
+        --teal: #0f766e;
+        --teal-soft: #ccfbf1;
+        --shadow: 0 18px 44px rgba(24, 33, 47, 0.09);
+        --radius: 8px;
+        --font: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      html {
+        scroll-behavior: smooth;
+      }
+
+      body {
+        margin: 0;
+        min-height: 100vh;
+        background: var(--bg);
+        color: var(--ink);
+        font-family: var(--font);
+        line-height: 1.55;
+      }
+
+      a {
+        color: inherit;
+      }
+
+      code,
+      pre {
+        font-family: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+      }
+
+      pre {
+        overflow: auto;
+        margin: 0;
+        padding: 16px;
+        border: 1px solid #c6d2df;
+        border-radius: var(--radius);
+        background: #101827;
+        color: #e6edf7;
+      }
+
+      .shell {
+        display: grid;
+        grid-template-columns: 280px minmax(0, 1fr);
+        min-height: 100vh;
+      }
+
+      .sidebar {
+        position: sticky;
+        top: 0;
+        height: 100vh;
+        padding: 22px 16px;
+        background: var(--nav);
+        color: #f8fafc;
+        overflow-y: auto;
+      }
+
+      .brand {
+        display: grid;
+        grid-template-columns: 40px 1fr;
+        gap: 12px;
+        align-items: center;
+        padding-bottom: 18px;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+      }
+
+      .mark {
+        width: 40px;
+        height: 40px;
+        display: grid;
+        place-items: center;
+        border-radius: 8px;
+        background: linear-gradient(135deg, #22c55e, #2563eb);
+        font-weight: 850;
+        letter-spacing: 0;
+      }
+
+      .brand-title {
+        font-weight: 800;
+        line-height: 1.15;
+      }
+
+      .brand-subtitle {
+        color: #a8b3c4;
+        font-size: 12px;
+      }
+
+      .search-wrap {
+        margin: 18px 0;
+      }
+
+      .search-wrap label {
+        display: block;
+        color: #a8b3c4;
+        font-size: 12px;
+        margin-bottom: 6px;
+      }
+
+      .search-wrap input {
+        width: 100%;
+        min-height: 38px;
+        border: 1px solid rgba(255, 255, 255, 0.16);
+        border-radius: var(--radius);
+        background: rgba(255, 255, 255, 0.07);
+        color: #ffffff;
+        padding: 8px 10px;
+        font: inherit;
+      }
+
+      .search-wrap input::placeholder {
+        color: #94a3b8;
+      }
+
+      .nav {
+        display: grid;
+        gap: 6px;
+      }
+
+      .nav a {
+        display: grid;
+        grid-template-columns: 10px 1fr;
+        align-items: center;
+        gap: 10px;
+        min-height: 36px;
+        padding: 8px 10px;
+        border-radius: var(--radius);
+        color: #cbd5e1;
+        text-decoration: none;
+        font-size: 14px;
+      }
+
+      .nav a::before {
+        content: "";
+        width: 8px;
+        height: 8px;
+        border-radius: 999px;
+        background: #60a5fa;
+        opacity: 0.55;
+      }
+
+      .nav a:hover,
+      .nav a.active {
+        color: #ffffff;
+        background: rgba(255, 255, 255, 0.1);
+      }
+
+      .sidebar-note {
+        margin-top: 22px;
+        padding: 14px;
+        border: 1px solid rgba(255, 255, 255, 0.12);
+        border-radius: var(--radius);
+        background: rgba(255, 255, 255, 0.06);
+        color: #cbd5e1;
+        font-size: 13px;
+      }
+
+      .content {
+        min-width: 0;
+      }
+
+      .hero {
+        padding: 34px 40px 28px;
+        border-bottom: 1px solid var(--line);
+        background:
+          linear-gradient(90deg, rgba(255, 255, 255, 0.94), rgba(245, 247, 251, 0.9)),
+          radial-gradient(circle at 82% 22%, rgba(37, 99, 235, 0.18), transparent 31%),
+          radial-gradient(circle at 64% 76%, rgba(21, 128, 61, 0.14), transparent 28%);
+      }
+
+      .hero-grid {
+        display: grid;
+        grid-template-columns: minmax(0, 1.15fr) minmax(320px, 0.85fr);
+        gap: 30px;
+        align-items: center;
+        max-width: 1220px;
+      }
+
+      .eyebrow {
+        display: inline-flex;
+        align-items: center;
+        min-height: 28px;
+        padding: 4px 10px;
+        border: 1px solid #bfdbfe;
+        border-radius: 999px;
+        background: var(--blue-soft);
+        color: #1d4ed8;
+        font-size: 12px;
+        font-weight: 750;
+      }
+
+      h1 {
+        margin: 16px 0 12px;
+        font-size: clamp(36px, 6vw, 74px);
+        line-height: 0.95;
+        letter-spacing: 0;
+      }
+
+      .hero p {
+        margin: 0;
+        max-width: 680px;
+        color: #455267;
+        font-size: 18px;
+      }
+
+      .forecast-board {
+        border: 1px solid #ccd8e5;
+        border-radius: var(--radius);
+        background: rgba(255, 255, 255, 0.9);
+        box-shadow: var(--shadow);
+        overflow: hidden;
+      }
+
+      .board-top {
+        display: flex;
+        justify-content: space-between;
+        gap: 12px;
+        padding: 14px 16px;
+        border-bottom: 1px solid var(--line);
+      }
+
+      .board-title {
+        font-weight: 800;
+      }
+
+      .board-day {
+        color: var(--muted);
+        font-size: 13px;
+      }
+
+      .signal-row {
+        display: grid;
+        grid-template-columns: 96px 1fr 52px;
+        gap: 12px;
+        align-items: center;
+        padding: 12px 16px;
+      }
+
+      .signal-name {
+        font-size: 13px;
+        color: #4b5565;
+        font-weight: 700;
+      }
+
+      .bar {
+        height: 12px;
+        border-radius: 999px;
+        background: #dbe3ee;
+        overflow: hidden;
+      }
+
+      .bar span {
+        display: block;
+        height: 100%;
+        border-radius: inherit;
+      }
+
+      .bar.ml span {
+        width: 62%;
+        background: var(--blue);
+      }
+
+      .bar.market span {
+        width: 70%;
+        background: var(--green);
+      }
+
+      .bar.fng span {
+        width: 58%;
+        background: var(--amber);
+      }
+
+      .bar.actual span {
+        width: 100%;
+        background: #111827;
+      }
+
+      .signal-value {
+        text-align: right;
+        font-weight: 800;
+        font-size: 13px;
+      }
+
+      .main {
+        max-width: 1220px;
+        padding: 30px 40px 60px;
+      }
+
+      .section {
+        scroll-margin-top: 20px;
+        margin-bottom: 28px;
+      }
+
+      .section[hidden] {
+        display: none;
+      }
+
+      .section-header {
+        display: flex;
+        justify-content: space-between;
+        gap: 18px;
+        align-items: end;
+        margin-bottom: 12px;
+      }
+
+      h2 {
+        margin: 0;
+        font-size: 26px;
+        line-height: 1.12;
+        letter-spacing: 0;
+      }
+
+      .section-kicker {
+        margin-top: 5px;
+        color: var(--muted);
+      }
+
+      .edit-tag {
+        flex: 0 0 auto;
+        border: 1px solid var(--line);
+        border-radius: 999px;
+        padding: 4px 10px;
+        color: var(--muted);
+        font-size: 12px;
+        background: #ffffff;
+      }
+
+      .panel {
+        border: 1px solid var(--line);
+        border-radius: var(--radius);
+        background: var(--surface);
+        box-shadow: 0 10px 26px rgba(24, 33, 47, 0.05);
+      }
+
+      .panel-body {
+        padding: 20px;
+      }
+
+      .lead {
+        font-size: 18px;
+        color: #344154;
+      }
+
+      .quote {
+        margin: 14px 0;
+        padding: 14px 16px;
+        border-left: 4px solid var(--blue);
+        background: #f0f6ff;
+        color: #1d3f72;
+        font-weight: 750;
+      }
+
+      .grid {
+        display: grid;
+        gap: 14px;
+      }
+
+      .grid.three {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+      }
+
+      .grid.two {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .mini-card {
+        min-height: 100%;
+        padding: 16px;
+        border: 1px solid var(--line);
+        border-radius: var(--radius);
+        background: #ffffff;
+      }
+
+      .mini-card h3 {
+        margin: 0 0 8px;
+        font-size: 16px;
+        line-height: 1.2;
+      }
+
+      .mini-card p {
+        margin: 0;
+        color: #4b5565;
+      }
+
+      .pill {
+        display: inline-flex;
+        align-items: center;
+        min-height: 24px;
+        margin-bottom: 10px;
+        padding: 3px 8px;
+        border-radius: 999px;
+        font-size: 12px;
+        font-weight: 800;
+      }
+
+      .pill.blue {
+        background: var(--blue-soft);
+        color: #1d4ed8;
+      }
+
+      .pill.green {
+        background: var(--green-soft);
+        color: var(--green);
+      }
+
+      .pill.amber {
+        background: var(--amber-soft);
+        color: var(--amber);
+      }
+
+      .pill.red {
+        background: var(--red-soft);
+        color: var(--red);
+      }
+
+      .pill.teal {
+        background: var(--teal-soft);
+        color: var(--teal);
+      }
+
+      ul,
+      ol {
+        margin: 10px 0 0;
+        padding-left: 22px;
+      }
+
+      li + li {
+        margin-top: 7px;
+      }
+
+      .flow {
+        display: grid;
+        gap: 10px;
+      }
+
+      .flow-step {
+        display: grid;
+        grid-template-columns: 36px 1fr;
+        gap: 12px;
+        align-items: start;
+      }
+
+      .step-num {
+        width: 34px;
+        height: 34px;
+        display: grid;
+        place-items: center;
+        border-radius: var(--radius);
+        background: #111827;
+        color: #ffffff;
+        font-weight: 850;
+      }
+
+      .step-copy {
+        padding-bottom: 12px;
+        border-bottom: 1px solid var(--line);
+      }
+
+      .step-copy strong {
+        display: block;
+        margin-bottom: 2px;
+      }
+
+      .step-copy span {
+        color: #4b5565;
+      }
+
+      .table-wrap {
+        overflow-x: auto;
+      }
+
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        min-width: 680px;
+      }
+
+      th,
+      td {
+        padding: 12px 14px;
+        border-bottom: 1px solid var(--line);
+        text-align: left;
+        vertical-align: top;
+      }
+
+      th {
+        color: #4b5565;
+        font-size: 12px;
+        text-transform: uppercase;
+        letter-spacing: 0.04em;
+        background: var(--surface-2);
+      }
+
+      td code {
+        padding: 2px 5px;
+        border-radius: 5px;
+        background: #edf2f7;
+        color: #293548;
+      }
+
+      .callout {
+        padding: 16px;
+        border: 1px solid #bbf7d0;
+        border-radius: var(--radius);
+        background: #f0fdf4;
+        color: #14532d;
+      }
+
+      .callout strong {
+        display: block;
+        margin-bottom: 4px;
+      }
+
+      .muted {
+        color: var(--muted);
+      }
+
+      .footer {
+        margin-top: 34px;
+        color: var(--muted);
+        font-size: 13px;
+      }
+
+      mark {
+        padding: 0 2px;
+        border-radius: 3px;
+        background: #fef3c7;
+        color: inherit;
+      }
+
+      @media (max-width: 980px) {
+        .shell {
+          grid-template-columns: 1fr;
+        }
+
+        .sidebar {
+          position: static;
+          height: auto;
+        }
+
+        .nav {
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+
+        .hero,
+        .main {
+          padding-left: 22px;
+          padding-right: 22px;
+        }
+
+        .hero-grid,
+        .grid.three,
+        .grid.two {
+          grid-template-columns: 1fr;
+        }
+      }
+
+      @media (max-width: 580px) {
+        .nav {
+          grid-template-columns: 1fr;
+        }
+
+        .section-header {
+          display: block;
+        }
+
+        .edit-tag {
+          display: inline-flex;
+          margin-top: 8px;
+        }
+
+        .signal-row {
+          grid-template-columns: 78px 1fr 44px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="shell">
+      <aside class="sidebar">
+        <div class="brand">
+          <div class="mark">B</div>
+          <div>
+            <div class="brand-title">Boiler Room</div>
+            <div class="brand-subtitle">Living product overview</div>
+          </div>
+        </div>
+
+        <div class="search-wrap">
+          <label for="doc-search">Filter sections</label>
+          <input id="doc-search" type="search" placeholder="Try Supabase, War Room, ML..." />
+        </div>
+
+        <nav class="nav" aria-label="Documentation sections">
+          <a href="#big-picture">Big Picture</a>
+          <a href="#core-app">What The App Does</a>
+          <a href="#corporate-precedent">Corporate Precedent</a>
+          <a href="#agent-sim">Agent Sim</a>
+          <a href="#agent-representation">Agent Representation</a>
+          <a href="#ml-pipeline">ML Pipeline</a>
+          <a href="#data-model">Where The Data Lives</a>
+          <a href="#war-room-flow">War Room Flow</a>
+          <a href="#purpose">The Point</a>
+          <a href="#update-notes">Update Notes</a>
+        </nav>
+
+        <div class="sidebar-note">
+          Edit this single file as Boiler Room evolves. The sections are intentionally modular so new tables, APIs, or gameplay rules can be dropped in without rewriting the page.
+        </div>
+      </aside>
+
+      <div class="content">
+        <header class="hero">
+          <div class="hero-grid">
+            <div>
+              <span class="eyebrow">Sales prediction game and dashboard</span>
+              <h1>Boiler Room turns revenue uncertainty into markets.</h1>
+              <p>
+                The app compares machine learning, market pricing, and the human player FNG to answer a sharp question: who made the best probability forecast?
+              </p>
+            </div>
+
+            <div class="forecast-board" aria-label="Forecast comparison example">
+              <div class="board-top">
+                <div>
+                  <div class="board-title">Example Deal Forecast</div>
+                  <div class="board-day">YES = customer buys before deadline</div>
+                </div>
+                <div class="board-day">Day 30 / 30</div>
+              </div>
+              <div class="signal-row">
+                <div class="signal-name">ML</div>
+                <div class="bar ml"><span></span></div>
+                <div class="signal-value">62%</div>
+              </div>
+              <div class="signal-row">
+                <div class="signal-name">Market</div>
+                <div class="bar market"><span></span></div>
+                <div class="signal-value">70%</div>
+              </div>
+              <div class="signal-row">
+                <div class="signal-name">FNG</div>
+                <div class="bar fng"><span></span></div>
+                <div class="signal-value">58%</div>
+              </div>
+              <div class="signal-row">
+                <div class="signal-name">Actual</div>
+                <div class="bar actual"><span></span></div>
+                <div class="signal-value">YES</div>
+              </div>
+            </div>
+          </div>
+        </header>
+
+        <main class="main">
+          <section class="section" id="big-picture" data-search="big picture yes no sales deal boiler room machine learning market human fng probability forecast">
+            <div class="section-header">
+              <div>
+                <h2>Big Picture</h2>
+                <div class="section-kicker">Plain-English framing for the product.</div>
+              </div>
+              <span class="edit-tag">Core narrative</span>
+            </div>
+            <div class="panel">
+              <div class="panel-body">
+                <p class="lead">
+                  Boiler Room is a sales prediction game and dashboard. Imagine your company has a bunch of possible sales deals. Each deal asks a simple question:
+                </p>
+                <div class="quote">Will this customer buy before the deadline?</div>
+                <p>
+                  Boiler Room turns those sales questions into little markets where the answer is basically <strong>YES or NO</strong>. Instead of only trusting one sales rep's guess, Boiler Room compares three kinds of forecasts.
+                </p>
+                <div class="grid three">
+                  <article class="mini-card">
+                    <span class="pill blue">1. ML model</span>
+                    <h3>The model's guess</h3>
+                    <p>The machine learning pipeline looks at deal data and estimates a probability, like a 62% chance of closing.</p>
+                  </article>
+                  <article class="mini-card">
+                    <span class="pill green">2. Market</span>
+                    <h3>The crowd or agent price</h3>
+                    <p>Agents or people buy and sell YES/NO positions. If YES costs 70 cents, the market is saying about 70% chance.</p>
+                  </article>
+                  <article class="mini-card">
+                    <span class="pill amber">3. FNG</span>
+                    <h3>The human player's call</h3>
+                    <p>In Agent Sim, the user is called FNG. FNG reviews deal information, then chooses Buy, Hold, or Sell with confidence.</p>
+                  </article>
+                </div>
+                <div class="quote">Who made the best probability forecast: ML, the market, or FNG?</div>
+                <p>
+                  P&amp;L matters, but the real winner is whoever guessed closest to reality.
+                </p>
+              </div>
+            </div>
+          </section>
+
+          <section class="section" id="core-app" data-search="dashboard markets leaderboard admin official forecast crm market-implied pipeline prediction questions calibration">
+            <div class="section-header">
+              <div>
+                <h2>What The App Does</h2>
+                <div class="section-kicker">The major app surfaces and what each one answers.</div>
+              </div>
+              <span class="edit-tag">Product map</span>
+            </div>
+            <div class="grid two">
+              <article class="mini-card">
+                <span class="pill blue">Dashboard</span>
+                <h3>Executive revenue view</h3>
+                <p>Shows overall sales forecast numbers: official forecast, CRM forecast, market-implied forecast, and total pipeline.</p>
+                <p><strong>Question:</strong> Are we actually going to hit the number?</p>
+              </article>
+              <article class="mini-card">
+                <span class="pill green">Markets</span>
+                <h3>Individual deal prediction markets</h3>
+                <p>Each market is tied to a sales question. Users inspect deal context, probability history, trades, comments, and alerts.</p>
+              </article>
+              <article class="mini-card">
+                <span class="pill teal">Leaderboard</span>
+                <h3>Calibration-first ranking</h3>
+                <p>Ranks people or agents by forecast accuracy. Being honestly close matters more than just being lucky.</p>
+              </article>
+              <article class="mini-card">
+                <span class="pill amber">Admin</span>
+                <h3>Market creation</h3>
+                <p>Lets someone create prediction markets from CRM-style opportunities.</p>
+              </article>
+            </div>
+
+            <div class="panel" style="margin-top: 14px;">
+              <div class="table-wrap">
+                <table>
+                  <thead>
+                    <tr>
+                      <th>Market question type</th>
+                      <th>Example</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>Close won</td>
+                      <td>Will this deal close won?</td>
+                    </tr>
+                    <tr>
+                      <td>Timing</td>
+                      <td>Will it close by the original date, or slip to next quarter?</td>
+                    </tr>
+                    <tr>
+                      <td>Process approval</td>
+                      <td>Will legal approve by date? Will security complete by date?</td>
+                    </tr>
+                    <tr>
+                      <td>Commercial threshold</td>
+                      <td>Will it close above a money threshold?</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </section>
+
+          <section class="section" id="corporate-precedent" data-search="corporate precedent real world examples google ford firm x hewlett packard hp microsoft best buy tagtrade theory latent information wisdom of crowds information aggregation hayek prediction markets">
+            <div class="section-header">
+              <div>
+                <h2>Corporate Precedent</h2>
+                <div class="section-kicker">Prediction markets are not just a toy model; companies have used them to forecast operational outcomes.</div>
+              </div>
+              <span class="edit-tag">Research-backed</span>
+            </div>
+            <div class="panel">
+              <div class="panel-body">
+                <p class="lead">
+                  The theory behind prediction markets is that useful knowledge inside an organization is often distributed, local, and politically awkward to say out loud. A market gives people a low-friction way to reveal that knowledge through prices instead of meetings. When someone buys YES, sells NO, or refuses to trade at a posted price, they are turning private signal into a public probability. The resulting price becomes a compact, continuously updated forecast that can surface latent information from sales reps, operators, product teams, finance, legal, and support before it appears in official plans.
+                </p>
+
+                <div class="grid two">
+                  <article class="mini-card">
+                    <span class="pill blue">Google</span>
+                    <h3>Internal markets for company events</h3>
+                    <p>
+                      Google ran a large internal prediction-market program, including markets about product launches, office openings, and other strategically relevant events. Research on the program found useful forecasts, but also documented biases such as optimism and showed that trading patterns revealed information flow inside the company.
+                    </p>
+                    <p class="muted">Sources: <a href="https://business.columbia.edu/faculty/research/using-prediction-markets-track-information-flows">Columbia Business School</a>, <a href="https://business.columbia.edu/faculty/research/corporate-prediction-markets-evidence-google-ford-and-firm-x">Corporate Prediction Markets study</a></p>
+                  </article>
+
+                  <article class="mini-card">
+                    <span class="pill green">Ford and Firm X</span>
+                    <h3>Markets compared with expert forecasts</h3>
+                    <p>
+                      Bo Cowgill and Eric Zitzewitz studied corporate prediction markets at Google, Ford Motor Company, and an anonymous basic-materials conglomerate called Firm X. Even with thin participation and weaker incentives than public markets, the markets were relatively efficient and improved on expert forecasts at all three firms, with error reductions reported up to 25%.
+                    </p>
+                    <p class="muted">Source: <a href="https://business.columbia.edu/faculty/research/corporate-prediction-markets-evidence-google-ford-and-firm-x">Columbia Business School summary</a></p>
+                  </article>
+
+                  <article class="mini-card">
+                    <span class="pill amber">Hewlett Packard</span>
+                    <h3>Sales forecasting experiments</h3>
+                    <p>
+                      HP tested internal markets for sales forecasting in the late 1990s. Summaries of the Chen and Plott work report that market predictions were closer than official forecasts in six of eight comparable events, and that prices produced probability distributions consistent with actual outcomes.
+                    </p>
+                    <p class="muted">Sources: <a href="https://www.sciencedirect.com/science/article/abs/pii/S1467089512000152">O'Leary review</a>, <a href="https://www.mohrcollaborative.com/2005/02/how-to-set-up-a-prediction-market-hp-example/">HP setup summary</a></p>
+                  </article>
+
+                  <article class="mini-card">
+                    <span class="pill teal">Microsoft and Best Buy</span>
+                    <h3>Internal adoption beyond research labs</h3>
+                    <p>
+                      Microsoft researchers reported using Hanson's automated market maker to run many markets internally. Best Buy's TagTrade is another documented corporate market, with research noting employee participation and use as a decision-support mechanism.
+                    </p>
+                    <p class="muted">Sources: <a href="https://www.ubplj.org/index.php/jpm/article/view/451">Journal of Prediction Markets</a>, <a href="https://www.sciencedirect.com/science/article/pii/S0167923615001360">Decision Support Systems abstract</a></p>
+                  </article>
+                </div>
+
+                <div class="callout" style="margin-top: 14px;">
+                  <strong>Why this matters for Boiler Room</strong>
+                  Boiler Room applies the same information-aggregation idea to revenue forecasting: sales and deal knowledge is scattered across people, systems, and agents, while market prices turn that scattered knowledge into a comparable probability signal.
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <section class="section" id="agent-sim" data-search="agent sim revenue war room fng 30 day buy hold sell confidence one three five ten deals settlement pnl forecast winner">
+            <div class="section-header">
+              <div>
+                <h2>Agent Sim / Revenue War Room</h2>
+                <div class="section-kicker">The game-like part of Boiler Room.</div>
+              </div>
+              <span class="edit-tag">Gameplay</span>
+            </div>
+            <div class="panel">
+              <div class="panel-body">
+                <p class="lead">
+                  The human player, <strong>FNG</strong>, competes against agent sales reps over a 30-day run.
+                </p>
+                <div class="grid three">
+                  <article class="mini-card">
+                    <span class="pill blue">Run length</span>
+                    <h3>Day 1 / 30 through Day 30 / 30</h3>
+                    <p>Runs settle only after the final day.</p>
+                  </article>
+                  <article class="mini-card">
+                    <span class="pill green">Deal counts</span>
+                    <h3>1, 3, 5, or 10 deals</h3>
+                    <p>The game can be a focused read or a broader portfolio challenge.</p>
+                  </article>
+                  <article class="mini-card">
+                    <span class="pill amber">Daily action</span>
+                    <h3>Buy, Hold, or Sell</h3>
+                    <p>FNG must choose for every active deal. Confidence from 1 to 5 controls trade strength.</p>
+                  </article>
+                </div>
+                <p>
+                  Every day gives FNG new information. At settlement, the app reveals actual outcomes and compares ML baseline probability, final market probability, FNG probability, actual result, forecast winner, and P&amp;L.
+                </p>
+              </div>
+            </div>
+          </section>
+
+          <section class="section" id="agent-representation" data-search="agent representation separate files data objects personas app.js api _game agentBelief openai agent-decision endpoint memory profile risk tolerance blind spots trading style ae bdr se sales manager legal csm">
+            <div class="section-header">
+              <div>
+                <h2>How Agents Are Represented</h2>
+                <div class="section-kicker">Agents are data-driven right now, not separate code files with individual brains.</div>
+              </div>
+              <span class="edit-tag">Implementation note</span>
+            </div>
+            <div class="panel">
+              <div class="panel-body">
+                <p class="lead">
+                  Each agent does <strong>not</strong> currently have its own separate file like <code>agents/ae_17.js</code>, <code>agents/se_4.js</code>, or <code>agents/sales_manager_9.js</code>. Agents are represented as data objects and interpreted through shared logic.
+                </p>
+
+                <div class="grid two">
+                  <article class="mini-card">
+                    <span class="pill blue">Older local simulation</span>
+                    <h3>Hardcoded demo personas</h3>
+                    <p>
+                      The original local demo keeps personas inside <a href="../app.js">app.js</a> as JavaScript objects. Examples include Nadia Price, Leo Grant, Talia Stone, Casey Vale, Quinn Okafor, and Victoria Sloan.
+                    </p>
+                  </article>
+
+                  <article class="mini-card">
+                    <span class="pill green">War Room / Agent Sim</span>
+                    <h3>Agents come from deal data</h3>
+                    <p>
+                      In the newer Supabase-backed game, each deal carries account-team members such as <code>AE_17</code>, <code>BDR_4</code>, <code>SE_12</code>, <code>SalesManager_8</code>, <code>Legal_3</code>, and <code>CSM_21</code>. Those names live in the deal payload, not separate files.
+                    </p>
+                  </article>
+                </div>
+
+                <div class="panel" style="margin-top: 14px;">
+                  <div class="panel-body">
+                    <h3>Current mental model</h3>
+                    <div class="quote">Here is a deal. Here are the people on that deal. Use their role to decide how they act.</div>
+                    <p>
+                      The game builds a roster in <a href="../api/_game.js">api/_game.js</a>, then calculates how each role thinks using shared logic such as <code>agentBelief(...)</code>. The current system does <strong>not</strong> load AE_17's personal brain from a file.
+                    </p>
+                  </div>
+                </div>
+
+                <div class="grid two" style="margin-top: 14px;">
+                  <article class="mini-card">
+                    <span class="pill amber">OpenAI endpoint</span>
+                    <h3>Shared decision service</h3>
+                    <p>
+                      The OpenAI API can produce an agent-style decision through <code>/api/agent-decision</code>, but that is one shared endpoint. It does not store a unique memory or file per agent.
+                    </p>
+                  </article>
+
+                  <article class="mini-card">
+                    <span class="pill teal">Possible upgrade</span>
+                    <h3>Persistent agent profiles</h3>
+                    <p>
+                      A natural next step would be to give each agent type or named agent its own profile, memory, risk tolerance, blind spots, and trading style.
+                    </p>
+                  </article>
+                </div>
+
+                <div class="callout" style="margin-top: 14px;">
+                  <strong>Simple answer</strong>
+                  No, each agent does not have its own file yet. Agents are generated from deal/team data and shared role logic.
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <section class="section" id="ml-pipeline" data-search="ml pipeline separate frontend kitchen restaurant synthetic deals train models live held-out supabase run_full_pipeline">
+            <div class="section-header">
+              <div>
+                <h2>How It Interacts With The ML Pipeline</h2>
+                <div class="section-kicker">The pipeline prepares the data; Boiler Room serves it to users.</div>
+              </div>
+              <span class="edit-tag">Architecture</span>
+            </div>
+            <div class="grid two">
+              <div class="panel">
+                <div class="panel-body">
+                  <h3>Kitchen</h3>
+                  <p>The <strong>ML pipeline</strong> creates synthetic sales deals, trains models, exports deal data, and loads it into Supabase.</p>
+                </div>
+              </div>
+              <div class="panel">
+                <div class="panel-body">
+                  <h3>Restaurant</h3>
+                  <p>The <strong>Boiler Room app</strong> reads the prepared live deal pool and serves the experience to users.</p>
+                </div>
+              </div>
+            </div>
+            <div class="panel" style="margin-top: 14px;">
+              <div class="panel-body">
+                <p>The command in the repo is roughly:</p>
+                <pre><code>python3 -m synthetic_pipeline.run_full_pipeline --n 10000 --live-n 200</code></pre>
+                <ul>
+                  <li>Create <strong>10,000 synthetic deals</strong>.</li>
+                  <li>Train baseline ML models on them.</li>
+                  <li>Export a smaller live set, like <strong>200 held-out deals</strong>, for the Agent Sim.</li>
+                  <li>Load those into Supabase.</li>
+                </ul>
+                <p>
+                  The app does <strong>not</strong> show all 10,000 deals at once. Instead, it uses a smaller live deal pool produced by the pipeline.
+                </p>
+              </div>
+            </div>
+          </section>
+
+          <section class="section" id="data-model" data-search="supabase tables agent_sim_live_deals synthetic_deal_events synthetic_deal_outcomes game_sessions game_session_deals game_turns game_actions hidden outcomes server-side">
+            <div class="section-header">
+              <div>
+                <h2>Where The Data Lives</h2>
+                <div class="section-kicker">Supabase tables and visibility rules.</div>
+              </div>
+              <span class="edit-tag">Data model</span>
+            </div>
+            <div class="panel">
+              <div class="table-wrap">
+                <table>
+                  <thead>
+                    <tr>
+                      <th>Table</th>
+                      <th>Purpose</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td><code>agent_sim_live_deals</code></td>
+                      <td>Safe visible deal data, market question, baseline ML probabilities, and agent signal seeds.</td>
+                    </tr>
+                    <tr>
+                      <td><code>synthetic_deal_events</code></td>
+                      <td>Timeline events for deals, like legal movement, procurement changes, buyer sentiment, activity, and related signals.</td>
+                    </tr>
+                    <tr>
+                      <td><code>synthetic_deal_outcomes</code></td>
+                      <td>The hidden answer key. This says what actually happened. The browser does not get this until settlement.</td>
+                    </tr>
+                    <tr>
+                      <td><code>game_sessions</code></td>
+                      <td>Stores each War Room run.</td>
+                    </tr>
+                    <tr>
+                      <td><code>game_session_deals</code></td>
+                      <td>Stores which deals were assigned to the run.</td>
+                    </tr>
+                    <tr>
+                      <td><code>game_turns</code></td>
+                      <td>Stores daily intel cards and summaries.</td>
+                    </tr>
+                    <tr>
+                      <td><code>game_actions</code></td>
+                      <td>Stores FNG and agent actions.</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+            <div class="callout" style="margin-top: 14px;">
+              <strong>Important security rule</strong>
+              Hidden outcomes stay server-side. The browser is not allowed to peek.
+            </div>
+          </section>
+
+          <section class="section" id="war-room-flow" data-search="war room run server picks useful disagreement daily intel cards metric process agent rumor fng actions agents market updates">
+            <div class="section-header">
+              <div>
+                <h2>How A War Room Run Works</h2>
+                <div class="section-kicker">A day-by-day loop from deal selection to settlement.</div>
+              </div>
+              <span class="edit-tag">Flow</span>
+            </div>
+            <div class="panel">
+              <div class="panel-body flow">
+                <div class="flow-step">
+                  <div class="step-num">1</div>
+                  <div class="step-copy">
+                    <strong>Day 1 starts.</strong>
+                    <span>The server picks deals where there is useful disagreement, such as ML at 75%, market at 52%, and mixed agent signals.</span>
+                  </div>
+                </div>
+                <div class="flow-step">
+                  <div class="step-num">2</div>
+                  <div class="step-copy">
+                    <strong>The app creates intel cards.</strong>
+                    <span>Cards include Metric, Process, Agent, and Rumor types. Rumors are noisy and clearly labeled as unreliable.</span>
+                  </div>
+                </div>
+                <div class="flow-step">
+                  <div class="step-num">3</div>
+                  <div class="step-copy">
+                    <strong>FNG reviews the cards and deal panels.</strong>
+                    <span>The player forms a probability judgment from structured context and daily signal changes.</span>
+                  </div>
+                </div>
+                <div class="flow-step">
+                  <div class="step-num">4</div>
+                  <div class="step-copy">
+                    <strong>FNG chooses Buy, Hold, or Sell.</strong>
+                    <span>Buy means YES is underpriced. Sell means NO is better. Hold means no trade. Confidence from 1 to 5 controls strength.</span>
+                  </div>
+                </div>
+                <div class="flow-step">
+                  <div class="step-num">5</div>
+                  <div class="step-copy">
+                    <strong>The day ends and the market updates.</strong>
+                    <span>Agents move too, prices change, and the next day begins until Day 30 settlement.</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <section class="section" id="purpose" data-search="point practical sales question better forecast normal forecasting rep opinions manager judgment crm stages model predictions market pricing agent behavior human judgment hidden outcomes revenue">
+            <div class="section-header">
+              <div>
+                <h2>The Point Of The App</h2>
+                <div class="section-kicker">The practical question Boiler Room is trying to answer.</div>
+              </div>
+              <span class="edit-tag">Why it matters</span>
+            </div>
+            <div class="panel">
+              <div class="panel-body">
+                <div class="quote">Can a market plus agent activity plus ML produce a better forecast than normal sales forecasting?</div>
+                <p>
+                  Normal forecasting often depends on rep opinions, manager judgment, and CRM stages. Boiler Room adds model predictions, market pricing, agent behavior, human judgment, and hidden final outcomes.
+                </p>
+                <p>
+                  Over time, the system reveals who is actually good at predicting revenue.
+                </p>
+              </div>
+            </div>
+          </section>
+
+          <section class="section" id="update-notes" data-search="update notes living documentation maintain source future todos changelog">
+            <div class="section-header">
+              <div>
+                <h2>Update Notes</h2>
+                <div class="section-kicker">Use this area as the doc changes with the product.</div>
+              </div>
+              <span class="edit-tag">Living section</span>
+            </div>
+            <div class="panel">
+              <div class="panel-body">
+                <ul>
+                  <li><strong>Source of truth:</strong> keep gameplay rules aligned with API behavior in <code>api/game/*</code>.</li>
+                  <li><strong>Data model:</strong> update the table list when <code>schema/supabase_schema.sql</code> changes.</li>
+                  <li><strong>Pipeline:</strong> revise the command block if the generation or Supabase loading flow changes.</li>
+                  <li><strong>Current doc version:</strong> May 10, 2026.</li>
+                </ul>
+              </div>
+            </div>
+            <div class="footer">
+              Local file: <code>docs/boiler_room_living_overview.html</code>
+            </div>
+          </section>
+        </main>
+      </div>
+    </div>
+
+    <script>
+      const sections = Array.from(document.querySelectorAll(".section"));
+      const navLinks = Array.from(document.querySelectorAll(".nav a"));
+      const search = document.querySelector("#doc-search");
+
+      function normalize(value) {
+        return value.toLowerCase().trim();
+      }
+
+      function updateActiveLink() {
+        const visibleSections = sections.filter((section) => !section.hidden);
+        let active = visibleSections[0]?.id;
+
+        for (const section of visibleSections) {
+          const rect = section.getBoundingClientRect();
+          if (rect.top <= 130) active = section.id;
+        }
+
+        navLinks.forEach((link) => {
+          link.classList.toggle("active", link.getAttribute("href") === `#${active}`);
+        });
+      }
+
+      search.addEventListener("input", () => {
+        const query = normalize(search.value);
+
+        sections.forEach((section) => {
+          const haystack = normalize(`${section.textContent} ${section.dataset.search || ""}`);
+          section.hidden = query.length > 0 && !haystack.includes(query);
+        });
+
+        navLinks.forEach((link) => {
+          const target = document.querySelector(link.getAttribute("href"));
+          link.hidden = Boolean(target?.hidden);
+        });
+
+        updateActiveLink();
+      });
+
+      window.addEventListener("scroll", updateActiveLink, { passive: true });
+      updateActiveLink();
+    </script>
+  </body>
+</html>

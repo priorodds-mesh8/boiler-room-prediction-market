@@ -1,1 +1,1 @@
-"""Synthetic sales-deal dataset and ML pipeline for Prism."""
+"""Synthetic sales-deal dataset and ML pipeline for Boiler Room."""

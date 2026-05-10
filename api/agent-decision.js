@@ -1,4 +1,4 @@
-const { findOutputText, readJson, sendJson } = require("./_utils");
+const { findOutputText, loadEnv, readJson, sendJson } = require("./_utils");
 
 module.exports = async function handler(req, res) {
   if (req.method !== "POST") {
@@ -6,7 +6,8 @@ module.exports = async function handler(req, res) {
     return;
   }
 
-  const apiKey = process.env.OPENAI_API_KEY;
+  const values = loadEnv("/Users/joellang/.env");
+  const apiKey = process.env.OPENAI_API_KEY || values.openai_api_key;
   if (!apiKey) {
     sendJson(res, 501, { error: "OPENAI_API_KEY is not set; frontend will use the local persona engine." });
     return;

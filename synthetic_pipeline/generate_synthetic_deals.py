@@ -202,7 +202,7 @@ REQUIRED_OBSERVABLE_FIELDS = {
 
 
 def main() -> None:
-    parser = argparse.ArgumentParser(description="Generate synthetic B2B sales deals for Prism.")
+    parser = argparse.ArgumentParser(description="Generate synthetic B2B sales deals for Boiler Room.")
     parser.add_argument("--n", type=int, default=10_000, help="Training-pool deal count.")
     parser.add_argument("--live-n", type=int, default=200, help="Held-out live-pool deal count.")
     parser.add_argument("--seed", type=int, default=20260509)

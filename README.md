@@ -1,4 +1,4 @@
-# Prism Revenue Market
+# Boiler Room
 
 A dependency-free local mockup of an internal prediction market for enterprise sales teams.
 

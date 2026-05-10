@@ -14,7 +14,7 @@ def main() -> None:
     parser = argparse.ArgumentParser(description="Apply schema/supabase_schema.sql to Supabase Postgres.")
     parser.add_argument("--env", type=Path, default=DEFAULT_ENV_PATH)
     parser.add_argument("--schema", type=Path, default=ROOT / "schema" / "supabase_schema.sql")
-    parser.add_argument("--deps", type=Path, default=Path("/private/tmp/prism_pydeps"))
+    parser.add_argument("--deps", type=Path, default=Path("/private/tmp/boiler_room_pydeps"))
     args = parser.parse_args()
 
     if args.deps.exists():
@@ -24,7 +24,7 @@ def main() -> None:
     except ImportError as exc:
         raise SystemExit(
             "psycopg is required to apply the schema. Install it with: "
-            "python3 -m pip install --target /private/tmp/prism_pydeps 'psycopg[binary]'"
+            "python3 -m pip install --target /private/tmp/boiler_room_pydeps 'psycopg[binary]'"
         ) from exc
 
     config = supabase_db_config(args.env)

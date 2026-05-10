@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Agent Sim — Wireframe</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=Geist+Mono:wght@400;500;600;700&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="tokens.css" />
+<style>
+  html, body { height: 100%; }
+</style>
+
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+</head>
+<body>
+<div id="root"></div>
+
+<script type="text/babel" src="design-canvas.jsx"></script>
+<script type="text/babel" src="components.jsx"></script>
+<script type="text/babel" src="screens.jsx"></script>
+
+<script type="text/babel">
+  const { ScreenSetup, ScreenRun3, ScreenRun10, ScreenCards, ScreenResults } = window.AgentSimScreens;
+
+  function App() {
+    return (
+      <DesignCanvas title="Boiler Room · Agent Sim — Wireframe" subtitle="Turn-based card strategy forecasting · FNG vs agents">
+        <DCSection id="flow" title="Run flow">
+          <DCArtboard id="setup" label="01 · Setup screen — mode + deal count" width={1280} height={880}>
+            <ScreenSetup />
+          </DCArtboard>
+          <DCArtboard id="run-3" label="02 · Run screen — 3 deals · Day 14 · Team mode" width={1440} height={980}>
+            <ScreenRun3 />
+          </DCArtboard>
+          <DCArtboard id="run-10" label="03 · Run screen — 10 deals · Day 22 · Floor density · Silent Market" width={1440} height={1080}>
+            <ScreenRun10 />
+          </DCArtboard>
+          <DCArtboard id="results" label="04 · Results screen — Day 30 · per-deal settlement + leaderboard" width={1440} height={980}>
+            <ScreenResults />
+          </DCArtboard>
+        </DCSection>
+
+        <DCSection id="vocab" title="Intel card vocabulary">
+          <DCArtboard id="cards" label="Card library — metric · process · agent · gossip" width={980} height={880}>
+            <ScreenCards />
+          </DCArtboard>
+        </DCSection>
+      </DesignCanvas>
+    );
+  }
+
+  ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+</script>
+</body>
+</html>

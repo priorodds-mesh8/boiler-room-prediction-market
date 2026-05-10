@@ -118,7 +118,7 @@ async function getResults(sessionId) {
 
 function makeStore() {
   const config = supabaseConfig();
-  if (process.env.PRISM_FORCE_LOCAL_GAME === "1" || !config.url || !config.key) return makeLocalStore();
+  if (process.env.BOILER_ROOM_FORCE_LOCAL_GAME === "1" || !config.url || !config.key) return makeLocalStore();
   return makeSupabaseStore(config);
 }
 
@@ -686,7 +686,7 @@ function safeAction(action) {
 async function buildBriefing(session, deals, cards) {
   const template = templateBriefing(session, deals, cards);
   const apiKey = process.env.OPENAI_API_KEY;
-  if (!apiKey || process.env.PRISM_DISABLE_LLM_BRIEFING === "1") return { summary: template, source: "template" };
+  if (!apiKey || process.env.BOILER_ROOM_DISABLE_LLM_BRIEFING === "1") return { summary: template, source: "template" };
   try {
     const response = await fetch("https://api.openai.com/v1/responses", {
       method: "POST",

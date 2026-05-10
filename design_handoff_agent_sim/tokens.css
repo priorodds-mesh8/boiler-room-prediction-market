@@ -1,0 +1,157 @@
+/* ───── Agent Sim — Revenue War Room tokens ───── */
+:root {
+  --bg:        #070a11;
+  --bg-2:      #0b0f18;
+  --surface:   #0f1422;
+  --surface-2: #161c2c;
+  --surface-3: #1c2338;
+  --border:    #232a3d;
+  --border-2:  #2e3852;
+  --hairline:  #1a2034;
+
+  --text:      #e6e8ee;
+  --muted:     #8a93a7;
+  --dim:       #5a6378;
+  --ink:       #c4cad9;
+
+  --fng:       #22d3ee;   /* player */
+  --ml:        #6aa9ff;   /* baseline model */
+  --mkt:       #f4f6fb;   /* market mid */
+  --buy:       #34d399;
+  --sell:      #f87171;
+  --hold:      #b8c0d0;
+  --amber:     #fbbf24;
+  --rumor:     #a78bfa;
+  --signal:    #f0abfc;
+
+  --rad:    3px;
+  --rad-2:  6px;
+
+  --sans: "Geist", "Inter", system-ui, sans-serif;
+  --mono: "Geist Mono", "JetBrains Mono", ui-monospace, monospace;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--sans);
+  font-feature-settings: "ss01", "cv11";
+  -webkit-font-smoothing: antialiased;
+}
+
+.mono { font-family: var(--mono); font-variant-numeric: tabular-nums; }
+.tab  { font-variant-numeric: tabular-nums; }
+.cap  { text-transform: uppercase; letter-spacing: 0.08em; }
+
+/* ── tactical scanlines on the body, very subtle ── */
+.board-bg {
+  background:
+    radial-gradient(1200px 600px at 30% -10%, rgba(34,211,238,0.04), transparent 60%),
+    radial-gradient(900px 500px at 100% 100%, rgba(167,139,250,0.04), transparent 60%),
+    linear-gradient(0deg, var(--bg), var(--bg));
+  position: relative;
+  overflow: hidden;
+}
+.board-bg::before {
+  content: "";
+  position: absolute; inset: 0;
+  background-image:
+    linear-gradient(var(--hairline) 1px, transparent 1px),
+    linear-gradient(90deg, var(--hairline) 1px, transparent 1px);
+  background-size: 40px 40px;
+  opacity: 0.35;
+  mask-image: radial-gradient(circle at 50% 40%, #000 0%, transparent 80%);
+  pointer-events: none;
+}
+
+/* Card primitives */
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--rad-2);
+}
+.card-flat {
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  border-radius: var(--rad);
+}
+
+.hr { height: 1px; background: var(--hairline); border: 0; }
+
+/* Chip */
+.chip {
+  display: inline-flex; align-items: center; gap: 6px;
+  height: 20px; padding: 0 8px;
+  font: 500 10px/1 var(--mono);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  border: 1px solid var(--border);
+  border-radius: 2px;
+  color: var(--muted);
+  background: var(--surface-2);
+}
+.chip.dot::before {
+  content: ""; width: 6px; height: 6px; border-radius: 999px;
+  background: currentColor;
+}
+.chip.fng    { color: var(--fng);    border-color: color-mix(in oklab, var(--fng) 35%, var(--border)); }
+.chip.ml     { color: var(--ml);     border-color: color-mix(in oklab, var(--ml) 35%, var(--border)); }
+.chip.mkt    { color: var(--mkt);    border-color: color-mix(in oklab, var(--mkt) 25%, var(--border)); }
+.chip.buy    { color: var(--buy);    border-color: color-mix(in oklab, var(--buy) 35%, var(--border)); }
+.chip.sell   { color: var(--sell);   border-color: color-mix(in oklab, var(--sell) 35%, var(--border)); }
+.chip.amber  { color: var(--amber);  border-color: color-mix(in oklab, var(--amber) 35%, var(--border)); }
+.chip.rumor  { color: var(--rumor);  border-color: color-mix(in oklab, var(--rumor) 40%, var(--border)); background: color-mix(in oklab, var(--rumor) 8%, var(--surface-2)); }
+.chip.solid  { background: var(--surface-3); color: var(--text); }
+
+/* Tag (square label) */
+.tag {
+  display: inline-flex; align-items: center; justify-content: center;
+  height: 18px; padding: 0 6px;
+  font: 600 9.5px/1 var(--mono);
+  letter-spacing: 0.1em; text-transform: uppercase;
+  border-radius: 2px;
+  background: var(--surface-3); color: var(--ink);
+  border: 1px solid var(--border);
+}
+
+/* Buttons */
+.btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+  height: 32px; padding: 0 14px;
+  font: 600 12px/1 var(--sans);
+  letter-spacing: 0.04em;
+  background: var(--surface-2); color: var(--text);
+  border: 1px solid var(--border-2);
+  border-radius: var(--rad);
+  cursor: pointer;
+}
+.btn.primary {
+  background: var(--fng);
+  color: #002028;
+  border-color: var(--fng);
+}
+.btn.ghost {
+  background: transparent; color: var(--muted);
+}
+
+/* Probability strip */
+.probstrip { position: relative; height: 22px; background: var(--surface-2); border: 1px solid var(--border); border-radius: 2px; overflow: hidden; }
+.probstrip .mid { position: absolute; left: 50%; top: 0; bottom: 0; width: 1px; background: var(--border-2); }
+.probstrip .tick { position: absolute; top: 0; bottom: 0; width: 1px; background: var(--hairline); }
+
+/* Diagonal rumor pattern */
+.rumor-stripes {
+  background-image: repeating-linear-gradient(
+    45deg,
+    color-mix(in oklab, var(--rumor) 12%, transparent) 0,
+    color-mix(in oklab, var(--rumor) 12%, transparent) 6px,
+    transparent 6px,
+    transparent 12px
+  );
+}
+
+/* Glow */
+.fng-glow { box-shadow: 0 0 0 1px color-mix(in oklab, var(--fng) 40%, transparent), 0 0 24px -6px color-mix(in oklab, var(--fng) 40%, transparent); }

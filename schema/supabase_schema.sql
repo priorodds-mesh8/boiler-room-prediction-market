@@ -1,4 +1,4 @@
--- Prism synthetic B2B sales-deal dataset schema.
+-- Boiler Room synthetic B2B sales-deal dataset schema.
 -- Run in the Supabase SQL editor before loading data with scripts/load_to_supabase.py.
 
 create extension if not exists pgcrypto;
