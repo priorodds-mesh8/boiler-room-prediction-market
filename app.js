@@ -52,7 +52,10 @@
       maxDays: 30,
       loading: false,
       pendingActions: {},
-      error: ""
+      error: "",
+      advancedSetup: false,
+      autoStartAttempted: false,
+      ignoreAdvancedQuery: false
     },
     onboardingStep: 0,
     showOnboarding: false,
@@ -764,6 +767,7 @@
       ui.showOnboarding ? renderOnboardingOverlay() : '',
       ui.toast ? '<div class="toast">' + escapeHtml(ui.toast) + '</div>' : ''
     ].join("");
+    maybeAutoStartGame();
   }
 
   function renderSidebar(currentUser) {
@@ -793,10 +797,13 @@
   }
 
   function renderTopbar() {
+    var advancedButton = isAdvancedSetupRequested() || ui.game.advancedSetup
+      ? ''
+      : '<button class="secondary-button subtle-button" data-action="game-advanced">Advanced setup</button>';
     return [
       '<header class="topbar">',
       '<div><h1 class="page-title">Boiler Room — Forecast Intelligence</h1><div class="page-kicker">Practice Run</div></div>',
-      '<div class="top-actions"><button class="secondary-button subtle-button" data-action="onboarding-replay">Replay tour</button><button class="secondary-button" data-action="reset-demo">Reset demo</button></div>',
+      '<div class="top-actions">' + advancedButton + '<button class="secondary-button subtle-button" data-action="onboarding-replay">Replay tour</button><button class="secondary-button" data-action="reset-demo">Reset demo</button></div>',
       '</header>'
     ].join("");
   }
@@ -874,6 +881,34 @@
       console.warn("Unable to reset onboarding state.", error);
     }
     render();
+  }
+
+  function isAdvancedSetupRequested() {
+    return window.location.search.indexOf("advanced") >= 0 && !ui.game.ignoreAdvancedQuery;
+  }
+
+  function hasActiveGameSession() {
+    var game = state.game && state.game.session;
+    return !!(game && game.session && game.session.status === "active");
+  }
+
+  function shouldAutoStartGame() {
+    return window.location.pathname.replace(/\/index\.html$/, "/") === "/"
+      && window.location.search === ""
+      && !ui.showOnboarding
+      && !ui.game.advancedSetup
+      && !ui.game.loading
+      && !ui.game.autoStartAttempted
+      && !hasActiveGameSession();
+  }
+
+  function maybeAutoStartGame() {
+    if (!shouldAutoStartGame()) return;
+    ui.game.autoStartAttempted = true;
+    ui.game.mode = "team";
+    ui.game.dealCount = 3;
+    ui.game.maxDays = 5;
+    window.setTimeout(startGameRun, 0);
   }
 
   function renderView() {
@@ -1212,6 +1247,7 @@
 
   function renderGameWarRoom() {
     var game = state.game && state.game.session ? state.game.session : null;
+    if (isAdvancedSetupRequested() || ui.game.advancedSetup) return renderGameSetup();
     if (!game) return renderGameSetup();
     return renderGameSession(game);
   }
@@ -1251,7 +1287,7 @@
       }).join("") + '</div></div>',
       '<div class="setup-footer"><div><span>Your wallet</span><strong>1,500</strong></div><div><span>Win condition</span><strong>Lowest forecast error</strong></div></div>',
       '<button class="primary-button war-start" data-action="game-start" ' + (ui.game.loading ? "disabled" : "") + '>' + (ui.game.loading ? "Assigning run..." : "Start Practice Run") + '</button>',
-      ui.game.error ? '<div class="war-error">' + escapeHtml(ui.game.error) + '</div>' : '',
+      ui.game.error ? '<div class="war-error"><span>' + escapeHtml(ui.game.error) + '</span><button class="secondary-button" data-action="game-start">Retry</button></div>' : '',
       '</div>',
       '</section>'
     ].join("");
@@ -1588,6 +1624,8 @@
   function startGameRun() {
     ui.game.loading = true;
     ui.game.error = "";
+    ui.game.advancedSetup = false;
+    ui.game.ignoreAdvancedQuery = true;
     render();
     gameApi("/api/game/start", {
       method: "POST",
@@ -2889,7 +2927,18 @@
       startGameRun();
       return;
     }
+    if (action === "game-advanced") {
+      ui.game.advancedSetup = true;
+      ui.game.autoStartAttempted = true;
+      state.game.session = null;
+      resetPendingGameActions(null);
+      saveState();
+      render();
+      return;
+    }
     if (action === "game-new") {
+      ui.game.advancedSetup = true;
+      ui.game.autoStartAttempted = true;
       state.game.session = null;
       resetPendingGameActions(null);
       saveState();
