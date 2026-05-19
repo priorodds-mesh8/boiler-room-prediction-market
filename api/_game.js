@@ -625,7 +625,7 @@ function safePayload(session, deals, turn, actions, results) {
       pnl: Number(session.pnl || 0),
       forecastLeader: session.status === "settled" && results ? results.forecastWinner : forecastLeader(deals)
     },
-    deals: deals.map(safeDeal),
+    deals: deals.map(deal => safeDeal(deal, session.status === "settled")),
     turn: turn ? {
       turnId: turn.turn_id,
       day: Number(turn.day_number),
@@ -639,9 +639,9 @@ function safePayload(session, deals, turn, actions, results) {
   };
 }
 
-function safeDeal(deal) {
+function safeDeal(deal, isSettled) {
   const payload = deal.observable_payload || {};
-  return {
+  const safe = {
     sessionDealId: deal.session_deal_id,
     dealId: deal.deal_id,
     liveDealId: deal.live_deal_id,
@@ -655,8 +655,6 @@ function safeDeal(deal) {
     volume: Number(deal.volume || 0),
     fngPnl: Number(deal.fng_pnl || 0),
     agentPnl: Number(deal.agent_pnl || 0),
-    actualOutcome: deal.actual_outcome,
-    forecastWinner: deal.forecast_winner,
     fngState: deal.fng_state || {},
     context: {
       amount: payload.deal_amount_arr,
@@ -668,6 +666,11 @@ function safeDeal(deal) {
       forecastCategory: payload.forecast_category
     }
   };
+  if (isSettled) {
+    safe.actualOutcome = deal.actual_outcome;
+    safe.forecastWinner = deal.forecast_winner;
+  }
+  return safe;
 }
 
 function safeAction(action) {
@@ -1060,5 +1063,14 @@ module.exports = {
   getSession,
   startGame,
   submitActions,
-  TARGETS
+  TARGETS,
+  __test: {
+    buildResults,
+    lmsrCost,
+    lmsrPrice,
+    qFromProbability,
+    quoteTrade,
+    safePayload,
+    settleSession
+  }
 };

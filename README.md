@@ -63,6 +63,7 @@ Useful commands:
 
 ```bash
 npm run check
+npm run test:smoke
 vercel
 vercel --prod
 ```
