@@ -2,6 +2,7 @@
   "use strict";
 
   var STORAGE_KEY = "boiler-room-agent-sim-state-v1";
+  var ONBOARDING_KEY = "br-onboarded-v1";
   var CURRENT_USER_ID = "u01";
   var app = document.getElementById("app");
 
@@ -53,6 +54,8 @@
       pendingActions: {},
       error: ""
     },
+    onboardingStep: 0,
+    showOnboarding: false,
     toast: ""
   };
 
@@ -60,6 +63,7 @@
   var simulationBusy = false;
   var state = loadState();
   ensureStateShape();
+  ui.showOnboarding = shouldShowOnboarding();
   if (!ui.selectedMarketId && state.markets.length) {
     ui.selectedMarketId = state.markets[0].id;
   }
@@ -757,6 +761,7 @@
       '</section>',
       '</main>',
       '</div>',
+      ui.showOnboarding ? renderOnboardingOverlay() : '',
       ui.toast ? '<div class="toast">' + escapeHtml(ui.toast) + '</div>' : ''
     ].join("");
   }
@@ -791,9 +796,84 @@
     return [
       '<header class="topbar">',
       '<div><h1 class="page-title">Boiler Room — Forecast Intelligence</h1><div class="page-kicker">Practice Run</div></div>',
-      '<div class="top-actions"><button class="secondary-button" data-action="reset-demo">Reset demo</button></div>',
+      '<div class="top-actions"><button class="secondary-button subtle-button" data-action="onboarding-replay">Replay tour</button><button class="secondary-button" data-action="reset-demo">Reset demo</button></div>',
       '</header>'
     ].join("");
+  }
+
+  function onboardingCards() {
+    return [
+      {
+        icon: "1",
+        title: "Three forecasts",
+        bodyHtml: "Every deal has three probabilities: the <strong>ML baseline</strong> from a calibrated model, the <strong>market price</strong> from your team's positions, and <strong>your</strong> forecast. They rarely agree. The disagreement is the signal."
+      },
+      {
+        icon: "2",
+        title: "Your job",
+        bodyHtml: "For each deal each day, set your probability from 0 to 100% and stake an amount. New intel arrives daily. Adjust as you learn."
+      },
+      {
+        icon: "3",
+        title: "How to win",
+        bodyHtml: "Win condition is <strong>calibration</strong>, not P&amp;L. The forecaster closest to the actual outcomes wins. Better-calibrated managers spot slipping deals earlier."
+      }
+    ];
+  }
+
+  function renderOnboardingOverlay() {
+    var cards = onboardingCards();
+    var step = clamp(Number(ui.onboardingStep) || 0, 0, cards.length - 1);
+    var card = cards[step];
+    return [
+      '<div class="onboarding-backdrop" role="presentation">',
+      '<section class="onboarding-modal" role="dialog" aria-modal="true" aria-labelledby="onboarding-title">',
+      '<button class="onboarding-close" data-action="onboarding-close" aria-label="Close tour">&times;</button>',
+      '<div class="onboarding-icon" aria-hidden="true">' + escapeHtml(card.icon) + '</div>',
+      '<div class="onboarding-step">Step ' + (step + 1) + ' of ' + cards.length + '</div>',
+      '<h2 id="onboarding-title">' + escapeHtml(card.title) + '</h2>',
+      '<p>' + card.bodyHtml + '</p>',
+      '<div class="onboarding-dots" aria-hidden="true">' + cards.map(function (_, index) {
+        return '<span class="' + (index === step ? "active" : "") + '"></span>';
+      }).join("") + '</div>',
+      '<div class="onboarding-actions">',
+      '<button class="secondary-button" data-action="onboarding-prev" ' + (step === 0 ? "disabled" : "") + '>Back</button>',
+      '<button class="secondary-button" data-action="onboarding-close">Close</button>',
+      '<button class="primary-button" data-action="' + (step === cards.length - 1 ? "onboarding-close" : "onboarding-next") + '">' + (step === cards.length - 1 ? "Start run" : "Next") + '</button>',
+      '</div>',
+      '</section>',
+      '</div>'
+    ].join("");
+  }
+
+  function shouldShowOnboarding() {
+    try {
+      return localStorage.getItem(ONBOARDING_KEY) !== "true";
+    } catch (error) {
+      console.warn("Local storage unavailable for onboarding.", error);
+      return true;
+    }
+  }
+
+  function closeOnboarding() {
+    ui.showOnboarding = false;
+    try {
+      localStorage.setItem(ONBOARDING_KEY, "true");
+    } catch (error) {
+      console.warn("Unable to persist onboarding state.", error);
+    }
+    render();
+  }
+
+  function replayOnboarding() {
+    ui.onboardingStep = 0;
+    ui.showOnboarding = true;
+    try {
+      localStorage.removeItem(ONBOARDING_KEY);
+    } catch (error) {
+      console.warn("Unable to reset onboarding state.", error);
+    }
+    render();
   }
 
   function renderView() {
@@ -2772,6 +2852,24 @@
     if (action === "create-market") createMarket();
     if (action === "prefill-rule") prefillDefaultRule();
     if (action === "reset-demo") resetDemo();
+    if (action === "onboarding-replay") {
+      replayOnboarding();
+      return;
+    }
+    if (action === "onboarding-close") {
+      closeOnboarding();
+      return;
+    }
+    if (action === "onboarding-next") {
+      ui.onboardingStep = Math.min(onboardingCards().length - 1, Number(ui.onboardingStep || 0) + 1);
+      render();
+      return;
+    }
+    if (action === "onboarding-prev") {
+      ui.onboardingStep = Math.max(0, Number(ui.onboardingStep || 0) - 1);
+      render();
+      return;
+    }
     if (action === "game-mode") {
       ui.game.mode = actionTarget.getAttribute("data-mode") || "team";
       render();
@@ -2880,6 +2978,12 @@
       if (simInput === "llmMode") ui.sim.llmMode = event.target.checked;
       else ui.sim[simInput] = event.target.value;
       render();
+    }
+  });
+
+  document.addEventListener("keydown", function (event) {
+    if (event.key === "Escape" && ui.showOnboarding) {
+      closeOnboarding();
     }
   });
 
