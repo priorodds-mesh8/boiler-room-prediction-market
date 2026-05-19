@@ -1,24 +1,24 @@
 # Boiler Room
 
-A dependency-free local mockup of an internal prediction market for enterprise sales teams.
+A dependency-free local mockup of forecast intelligence for enterprise sales teams.
 
 ## What is included
 
 - Synthetic Salesforce-style opportunity markets
 - Dashboard with official, CRM, and market-implied forecast signals
 - Searchable and filterable markets table
-- Market detail pages with CRM context, probability history, trades, comments, alerts, and virtual-credit trading
-- LMSR-style price impact for YES / NO trades
+- Market detail pages with CRM context, probability history, forecasts, comments, alerts, and virtual-credit forecasting
+- LMSR-style price impact for YES / NO forecasts
 - Calibration-first leaderboard with synthetic revenue personas
 - Admin flow for creating markets from synthetic CRM opportunities
 - Local state persistence through `localStorage`
-- Supabase-backed, turn-based Agent Sim / Boiler Room sessions
+- Supabase-backed, turn-based Boiler Room Practice Runs
 
 ## Run locally
 
 Open `index.html` directly in a browser for the static mockup views.
 
-The Agent Sim / Boiler Room uses local API routes, so run the Node server for the full experience:
+Boiler Room Practice Runs use local API routes, so run the Node server for the full experience:
 
 ```bash
 node server.js
@@ -80,7 +80,7 @@ The deployed app serves static files from the repo root and uses Vercel API rout
 
 ## Synthetic 10,000-deal dataset
 
-The `synthetic_pipeline/` package generates 10,000 synthetic training deals, trains baseline ML models, exports held-out Agent Sim deals, and can load the result into Supabase.
+The `synthetic_pipeline/` package generates 10,000 synthetic training deals, trains baseline ML models, exports held-out Practice Run deals, and can load the result into Supabase.
 
 Run the local pipeline:
 
@@ -123,18 +123,18 @@ docs/research_deal_parameters.md
 docs/claude_code_dataset_review_prompt.md
 ```
 
-## Agent simulation
+## Practice Run
 
-The `Agent Sim` tab is now a turn-based Boiler Room:
+The Practice Run is now a turn-based Boiler Room:
 
-- Human player label: `FNG`
+- Human player label: `You`
 - Selectable 5, 15, or 30 daily turns per run, displayed as `Day n / max`
 - Gameplay modes: Team, Agent Focus, and Silent Market
 - Deal counts: 1, 3, 5, or 10
 - Server-assigned high-disagreement live deals and per-deal ML targets
 - Daily priority-stack intel cards from deal fields, pipeline events, agent activity, and noisy gossip
-- Required FNG buy/hold/sell plus confidence for every deal before the day advances
-- Final probability comparison: ML baseline vs. market vs. FNG, with P&L shown prominently
+- Required user forecast or skip decision plus confidence for every deal before the day advances
+- Final probability comparison: ML baseline vs. market vs. you, with P&L shown prominently
 
 The game reads safe live-deal fields and model baselines from Supabase. Hidden outcomes remain server-side until a run settles after the selected final day.
 

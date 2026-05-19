@@ -638,7 +638,7 @@
           <a href="#big-picture">Big Picture</a>
           <a href="#core-app">What The App Does</a>
           <a href="#corporate-precedent">Corporate Precedent</a>
-          <a href="#agent-sim">Agent Sim</a>
+          <a href="#agent-sim">Practice Run</a>
           <a href="#agent-representation">Agent Representation</a>
           <a href="#ml-pipeline">ML Pipeline</a>
           <a href="#data-model">Where The Data Lives</a>
@@ -659,7 +659,7 @@
               <span class="eyebrow">Sales prediction game and dashboard</span>
               <h1>Boiler Room turns revenue uncertainty into markets.</h1>
               <p>
-                The app compares machine learning, market pricing, and the human player FNG to answer a sharp question: who made the best probability forecast?
+                The app compares machine learning, market pricing, and your forecast to answer a sharp question: who made the best probability call?
               </p>
             </div>
 
@@ -682,7 +682,7 @@
                 <div class="signal-value">70%</div>
               </div>
               <div class="signal-row">
-                <div class="signal-name">FNG</div>
+                <div class="signal-name">You</div>
                 <div class="bar fng"><span></span></div>
                 <div class="signal-value">58%</div>
               </div>
@@ -696,7 +696,7 @@
         </header>
 
         <main class="main">
-          <section class="section" id="big-picture" data-search="big picture yes no sales deal boiler room machine learning market human fng probability forecast">
+          <section class="section" id="big-picture" data-search="big picture yes no sales deal boiler room machine learning market human user probability forecast">
             <div class="section-header">
               <div>
                 <h2>Big Picture</h2>
@@ -725,12 +725,12 @@
                     <p>Agents or people buy and sell YES/NO positions. If YES costs 70 cents, the market is saying about 70% chance.</p>
                   </article>
                   <article class="mini-card">
-                    <span class="pill amber">3. FNG</span>
+                    <span class="pill amber">3. You</span>
                     <h3>The human player's call</h3>
-                    <p>In Agent Sim, the user is called FNG. FNG reviews deal information, then chooses Buy, Hold, or Sell with confidence.</p>
+                    <p>In a Practice Run, you review deal information, then forecast whether each deal will close or skip the day.</p>
                   </article>
                 </div>
-                <div class="quote">Who made the best probability forecast: ML, the market, or FNG?</div>
+                <div class="quote">Who made the best probability forecast: ML, the market, or You?</div>
                 <p>
                   P&amp;L matters, but the real winner is whoever guessed closest to reality.
                 </p>
@@ -756,7 +756,7 @@
               <article class="mini-card">
                 <span class="pill green">Markets</span>
                 <h3>Individual deal prediction markets</h3>
-                <p>Each market is tied to a sales question. Users inspect deal context, probability history, trades, comments, and alerts.</p>
+                <p>Each market is tied to a sales question. Users inspect deal context, probability history, forecasts, comments, and alerts.</p>
               </article>
               <article class="mini-card">
                 <span class="pill teal">Leaderboard</span>
@@ -862,10 +862,10 @@
             </div>
           </section>
 
-          <section class="section" id="agent-sim" data-search="agent sim revenue boiler room fng 30 day buy hold sell confidence one three five ten deals settlement pnl forecast winner">
+          <section class="section" id="agent-sim" data-search="practice run revenue boiler room user 30 day forecast skip confidence one three five ten deals settlement pnl forecast winner">
             <div class="section-header">
               <div>
-                <h2>Agent Sim / Boiler Room</h2>
+                <h2>Practice Run / Boiler Room</h2>
                 <div class="section-kicker">The game-like part of Boiler Room.</div>
               </div>
               <span class="edit-tag">Gameplay</span>
@@ -873,7 +873,7 @@
             <div class="panel">
               <div class="panel-body">
                 <p class="lead">
-                  The human player, <strong>FNG</strong>, competes against agent sales reps over a selectable 5-, 15-, or 30-day run.
+                  You compete against agent sales reps over a selectable 5-, 15-, or 30-day run.
                 </p>
                 <div class="grid three">
                   <article class="mini-card">
@@ -888,12 +888,12 @@
                   </article>
                   <article class="mini-card">
                     <span class="pill amber">Daily action</span>
-                    <h3>Buy, Hold, or Sell</h3>
-                    <p>FNG must choose for every active deal. Confidence from 1 to 5 controls trade strength.</p>
+                    <h3>Forecast or skip</h3>
+                    <p>You must make a call for every active deal. Confidence from 1 to 5 controls forecast strength.</p>
                   </article>
                 </div>
                 <p>
-                  Every day gives FNG new information. At settlement, the app reveals actual outcomes and compares ML baseline probability, final market probability, FNG probability, actual result, forecast winner, and P&amp;L.
+                  Every day gives you new information. At settlement, the app reveals actual outcomes and compares ML baseline probability, final market probability, your probability, actual result, forecast winner, and P&amp;L.
                 </p>
               </div>
             </div>
@@ -923,7 +923,7 @@
                   </article>
 
                   <article class="mini-card">
-                    <span class="pill green">Boiler Room / Agent Sim</span>
+                    <span class="pill green">Boiler Room / Practice Run</span>
                     <h3>Agents come from deal data</h3>
                     <p>
                       In the newer Supabase-backed game, each deal carries account-team members such as <code>AE_17</code>, <code>BDR_4</code>, <code>SE_12</code>, <code>SalesManager_8</code>, <code>Legal_3</code>, and <code>CSM_21</code>. Those names live in the deal payload, not separate files.
@@ -996,7 +996,7 @@
                 <ul>
                   <li>Create <strong>10,000 synthetic deals</strong>.</li>
                   <li>Train baseline ML models on them.</li>
-                  <li>Export a smaller live set, like <strong>200 held-out deals</strong>, for the Agent Sim.</li>
+                  <li>Export a smaller live set, like <strong>200 held-out deals</strong>, for the Practice Run.</li>
                   <li>Load those into Supabase.</li>
                 </ul>
                 <p>
@@ -1050,7 +1050,7 @@
                     </tr>
                     <tr>
                       <td><code>game_actions</code></td>
-                      <td>Stores FNG and agent actions.</td>
+                      <td>Stores You and agent actions.</td>
                     </tr>
                   </tbody>
                 </table>
@@ -1062,7 +1062,7 @@
             </div>
           </section>
 
-          <section class="section" id="war-room-flow" data-search="boiler room run server picks useful disagreement daily intel cards metric process agent rumor fng actions agents market updates">
+          <section class="section" id="war-room-flow" data-search="boiler room run server picks useful disagreement daily intel cards metric process agent rumor user actions agents market updates">
             <div class="section-header">
               <div>
                 <h2>How A Boiler Room Run Works</h2>
@@ -1089,15 +1089,15 @@
                 <div class="flow-step">
                   <div class="step-num">3</div>
                   <div class="step-copy">
-                    <strong>FNG reviews the cards and deal panels.</strong>
+                    <strong>You review the cards and deal panels.</strong>
                     <span>The player forms a probability judgment from structured context and daily signal changes.</span>
                   </div>
                 </div>
                 <div class="flow-step">
                   <div class="step-num">4</div>
                   <div class="step-copy">
-                    <strong>FNG chooses Buy, Hold, or Sell.</strong>
-                    <span>Buy means YES is underpriced. Sell means NO is better. Hold means no trade. Confidence from 1 to 5 controls strength.</span>
+                    <strong>You forecast or skip each deal.</strong>
+                    <span>Forecast will close means YES is underpriced. Forecast won't close means NO is better. Skip means no position change. Confidence from 1 to 5 controls strength.</span>
                   </div>
                 </div>
                 <div class="flow-step">

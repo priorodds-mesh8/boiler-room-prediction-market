@@ -4,7 +4,7 @@
 You are Claude Code reviewing a plan to create a synthetic B2B sales-deal dataset for an internal prediction market.
 
 Context:
-We are building "Polymarket for enterprise sales teams." The app needs 10,000 synthetic historical sales deals stored in Supabase. These deals will train baseline ML models that produce probabilities for outcomes like close-won, close-won by original date, slip to next quarter, legal approval, security completion, and close above amount. A separate held-out/live-deal set will be used in an Agent Sim where LLM sales personas trade against model probabilities.
+We are building "Polymarket for enterprise sales teams." The app needs 10,000 synthetic historical sales deals stored in Supabase. These deals will train baseline ML models that produce probabilities for outcomes like close-won, close-won by original date, slip to next quarter, legal approval, security completion, and close above amount. A separate held-out/live-deal set will be used in a Practice Run where LLM sales personas forecast against model probabilities.
 
 Your tasks:
 1. Do your own research on what fields make up a real B2B sales opportunity/deal unit.
@@ -21,11 +21,11 @@ Your tasks:
    - agent_sim_live_deals
 6. Design a synthetic data generator for 10,000 deals with correlated features, realistic missingness, latent outcomes, and reproducible seeds.
 7. Design an ML pipeline that trains calibrated baseline probability models and evaluates whether they beat stage-only forecasts.
-8. Call out leakage risks, unrealistic assumptions, and how to separate training deals from held-out/live Agent Sim deals.
+8. Call out leakage risks, unrealistic assumptions, and how to separate training deals from held-out/live Practice Run deals.
 9. Produce implementation-ready recommendations, including table schemas, scripts, validation checks, and test cases.
 
 Important constraints:
-- Hidden outcomes must never be exposed to Agent Sim agents before settlement.
+- Hidden outcomes must never be exposed to Practice Run agents before settlement.
 - Not every synthetic deal should have every parameter populated.
 - Missingness itself should sometimes be predictive.
 - The dataset should be useful for demo ML, not claimed as real production forecasting evidence.

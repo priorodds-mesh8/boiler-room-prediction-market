@@ -107,4 +107,4 @@ The generator adds more than 30 fields beyond the requested 40, including:
 
 ## Leakage Boundary
 
-Observable feature rows never include hidden labels or latent probabilities. Labels and latent drivers live only in `synthetic_deal_outcomes`. Agent Sim live rows include public observable features and baseline predictions, but not hidden outcomes.
+Observable feature rows never include hidden labels or latent probabilities. Labels and latent drivers live only in `synthetic_deal_outcomes`. Practice Run live rows include public observable features and baseline predictions, but not hidden outcomes.

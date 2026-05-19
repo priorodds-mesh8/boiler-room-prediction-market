@@ -766,10 +766,10 @@
       '<aside class="sidebar">',
       '<div class="brand">',
       '<div class="brand-mark">B</div>',
-      '<div><div class="brand-title">Boiler Room</div><div class="brand-subtitle">Private sales intelligence</div></div>',
+      '<div><div class="brand-title">Boiler Room</div><div class="brand-subtitle">Forecast Intelligence</div></div>',
       '</div>',
       '<nav class="nav">',
-      navButton("simulation", "Agent Sim", "#f43f5e"),
+      navButton("simulation", "Practice Run", "#f43f5e"),
       '</nav>',
       '<div class="side-panel">',
       '<div class="side-label">Signed in as</div>',
@@ -790,7 +790,7 @@
   function renderTopbar() {
     return [
       '<header class="topbar">',
-      '<div><h1 class="page-title">Boiler Room</h1><div class="page-kicker">Agent Sim</div></div>',
+      '<div><h1 class="page-title">Boiler Room — Forecast Intelligence</h1><div class="page-kicker">Practice Run</div></div>',
       '<div class="top-actions"><button class="secondary-button" data-action="reset-demo">Reset demo</button></div>',
       '</header>'
     ].join("");
@@ -999,14 +999,14 @@
       '<div style="display:grid;gap:18px">',
       '<section class="panel"><div class="panel-header"><div><div class="panel-title">Probability history</div><div class="panel-subtitle">YES and implied NO probability over time</div></div><div class="legend-row"><span class="legend-key"><span class="legend-swatch" style="background:var(--green)"></span>YES</span><span class="legend-key"><span class="legend-swatch" style="background:var(--red)"></span>NO</span></div></div><div class="panel-body">' + renderMarketChart(market) + '</div></section>',
       '<section class="panel"><div class="panel-header"><div><div class="panel-title">CRM context</div><div class="panel-subtitle">' + escapeHtml(market.account) + ' opportunity fields and MEDDICC signals</div></div></div><div class="panel-body">' + renderCrmContext(market) + '</div></section>',
-      '<section class="panel"><div class="panel-header"><div><div class="panel-title">Recent trades and rationale</div><div class="panel-subtitle">Attributed internal trades with context from revenue teams</div></div></div><div class="panel-body split-panel">' + renderRecentTrades(market) + renderComments(market) + '</div></section>',
+      '<section class="panel"><div class="panel-header"><div><div class="panel-title">Recent forecasts and rationale</div><div class="panel-subtitle">Attributed internal forecasts with context from revenue teams</div></div></div><div class="panel-body split-panel">' + renderRecentTrades(market) + renderComments(market) + '</div></section>',
       '</div>',
       '<aside style="display:grid;gap:18px">',
-      '<section class="trade-panel"><div><div class="panel-title">Trade market</div><div class="panel-subtitle">Virtual credits, LMSR-style price impact</div></div>',
+      '<section class="trade-panel"><div><div class="panel-title">Forecast market</div><div class="panel-subtitle">Virtual credits, LMSR-style price impact</div></div>',
       '<div class="segmented"><button class="segment yes ' + (side === "YES" ? "active" : "") + '" data-action="trade-side" data-side="YES">YES</button><button class="segment no ' + (side === "NO" ? "active" : "") + '" data-action="trade-side" data-side="NO">NO</button></div>',
       '<div class="field"><label for="trade-amount">Credits to spend</label><input id="trade-amount" class="range" type="range" min="10" max="' + Math.max(10, Math.min(900, state.wallet)) + '" step="10" data-input="tradeAmount" value="' + amount + '" /><input class="input" data-input="tradeAmount" type="number" min="10" max="' + state.wallet + '" step="10" value="' + amount + '" /></div>',
-      '<div class="trade-summary"><div class="summary-row"><span>Estimated shares</span><strong>' + quote.shares.toFixed(2) + '</strong></div><div class="summary-row"><span>Price after trade</span><strong>' + formatPercent(quote.nextProbability) + '</strong></div><div class="summary-row"><span>Your YES / NO</span><strong>' + userPosition.yes.toFixed(2) + ' / ' + userPosition.no.toFixed(2) + '</strong></div><div class="summary-row"><span>Balance after</span><strong>' + formatNumber(Math.max(0, state.wallet - amount)) + '</strong></div></div>',
-      '<button class="buy-button ' + (side === "YES" ? "yes" : "no") + '" data-action="execute-trade" ' + (disabled || state.wallet < 10 ? "disabled" : "") + '>Buy ' + side + '</button>',
+      '<div class="trade-summary"><div class="summary-row"><span>Estimated shares</span><strong>' + quote.shares.toFixed(2) + '</strong></div><div class="summary-row"><span>Price after forecast</span><strong>' + formatPercent(quote.nextProbability) + '</strong></div><div class="summary-row"><span>Your YES / NO</span><strong>' + userPosition.yes.toFixed(2) + ' / ' + userPosition.no.toFixed(2) + '</strong></div><div class="summary-row"><span>Balance after</span><strong>' + formatNumber(Math.max(0, state.wallet - amount)) + '</strong></div></div>',
+      '<button class="buy-button ' + (side === "YES" ? "yes" : "no") + '" data-action="execute-trade" ' + (disabled || state.wallet < 10 ? "disabled" : "") + '>Forecast ' + side + '</button>',
       '<div class="small-muted">' + escapeHtml(market.resolutionRule) + '</div>',
       '</section>',
       '<section class="panel"><div class="panel-header"><div><div class="panel-title">Alerts</div><div class="panel-subtitle">Signals for the next forecast review</div></div></div><div class="panel-body">' + renderAlerts(market) + '</div></section>',
@@ -1086,9 +1086,9 @@
   function renderRecentTrades(market) {
     var trades = market.trades.slice().reverse().slice(0, 8);
     return [
-      '<div><div class="row-title" style="margin-bottom:10px">Trades</div><div class="trade-list">',
+      '<div><div class="row-title" style="margin-bottom:10px">Forecast ledger</div><div class="trade-list">',
       trades.map(function (trade) {
-        return '<div class="trade-item"><div class="row-title">' + escapeHtml(trade.user) + ' bought <span class="' + (trade.side === "YES" ? "delta up" : "delta down") + '">' + trade.side + '</span></div><div class="row-subtitle">' + formatNumber(trade.credits) + ' credits at ' + formatPercent(trade.price) + ' | ' + escapeHtml(trade.role) + ' | ' + escapeHtml(trade.time) + '</div></div>';
+        return '<div class="trade-item"><div class="row-title">' + escapeHtml(trade.user) + ' forecast <span class="' + (trade.side === "YES" ? "delta up" : "delta down") + '">' + trade.side + '</span></div><div class="row-subtitle">' + formatNumber(trade.credits) + ' credits at ' + formatPercent(trade.price) + ' | ' + escapeHtml(trade.role) + ' | ' + escapeHtml(trade.time) + '</div></div>';
       }).join(""),
       '</div></div>'
     ].join("");
@@ -1138,7 +1138,7 @@
 
   function renderGameSetup() {
     var modes = [
-      { id: "team", title: "Team", tag: "Open table", body: "1-3 deal-team agents act and comment before FNG responds.", contract: "Visible rationale" },
+      { id: "team", title: "Team", tag: "Open table", body: "1-3 deal-team agents act and comment before you respond.", contract: "Visible rationale" },
       { id: "focus", title: "Agent Focus", tag: "Spotlight", body: "One selected deal-team agent frames each daily read.", contract: "Focused signal" },
       { id: "silent", title: "Silent Market", tag: "Fog of war", body: "Agents still move price, but the table keeps most rationale hidden.", contract: "Compressed intel" }
     ];
@@ -1146,7 +1146,7 @@
       { count: 1, label: "Duel", body: "One deal, maximum inspection.", meta: "Full card" },
       { count: 3, label: "Squad", body: "A clean executive pacing lane.", meta: "Full cards" },
       { count: 5, label: "Bench", body: "Enough spread to compare signals.", meta: "Full cards" },
-      { count: 10, label: "Floor", body: "Dense trading-floor mode.", meta: "Auto dense" }
+      { count: 10, label: "Floor", body: "Dense forecast-floor mode.", meta: "Auto dense" }
     ];
     var durations = [
       { days: 5, label: "Sprint", body: "Fast demo loop.", meta: "Quick settle" },
@@ -1156,7 +1156,7 @@
     var selectedMode = modes.find(function (mode) { return mode.id === ui.game.mode; }) || modes[0];
     return [
       '<section class="war-room-setup">',
-      '<div class="war-room-copy"><div class="setup-kicker"><span class="reticle"></span> Boiler Room Agent Sim</div><h2 class="sim-title">Boiler Room</h2><div class="sim-subtitle"><p>Boiler Room is a prediction market for enterprise sales teams, turning live deal signals into a sharper forecast of what will actually close. Agents and users evaluate pipeline risk, trade on deal outcomes, and expose disagreement before it surprises leadership. The result is a faster, more honest read on revenue than CRM probability alone.</p><p>Boiler Room works by turning each sales deal into a tradable forecast: users and agents buy, hold, or sell based on whether they think the deal outcome is underpriced or overpriced. As trades and new deal signals come in, the market price becomes a live probability that captures disagreement faster than a static CRM forecast. Internal prediction markets have been used by companies including Google, Hewlett-Packard, Microsoft, Intel, Best Buy, GE, and Eli Lilly to forecast launches, sales, demand, and other business outcomes.</p></div><div class="setup-contract"><span>Deploy contract</span><strong>' + Number(ui.game.dealCount) + ' deal' + (Number(ui.game.dealCount) === 1 ? "" : "s") + ' | ' + escapeHtml(selectedMode.title) + ' | Day 1 / ' + Number(ui.game.maxDays) + '</strong></div></div>',
+      '<div class="war-room-copy"><div class="setup-kicker"><span class="reticle"></span> Boiler Room Practice Run</div><h2 class="sim-title">Boiler Room — Forecast Intelligence</h2><div class="sim-subtitle"><p>Surface deal-slip risk before it surprises leadership.</p><p>Boiler Room turns live deal signals into a sharper forecast of what will actually close. Agents and users evaluate pipeline risk, forecast deal outcomes, and expose disagreement before it surprises leadership. The result is a faster, more honest read on revenue than CRM probability alone.</p><p>Boiler Room works by turning each sales deal into a live forecast: users and agents mark whether they think the deal outcome is underpriced or overpriced. As forecasts and new deal signals come in, the market price becomes a live probability that captures disagreement faster than a static CRM forecast.</p></div><div class="setup-contract"><span>Run setup</span><strong>' + Number(ui.game.dealCount) + ' deal' + (Number(ui.game.dealCount) === 1 ? "" : "s") + ' | ' + escapeHtml(selectedMode.title) + ' | Day 1 / ' + Number(ui.game.maxDays) + '</strong></div></div>',
       '<div class="setup-board">',
       '<div class="setup-group"><div class="setup-label">Gameplay mode</div><div class="mode-grid">',
       modes.map(function (mode) {
@@ -1169,8 +1169,8 @@
       '<div class="setup-group"><div class="setup-label">Run length</div><div class="count-card-grid duration-grid">' + durations.map(function (item) {
         return '<button class="count-card ' + (Number(ui.game.maxDays) === item.days ? "active" : "") + '" data-action="game-days" data-days="' + item.days + '"><span>' + item.days + '</span><strong>' + escapeHtml(item.label) + '</strong><small>' + escapeHtml(item.body) + '</small><em>' + escapeHtml(item.meta) + '</em></button>';
       }).join("") + '</div></div>',
-      '<div class="setup-footer"><div><span>FNG wallet</span><strong>1,500</strong></div><div><span>Win condition</span><strong>Lowest forecast error</strong></div></div>',
-      '<button class="primary-button war-start" data-action="game-start" ' + (ui.game.loading ? "disabled" : "") + '>' + (ui.game.loading ? "Assigning run..." : "Deploy run") + '</button>',
+      '<div class="setup-footer"><div><span>Your wallet</span><strong>1,500</strong></div><div><span>Win condition</span><strong>Lowest forecast error</strong></div></div>',
+      '<button class="primary-button war-start" data-action="game-start" ' + (ui.game.loading ? "disabled" : "") + '>' + (ui.game.loading ? "Assigning run..." : "Start Practice Run") + '</button>',
       ui.game.error ? '<div class="war-error">' + escapeHtml(ui.game.error) + '</div>' : '',
       '</div>',
       '</section>'
@@ -1188,7 +1188,7 @@
     return [
       '<section class="war-room">',
       '<div class="run-header">',
-      '<div><div class="setup-kicker"><span class="reticle"></span> Boiler Room | ' + escapeHtml(modeLabel(session.mode)) + ' | ' + escapeHtml(game.source || "local") + '</div><h2 class="sim-title">Day ' + session.currentDay + ' / ' + session.maxDays + '</h2><div class="sim-subtitle">' + escapeHtml(turn.summary || "Review the priority stack and make every FNG call.") + '</div></div>',
+      '<div><div class="setup-kicker"><span class="reticle"></span> Boiler Room | ' + escapeHtml(modeLabel(session.mode)) + ' | ' + escapeHtml(game.source || "local") + '</div><h2 class="sim-title">Day ' + session.currentDay + ' / ' + session.maxDays + '</h2><div class="sim-subtitle">' + escapeHtml(turn.summary || "Review the priority stack and make every forecast call.") + '</div></div>',
       '<div class="war-actions"><button class="secondary-button" data-action="game-refresh">Refresh</button><button class="secondary-button" data-action="game-new">New run</button></div>',
       '</div>',
       renderWarHud(session, deals, allReady, floorMode),
@@ -1201,13 +1201,13 @@
     var actionText = session.status === "settled" ? "Settled" : readyCount(deals) + " / " + deals.length;
     return [
       '<div class="hud-rail">',
-      hudCell("PLAYER", "FNG", "Probability desk", "player"),
+      hudCell("PLAYER", "You", "Probability desk", "player"),
       hudCell("CLOCK", "Day " + session.currentDay + " / " + session.maxDays, floorMode ? "Floor mode" : "Card mode", "clock"),
       hudCell("WALLET", formatNumber(session.fngWallet || 0), "Run capital", "wallet"),
       hudCell("P&L", formatSignedNumber(session.pnl || 0), "Secondary score", Number(session.pnl || 0) >= 0 ? "pnl up" : "pnl down"),
       hudCell("MODE", modeLabel(session.mode), floorMode ? "10-deal density" : "Tactical board", "mode"),
       hudCell("LEADER", leaderLabel(session.forecastLeader), session.status === "settled" ? "Final" : "Live proxy", "leader"),
-      hudCell("ACTIONS", actionText, allReady || session.status === "settled" ? "Advance armed" : "Awaiting FNG calls", allReady || session.status === "settled" ? "ready" : "locked"),
+      hudCell("ACTIONS", actionText, allReady || session.status === "settled" ? "Advance armed" : "Awaiting your calls", allReady || session.status === "settled" ? "ready" : "locked"),
       '</div>'
     ].join("");
   }
@@ -1219,11 +1219,11 @@
   function renderActiveGameBoard(session, deals, turn, allReady, floorMode) {
     return [
       '<div class="war-grid ' + (floorMode ? "floor-mode" : "card-mode") + '">',
-      '<section class="war-panel priority-panel"><div class="panel-header"><div><div class="panel-title">Priority Stack</div><div class="panel-subtitle">Ranked by ML, market, and FNG disagreement</div></div><span class="pill amber">' + (turn.cards || []).length + ' cards</span></div><div class="intel-stack">' + renderIntelCards(turn.cards || []) + '</div></section>',
-      '<section class="war-panel deal-board-panel ' + (floorMode ? "dense-panel" : "") + '"><div class="panel-header"><div><div class="panel-title">Active Deals</div><div class="panel-subtitle">' + (floorMode ? "Dense trading-floor read; every row still needs an order" : "Forecast readout and FNG order live in the same card") + '</div></div><span class="pill ' + (allReady ? "green" : "amber") + '">' + readyCount(deals) + ' / ' + deals.length + ' ready</span></div>',
+      '<section class="war-panel priority-panel"><div class="panel-header"><div><div class="panel-title">Priority Stack</div><div class="panel-subtitle">Ranked by ML, market, and your disagreement</div></div><span class="pill amber">' + (turn.cards || []).length + ' cards</span></div><div class="intel-stack">' + renderIntelCards(turn.cards || []) + '</div></section>',
+      '<section class="war-panel deal-board-panel ' + (floorMode ? "dense-panel" : "") + '"><div class="panel-header"><div><div class="panel-title">Active Deals</div><div class="panel-subtitle">' + (floorMode ? "Dense forecast-floor read; every row still needs a call" : "Forecast readout and your call live in the same card") + '</div></div><span class="pill ' + (allReady ? "green" : "amber") + '">' + readyCount(deals) + ' / ' + deals.length + ' ready</span></div>',
       renderProbabilityLegend(),
       floorMode ? renderDenseDealBoard(deals) : '<div class="deal-card-grid">' + deals.map(renderGameDealPanel).join("") + '</div>',
-      '<div class="advance-dock"><div><strong>' + (allReady ? "Round ready" : "Orders incomplete") + '</strong><span>' + (allReady ? "Submit the full FNG book to reveal the next day of intel." : "Buy, hold, or sell every active deal before the clock advances.") + '</span></div><button class="primary-button submit-day" data-action="game-submit-day" ' + (!allReady || ui.game.loading ? "disabled" : "") + '>' + (ui.game.loading ? "Submitting..." : "End day") + '</button></div>',
+      '<div class="advance-dock"><div><strong>' + (allReady ? "Round ready" : "Forecasts incomplete") + '</strong><span>' + (allReady ? "Submit your full forecast book to reveal the next day of intel." : "Forecast or skip every active deal before the clock advances.") + '</span></div><button class="primary-button submit-day" data-action="game-submit-day" ' + (!allReady || ui.game.loading ? "disabled" : "") + '>' + (ui.game.loading ? "Submitting..." : "End day") + '</button></div>',
       '</section>',
       '</div>'
     ].join("");
@@ -1266,9 +1266,9 @@
       '<div class="deal-card-head"><div><div class="deal-title">' + escapeHtml(deal.accountName) + '</div><div class="deal-meta">' + escapeHtml(deal.targetLabel) + ' | ' + escapeHtml((deal.context && deal.context.stage) || "Unknown") + ' | ' + formatCurrency(Number((deal.context && deal.context.amount) || 0)) + '</div></div><span class="status-pill ' + outcomeClass(deal) + '">' + outcomeLabel(deal) + '</span></div>',
       '<div class="deal-question">' + escapeHtml(deal.marketQuestion || "") + '</div>',
       renderProbabilityStrip(deal),
-      '<div class="deal-readout"><span>ML <strong>' + formatPercent(deal.baselineProbability) + '</strong></span><span>Market <strong>' + formatPercent(deal.marketProbability) + '</strong></span><span>FNG <strong>' + formatPercent(deal.fngProbability) + '</strong></span></div>',
+      '<div class="deal-readout"><span>ML <strong>' + formatPercent(deal.baselineProbability) + '</strong></span><span>Market <strong>' + formatPercent(deal.marketProbability) + '</strong></span><span>You <strong>' + formatPercent(deal.fngProbability) + '</strong></span></div>',
       renderFngActionPanel(deal),
-      '<div class="forecast-footer"><span class="delta ' + (move >= 0 ? "up" : "down") + '">' + formatSignedPercent(move) + ' vs ML</span><span>FNG P&L <strong class="' + (deal.fngPnl >= 0 ? "delta up" : "delta down") + '">' + formatSignedNumber(deal.fngPnl || 0) + '</strong></span></div>',
+      '<div class="forecast-footer"><span class="delta ' + (move >= 0 ? "up" : "down") + '">' + formatSignedPercent(move) + ' vs ML</span><span>Your P&L <strong class="' + (deal.fngPnl >= 0 ? "delta up" : "delta down") + '">' + formatSignedNumber(deal.fngPnl || 0) + '</strong></span></div>',
       '</article>'
     ].join("");
   }
@@ -1281,10 +1281,10 @@
     var pending = getPendingGameAction(deal.sessionDealId);
     return [
       '<div class="fng-card action-control">',
-      '<div class="action-head"><span>FNG order</span><strong>' + (pending.action ? escapeHtml(pending.action) : "Open") + '</strong></div>',
+      '<div class="action-head"><span>Your forecast</span><strong>' + (pending.action ? escapeHtml(actionLabel(pending.action)) : "Open") + '</strong></div>',
       '<div class="order-row">',
       ["BUY", "HOLD", "SELL"].map(function (choice) {
-        return '<button class="order-button ' + choice.toLowerCase() + ' ' + (pending.action === choice ? "active" : "") + '" data-action="game-set-action" data-deal="' + escapeAttr(deal.sessionDealId) + '" data-choice="' + choice + '">' + choice + '</button>';
+        return '<button class="order-button ' + choice.toLowerCase() + ' ' + (pending.action === choice ? "active" : "") + '" data-action="game-set-action" data-deal="' + escapeAttr(deal.sessionDealId) + '" data-choice="' + choice + '">' + actionLabel(choice) + '</button>';
       }).join(""),
       '</div>',
       '<div class="confidence-row"><span>Confidence</span>' + [1, 2, 3, 4, 5].map(function (level) {
@@ -1297,7 +1297,7 @@
   function renderDenseDealBoard(deals) {
     return [
       '<div class="dense-deal-board">',
-      '<div class="dense-header"><span>Deal / target</span><span>Probability strip</span><span>Read</span><span>FNG order</span></div>',
+      '<div class="dense-header"><span>Deal / target</span><span>Probability strip</span><span>Read</span><span>Your forecast</span></div>',
       deals.map(renderDenseDealRow).join(""),
       '</div>'
     ].join("");
@@ -1309,7 +1309,7 @@
       '<article class="dense-deal-row">',
       '<div class="dense-account"><div class="deal-title">' + escapeHtml(deal.accountName) + '</div><div class="deal-meta">' + escapeHtml(deal.targetLabel) + ' | ' + escapeHtml((deal.context && deal.context.stage) || "Unknown") + '</div></div>',
       '<div class="dense-prob">' + renderProbabilityStrip(deal, { mini: true }) + '</div>',
-      '<div class="dense-read"><span>MKT <strong>' + formatPercent(deal.marketProbability) + '</strong></span><span class="delta ' + (move >= 0 ? "up" : "down") + '">' + formatSignedPercent(move) + '</span><span>FNG P&L <strong class="' + (deal.fngPnl >= 0 ? "delta up" : "delta down") + '">' + formatSignedNumber(deal.fngPnl || 0) + '</strong></span></div>',
+      '<div class="dense-read"><span>MKT <strong>' + formatPercent(deal.marketProbability) + '</strong></span><span class="delta ' + (move >= 0 ? "up" : "down") + '">' + formatSignedPercent(move) + '</span><span>Your P&L <strong class="' + (deal.fngPnl >= 0 ? "delta up" : "delta down") + '">' + formatSignedNumber(deal.fngPnl || 0) + '</strong></span></div>',
       '<div class="dense-action">' + renderCompactActionPanel(deal) + '</div>',
       '</article>'
     ].join("");
@@ -1321,7 +1321,7 @@
       '<div class="action-control compact">',
       '<div class="order-row">',
       ["BUY", "HOLD", "SELL"].map(function (choice) {
-        return '<button class="order-button ' + choice.toLowerCase() + ' ' + (pending.action === choice ? "active" : "") + '" data-action="game-set-action" data-deal="' + escapeAttr(deal.sessionDealId) + '" data-choice="' + choice + '">' + choice.charAt(0) + '</button>';
+        return '<button class="order-button ' + choice.toLowerCase() + ' ' + (pending.action === choice ? "active" : "") + '" data-action="game-set-action" data-deal="' + escapeAttr(deal.sessionDealId) + '" data-choice="' + choice + '">' + compactActionLabel(choice) + '</button>';
       }).join(""),
       '</div>',
       '<div class="confidence-row"><span>C</span>' + [1, 2, 3, 4, 5].map(function (level) {
@@ -1336,7 +1336,7 @@
       '<div class="probability-legend">',
       '<span><i class="prob-dot ml"></i>ML</span>',
       '<span><i class="prob-dot market"></i>Market</span>',
-      '<span><i class="prob-dot fng"></i>FNG</span>',
+      '<span><i class="prob-dot fng"></i>You</span>',
       '<span><i class="prob-dot target"></i>Target line</span>',
       '</div>'
     ].join("");
@@ -1367,7 +1367,7 @@
     var markers = [
       { label: "ML", className: "ml", value: probabilityValue(deal.baselineProbability, 0.5) },
       { label: "MKT", className: "market", value: probabilityValue(deal.marketProbability, 0.5) },
-      { label: "FNG", className: "fng", value: probabilityValue(deal.fngProbability, probabilityValue(deal.marketProbability, 0.5)) }
+      { label: "You", className: "fng", value: probabilityValue(deal.fngProbability, probabilityValue(deal.marketProbability, 0.5)) }
     ].sort(function (a, b) {
       return a.value - b.value;
     });
@@ -1390,7 +1390,7 @@
     return [
       { label: "ML", className: "ml", value: probabilityValue(deal.baselineProbability, 0.5) },
       { label: "MKT", className: "market", value: probabilityValue(deal.marketProbability, 0.5) },
-      { label: "FNG", className: "fng", value: probabilityValue(deal.fngProbability, probabilityValue(deal.marketProbability, 0.5)) }
+      { label: "You", className: "fng", value: probabilityValue(deal.fngProbability, probabilityValue(deal.marketProbability, 0.5)) }
     ].map(function (item) {
       var from = Math.round(Math.min(actual, item.value) * 1000) / 10;
       var width = Math.round(Math.abs(item.value - actual) * 1000) / 10;
@@ -1418,16 +1418,16 @@
     var errors = results.aggregateErrors || {};
     return [
       '<section class="war-panel results-panel">',
-      '<div class="winner-banner"><div><span>Forecast winner</span><strong>' + leaderLabel(results.forecastWinner) + '</strong><small>Lowest aggregate probability error wins the run.</small></div><div class="winner-score">FNG P&L <strong class="' + (results.fngPnl >= 0 ? "delta up" : "delta down") + '">' + formatSignedNumber(results.fngPnl || 0) + '</strong></div></div>',
+      '<div class="winner-banner"><div><span>Forecast winner</span><strong>' + leaderLabel(results.forecastWinner) + '</strong><small>Lowest aggregate probability error wins the run.</small></div><div class="winner-score">Your P&L <strong class="' + (results.fngPnl >= 0 ? "delta up" : "delta down") + '">' + formatSignedNumber(results.fngPnl || 0) + '</strong></div></div>',
       '<div class="results-grid">',
       metricCard("ML error", formatPercent(errors.ml || 0), "Average absolute error"),
       metricCard("Market error", formatPercent(errors.market || 0), "Average absolute error"),
-      metricCard("FNG error", formatPercent(errors.fng || 0), "Average absolute error"),
+      metricCard("Your error", formatPercent(errors.fng || 0), "Average absolute error"),
       metricCard("Agent P&L", formatSignedNumber(results.agentPnl || 0), "Market desk outcome"),
       '</div>',
       '<div class="pnl-leaderboard">',
-      pnlRow("FNG", results.fngPnl || 0, errors.fng, results.forecastWinner === "fng"),
-      pnlRow("Agent market", results.agentPnl || 0, errors.market, results.forecastWinner === "market"),
+      pnlRow("You", results.fngPnl || 0, errors.fng, results.forecastWinner === "fng"),
+      pnlRow("Market", results.agentPnl || 0, errors.market, results.forecastWinner === "market"),
       pnlRow("ML baseline", 0, errors.ml, results.forecastWinner === "ml"),
       '</div>',
       '<div class="settlement-list">',
@@ -1437,7 +1437,7 @@
           '<div class="deal-card-head"><div><div class="deal-title">' + escapeHtml(item.accountName) + '</div><div class="deal-meta">' + escapeHtml(item.targetLabel) + '</div></div></div>',
           '<div class="settlement-outcome ' + (item.actualOutcome ? "yes" : "no") + '"><span>Resolved outcome</span><strong>' + (item.actualOutcome ? "YES" : "NO") + '</strong><small>' + (item.actualOutcome ? "The contract settled at 100." : "The contract settled at 0.") + '</small></div>',
           renderProbabilityStrip(item, { showErrors: true }),
-          '<div class="settlement-footer"><span>Winner <strong>' + leaderLabel(item.forecastWinner) + '</strong></span><span>FNG P&L <strong class="' + (item.fngPnl >= 0 ? "delta up" : "delta down") + '">' + formatSignedNumber(item.fngPnl || 0) + '</strong></span></div>',
+          '<div class="settlement-footer"><span>Winner <strong>' + leaderLabel(item.forecastWinner) + '</strong></span><span>Your P&L <strong class="' + (item.fngPnl >= 0 ? "delta up" : "delta down") + '">' + formatSignedNumber(item.fngPnl || 0) + '</strong></span></div>',
           '</article>'
         ].join("");
       }).join(""),
@@ -1455,7 +1455,15 @@
   }
 
   function leaderLabel(value) {
-    return { ml: "ML baseline", market: "Agent market", fng: "FNG" }[value] || "Pending";
+    return { ml: "ML baseline", market: "Market", fng: "You" }[value] || "Pending";
+  }
+
+  function actionLabel(action) {
+    return { BUY: "Forecast: will close", SELL: "Forecast: won't close", HOLD: "Skip this day" }[action] || action;
+  }
+
+  function compactActionLabel(action) {
+    return { BUY: "Close", SELL: "Slip", HOLD: "Skip" }[action] || action;
   }
 
   function getPendingGameAction(sessionDealId) {
@@ -1558,7 +1566,7 @@
       saveState();
       showToast(payload.session.status === "settled" ? "Run settled. Forecast results are live." : "Advanced to Day " + payload.session.currentDay + " / " + payload.session.maxDays + ".");
     }).catch(function (error) {
-      showToast(error.message || "Unable to submit FNG actions.");
+      showToast(error.message || "Unable to submit your forecasts.");
     }).finally(function () {
       ui.game.loading = false;
       render();
@@ -1603,7 +1611,7 @@
     return [
       '<div class="price-strip">',
       '<div class="price-tile"><div class="price-label">Baseline model</div><div class="price-value">' + formatPercent(deal.baselineProbability) + '</div><div class="small-muted">Uses public synthetic CRM fields only</div></div>',
-      '<div class="price-tile"><div class="price-label">Market price</div><div class="price-value yes">' + formatPercent(deal.marketProbability) + '</div><div class="small-muted">After agent and player trades</div></div>',
+      '<div class="price-tile"><div class="price-label">Market price</div><div class="price-value yes">' + formatPercent(deal.marketProbability) + '</div><div class="small-muted">After agent and player forecasts</div></div>',
       '<div class="price-tile"><div class="price-label">Observed value</div><div class="price-value ' + (outcome === null ? "" : outcome ? "yes" : "no") + '">' + (outcome === null ? "Sealed" : outcome ? "Won" : "Lost") + '</div><div class="small-muted">' + escapeHtml(formatCurrency(deal.amount) + " | " + deal.region + " | " + formatShortDate(deal.closeDate)) + '</div></div>',
       '</div>',
       '<div style="margin-top:16px">' + renderDualLine(deal.history.map(function (point) { return { date: addDays("2026-05-09", point.tick), market: point.probability, official: deal.baselineProbability }; }), "market", "official", formatPercent) + '</div>',
@@ -1612,7 +1620,7 @@
   }
 
   function renderPublicNews(deal) {
-    if (!deal.publicNews.length) return '<div class="alert"><div class="alert-title">No public update yet</div><div class="alert-body">Agents are trading from private fragments and public CRM fields.</div></div>';
+    if (!deal.publicNews.length) return '<div class="alert"><div class="alert-title">No public update yet</div><div class="alert-body">Agents are forecasting from private fragments and public CRM fields.</div></div>';
     return deal.publicNews.slice(-3).reverse().map(function (news) {
       return '<div class="alert ' + (news.impact >= 0 ? "positive" : "risk") + '"><div class="alert-title">Tick ' + news.tick + ' public update</div><div class="alert-body">' + escapeHtml(news.text) + '</div></div>';
     }).join("");
@@ -1644,7 +1652,7 @@
         '<article class="agent-card" style="--agent-color:' + agent.color + '">',
         '<div class="agent-head"><div class="agent-avatar">' + escapeHtml(initials) + '</div><div><div class="agent-name">' + escapeHtml(agent.name) + '</div><div class="agent-role">' + escapeHtml(agent.role) + ' | ' + escapeHtml(agent.specialty) + '</div></div></div>',
         '<div class="agent-personality">' + escapeHtml(agent.personality) + '</div>',
-        '<div class="agent-stats"><span>Wallet <strong>' + formatNumber(agent.wallet) + '</strong></span><span>P&L <strong class="' + (agent.pnl >= 0 ? "delta up" : "delta down") + '">' + formatSignedNumber(agent.pnl) + '</strong></span><span>Trades <strong>' + agent.trades + '</strong></span></div>',
+        '<div class="agent-stats"><span>Wallet <strong>' + formatNumber(agent.wallet) + '</strong></span><span>P&L <strong class="' + (agent.pnl >= 0 ? "delta up" : "delta down") + '">' + formatSignedNumber(agent.pnl) + '</strong></span><span>Forecasts <strong>' + agent.trades + '</strong></span></div>',
         '</article>'
       ].join("");
     }).join("") + '</div>';
@@ -1660,8 +1668,8 @@
       '<select class="select" data-sim="selectedDealId">' + activeSimDeals(sim).map(function (item) { return '<option value="' + item.id + '"' + (item.id === deal.id ? " selected" : "") + '>' + escapeHtml(item.account + " | " + formatPercent(item.marketProbability)) + '</option>'; }).join("") + '</select>',
       '<div class="segmented"><button class="segment yes ' + (ui.sim.humanSide === "YES" ? "active" : "") + '" data-action="sim-human-side" data-side="YES">YES</button><button class="segment no ' + (ui.sim.humanSide === "NO" ? "active" : "") + '" data-action="sim-human-side" data-side="NO">NO</button></div>',
       '<div class="field"><label>Credits to spend</label><input class="range" type="range" min="10" max="' + Math.max(10, Math.min(700, sim.playerWallet)) + '" step="10" data-sim="humanAmount" value="' + amount + '" /><input class="input" type="number" min="10" max="' + sim.playerWallet + '" step="10" data-sim="humanAmount" value="' + amount + '" /></div>',
-      '<div class="trade-summary"><div class="summary-row"><span>Estimated shares</span><strong>' + quote.shares.toFixed(2) + '</strong></div><div class="summary-row"><span>Price after trade</span><strong>' + formatPercent(quote.nextProbability) + '</strong></div><div class="summary-row"><span>Your YES / NO</span><strong>' + position.yes.toFixed(2) + ' / ' + position.no.toFixed(2) + '</strong></div><div class="summary-row"><span>Wallet after</span><strong>' + formatNumber(Math.max(0, sim.playerWallet - amount)) + '</strong></div></div>',
-      '<button class="buy-button ' + (ui.sim.humanSide === "YES" ? "yes" : "no") + '" data-action="sim-human-trade" ' + (sim.settled || sim.playerWallet < 10 ? "disabled" : "") + '>Buy ' + ui.sim.humanSide + '</button>'
+      '<div class="trade-summary"><div class="summary-row"><span>Estimated shares</span><strong>' + quote.shares.toFixed(2) + '</strong></div><div class="summary-row"><span>Price after forecast</span><strong>' + formatPercent(quote.nextProbability) + '</strong></div><div class="summary-row"><span>Your YES / NO</span><strong>' + position.yes.toFixed(2) + ' / ' + position.no.toFixed(2) + '</strong></div><div class="summary-row"><span>Wallet after</span><strong>' + formatNumber(Math.max(0, sim.playerWallet - amount)) + '</strong></div></div>',
+      '<button class="buy-button ' + (ui.sim.humanSide === "YES" ? "yes" : "no") + '" data-action="sim-human-trade" ' + (sim.settled || sim.playerWallet < 10 ? "disabled" : "") + '>Forecast ' + ui.sim.humanSide + '</button>'
     ].join("");
   }
 
@@ -2327,7 +2335,7 @@
       '<section class="panel"><div class="panel-header"><div><div class="panel-title">Calibration first</div><div class="panel-subtitle">Lower Brier score ranks ahead of raw profit to reward honest probability estimates</div></div><span class="pill teal">Synthetic personas</span></div></section>',
       '<section class="table-shell">',
       '<table class="data-table">',
-      '<thead><tr><th>Rank</th><th>User</th><th>Role</th><th>Specialty</th><th>Brier score</th><th>Virtual P&L</th><th>Trades</th><th>Markets</th><th>Recent accuracy</th></tr></thead>',
+      '<thead><tr><th>Rank</th><th>User</th><th>Role</th><th>Specialty</th><th>Brier score</th><th>Virtual P&L</th><th>Forecasts</th><th>Markets</th><th>Recent accuracy</th></tr></thead>',
       '<tbody>',
       users.map(function (user, index) {
         return [
@@ -2488,7 +2496,7 @@
     if (!market || market.outcomeStatus !== "Active") return;
     var budget = clamp(Number(ui.tradeAmount) || 0, 10, state.wallet);
     if (state.wallet < budget) {
-      showToast("Insufficient credits for that trade.");
+      showToast("Insufficient credits for that forecast.");
       return;
     }
     var side = ui.tradeSide;
@@ -2521,7 +2529,7 @@
     if (market.probabilityHistory.length > 31) market.probabilityHistory.shift();
     market.alerts = makeAlerts(market.type, market.marketProbability, market.repProbability, market.legalStatus, market.securityStatus, market.procurementStatus);
     saveState();
-    showToast("Bought " + quote.shares.toFixed(2) + " " + side + " shares in " + market.account + ".");
+    showToast("Forecast added: " + quote.shares.toFixed(2) + " " + side + " shares in " + market.account + ".");
   }
 
   function addComment() {
@@ -2623,7 +2631,7 @@
   }
 
   function resetDemo() {
-    if (!window.confirm("Reset the synthetic demo data and clear local trades?")) return;
+    if (!window.confirm("Reset the synthetic demo data and clear local forecasts?")) return;
     stopSimulationTimer();
     try {
       localStorage.removeItem(STORAGE_KEY);
