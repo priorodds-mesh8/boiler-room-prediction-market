@@ -768,6 +768,7 @@
       ui.toast ? '<div class="toast">' + escapeHtml(ui.toast) + '</div>' : ''
     ].join("");
     maybeAutoStartGame();
+    maybeRenderDebriefChart();
   }
 
   function renderSidebar(currentUser) {
@@ -1308,7 +1309,7 @@
       '<div class="war-actions"><button class="secondary-button" data-action="game-refresh">Refresh</button><button class="secondary-button" data-action="game-new">New run</button></div>',
       '</div>',
       renderWarHud(session, deals, allReady, floorMode),
-      isSettled && results ? renderGameResults(results) : renderActiveGameBoard(session, deals, turn, allReady, floorMode),
+      isSettled && results ? renderGameDebrief(game) : renderActiveGameBoard(session, deals, turn, allReady, floorMode),
       '</section>'
     ].join("");
   }
@@ -1567,6 +1568,124 @@
       '</div>',
       '</section>'
     ].join("");
+  }
+
+  function renderGameDebrief(game) {
+    var results = game.results || {};
+    var aggregate = results.aggregateBrier || {};
+    var perDeal = results.perDeal || [];
+    return [
+      '<section class="war-panel debrief-panel" data-view-name="debrief">',
+      '<div class="debrief-hero"><div><span>Settlement Debrief</span><h2>' + escapeHtml(results.headline || "Run settled.") + '</h2><p>Aggregate Brier - ML ' + formatBrier(aggregate.ml) + ' | Market ' + formatBrier(aggregate.market) + ' | You ' + formatBrier(aggregate.fng) + '</p></div></div>',
+      '<div class="debrief-table-wrap"><table class="debrief-table"><thead><tr><th>Deal</th><th>Outcome</th><th>ML</th><th>Market</th><th>You</th><th>Brier ML</th><th>Brier Market</th><th>Brier You</th><th>Attribution</th></tr></thead><tbody>',
+      perDeal.map(function (item) {
+        return '<tr><td><strong>' + escapeHtml(item.accountName) + '</strong><small>' + escapeHtml(item.targetLabel || item.target || "") + '</small></td><td><span class="outcome-token ' + (item.actualOutcome ? "yes" : "no") + '">' + (item.actualOutcome ? "Close" : "Slip") + '</span></td><td>' + formatPercent(item.baselineProbability) + '</td><td>' + formatPercent(item.marketProbability) + '</td><td>' + formatPercent(item.fngProbability) + '</td><td>' + formatBrier(item.brier && item.brier.ml) + '</td><td>' + formatBrier(item.brier && item.brier.market) + '</td><td>' + formatBrier(item.brier && item.brier.fng) + '</td><td>' + escapeHtml(item.attribution || "") + '</td></tr>';
+      }).join(""),
+      '</tbody></table></div>',
+      '<div class="calibration-card"><div class="panel-header"><div><div class="panel-title">Calibration curve</div><div class="panel-subtitle">Predicted probability vs. observed close rate</div></div></div><div class="calibration-chart-wrap"><canvas id="calibration-chart" width="900" height="320" aria-label="Calibration curve"></canvas></div></div>',
+      '<div class="debrief-actions"><button class="primary-button" data-action="game-new">Restart Practice Run</button><button class="secondary-button" data-action="open-lr-report">Open LR-Test Report</button></div>',
+      '</section>'
+    ].join("");
+  }
+
+  function formatBrier(value) {
+    var number = Number(value);
+    return Number.isFinite(number) ? number.toFixed(3) : "--";
+  }
+
+  function maybeRenderDebriefChart() {
+    var canvas = document.getElementById("calibration-chart");
+    var game = state.game && state.game.session;
+    var results = game && game.results;
+    if (!canvas || !results || !results.calibrationBins) return;
+    window.setTimeout(function () {
+      drawCalibrationChart(canvas, results.calibrationBins);
+    }, 0);
+  }
+
+  function drawCalibrationChart(canvas, bins) {
+    var context = canvas.getContext("2d");
+    if (!context) return;
+    var width = canvas.width;
+    var height = canvas.height;
+    var pad = { left: 48, right: 24, top: 24, bottom: 42 };
+    context.clearRect(0, 0, width, height);
+    context.fillStyle = "#0f172a";
+    context.fillRect(0, 0, width, height);
+    context.strokeStyle = "rgba(226, 232, 240, 0.16)";
+    context.lineWidth = 1;
+    for (var i = 0; i <= 4; i += 1) {
+      var x = pad.left + (i / 4) * (width - pad.left - pad.right);
+      var y = pad.top + (i / 4) * (height - pad.top - pad.bottom);
+      context.beginPath();
+      context.moveTo(x, pad.top);
+      context.lineTo(x, height - pad.bottom);
+      context.stroke();
+      context.beginPath();
+      context.moveTo(pad.left, y);
+      context.lineTo(width - pad.right, y);
+      context.stroke();
+    }
+    context.strokeStyle = "rgba(255, 255, 255, 0.42)";
+    context.setLineDash([5, 5]);
+    drawChartLine(context, [{ x: 0, y: 0 }, { x: 1, y: 1 }], "#e2e8f0", pad, width, height);
+    context.setLineDash([]);
+    drawEstimatorLine(context, bins.ml || [], "#60a5fa", pad, width, height);
+    drawEstimatorLine(context, bins.market || [], "#f8fafc", pad, width, height);
+    drawEstimatorLine(context, bins.fng || [], "#22d3ee", pad, width, height);
+    context.fillStyle = "#cbd5e1";
+    context.font = "12px Inter, sans-serif";
+    context.fillText("0%", pad.left - 4, height - 18);
+    context.fillText("100%", width - pad.right - 34, height - 18);
+    context.fillText("Observed", 8, pad.top + 8);
+    context.fillText("Predicted probability", width / 2 - 58, height - 10);
+    renderChartLegend(context, width, pad);
+  }
+
+  function drawEstimatorLine(context, bins, color, pad, width, height) {
+    var points = bins.filter(function (bin) {
+      return bin.n > 0 && Number.isFinite(Number(bin.meanPredicted)) && Number.isFinite(Number(bin.meanActual));
+    }).map(function (bin) {
+      return { x: Number(bin.meanPredicted), y: Number(bin.meanActual) };
+    });
+    drawChartLine(context, points, color, pad, width, height);
+  }
+
+  function drawChartLine(context, points, color, pad, width, height) {
+    if (!points.length) return;
+    context.strokeStyle = color;
+    context.fillStyle = color;
+    context.lineWidth = 2;
+    context.beginPath();
+    points.forEach(function (point, index) {
+      var x = pad.left + clamp(point.x, 0, 1) * (width - pad.left - pad.right);
+      var y = height - pad.bottom - clamp(point.y, 0, 1) * (height - pad.top - pad.bottom);
+      if (index === 0) context.moveTo(x, y);
+      else context.lineTo(x, y);
+    });
+    context.stroke();
+    points.forEach(function (point) {
+      var x = pad.left + clamp(point.x, 0, 1) * (width - pad.left - pad.right);
+      var y = height - pad.bottom - clamp(point.y, 0, 1) * (height - pad.top - pad.bottom);
+      context.beginPath();
+      context.arc(x, y, 4, 0, Math.PI * 2);
+      context.fill();
+    });
+  }
+
+  function renderChartLegend(context, width, pad) {
+    var items = [
+      ["ML", "#60a5fa"],
+      ["Market", "#f8fafc"],
+      ["You", "#22d3ee"]
+    ];
+    var x = width - pad.right - 190;
+    items.forEach(function (item, index) {
+      context.fillStyle = item[1];
+      context.fillRect(x + index * 64, pad.top, 18, 3);
+      context.fillStyle = "#cbd5e1";
+      context.fillText(item[0], x + 24 + index * 64, pad.top + 5);
+    });
   }
 
   function pnlRow(label, pnl, error, active) {
@@ -2979,6 +3098,10 @@
     }
     if (action === "game-submit-day") {
       submitGameDay();
+      return;
+    }
+    if (action === "open-lr-report") {
+      window.location.href = "/?view=lr-report";
       return;
     }
     if (action === "sim-start") startSimulation();

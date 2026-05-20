@@ -622,7 +622,12 @@ async function settleSession(session, deals, store) {
 function buildResults(session, deals) {
   const perDeal = deals.map(deal => {
     const actual = deal.actual_outcome === true ? 1 : 0;
-    return {
+    const brier = {
+      ml: squaredError(deal.baseline_probability, actual),
+      market: squaredError(deal.market_probability, actual),
+      fng: squaredError(deal.fng_probability, actual)
+    };
+    const item = {
       sessionDealId: deal.session_deal_id,
       accountName: deal.account_name,
       target: deal.target,
@@ -634,31 +639,109 @@ function buildResults(session, deals) {
       forecastWinner: deal.forecast_winner,
       fngPnl: deal.fng_pnl,
       agentPnl: deal.agent_pnl,
+      brier,
       errors: {
         ml: Math.abs(Number(deal.baseline_probability) - actual),
         market: Math.abs(Number(deal.market_probability) - actual),
         fng: Math.abs(Number(deal.fng_probability) - actual)
       }
     };
+    item.attribution = buildAttribution(item);
+    return item;
   });
   const totals = perDeal.reduce((acc, deal) => {
     acc.ml += deal.errors.ml;
     acc.market += deal.errors.market;
     acc.fng += deal.errors.fng;
+    acc.brierMl += deal.brier.ml;
+    acc.brierMarket += deal.brier.market;
+    acc.brierFng += deal.brier.fng;
     acc.fngPnl += deal.fngPnl;
     acc.agentPnl += deal.agentPnl;
     return acc;
-  }, { ml: 0, market: 0, fng: 0, fngPnl: 0, agentPnl: 0 });
+  }, { ml: 0, market: 0, fng: 0, brierMl: 0, brierMarket: 0, brierFng: 0, fngPnl: 0, agentPnl: 0 });
   const count = Math.max(1, perDeal.length);
   const aggregateErrors = { ml: totals.ml / count, market: totals.market / count, fng: totals.fng / count };
+  const aggregateBrier = { ml: totals.brierMl / count, market: totals.brierMarket / count, fng: totals.brierFng / count };
   return {
     status: session.status,
     forecastWinner: lowestKey(aggregateErrors),
     aggregateErrors,
+    aggregateBrier,
+    calibrationBins: buildCalibrationBins(perDeal),
+    headline: buildHeadline(aggregateBrier),
     fngPnl: totals.fngPnl,
     agentPnl: totals.agentPnl,
-    perDeal
+    perDeal: perDeal.sort((a, b) => brierSpread(b.brier) - brierSpread(a.brier))
   };
+}
+
+function squaredError(probability, actual) {
+  const p = clamp(Number(probability), 0, 1);
+  return (p - actual) * (p - actual);
+}
+
+function brierSpread(brier) {
+  return Math.max(brier.ml, brier.market, brier.fng) - Math.min(brier.ml, brier.market, brier.fng);
+}
+
+function buildCalibrationBins(perDeal) {
+  const estimators = [
+    ["ml", "baselineProbability"],
+    ["market", "marketProbability"],
+    ["fng", "fngProbability"]
+  ];
+  return estimators.reduce((acc, item) => {
+    acc[item[0]] = calibrationBinsFor(perDeal, item[1], 5);
+    return acc;
+  }, {});
+}
+
+function calibrationBinsFor(perDeal, probabilityKey, binCount) {
+  const bins = Array.from({ length: binCount }, (_, index) => ({
+    binStart: index / binCount,
+    binEnd: (index + 1) / binCount,
+    n: 0,
+    totalPredicted: 0,
+    totalActual: 0,
+    meanPredicted: null,
+    meanActual: null
+  }));
+  for (const deal of perDeal) {
+    const p = clamp(Number(deal[probabilityKey]), 0, 1);
+    const index = Math.min(binCount - 1, Math.floor(p * binCount));
+    bins[index].n += 1;
+    bins[index].totalPredicted += p;
+    bins[index].totalActual += deal.actualOutcome ? 1 : 0;
+  }
+  return bins.map(bin => {
+    if (bin.n > 0) {
+      bin.meanPredicted = bin.totalPredicted / bin.n;
+      bin.meanActual = bin.totalActual / bin.n;
+    }
+    delete bin.totalPredicted;
+    delete bin.totalActual;
+    return bin;
+  });
+}
+
+function buildAttribution(item) {
+  const briers = item.brier;
+  const best = lowestKey(briers);
+  const actual = item.actualOutcome ? "true" : "false";
+  const label = item.accountName || "this deal";
+  if (best === "fng") return `You added information on ${label}: your ${formatPercent(item.fngProbability)} beat the market's ${formatPercent(item.marketProbability)} - outcome ${actual}.`;
+  if (best === "market") return `The market was sharper on ${label}: ${formatPercent(item.marketProbability)} vs. your ${formatPercent(item.fngProbability)} - outcome ${actual}.`;
+  return `ML was sharper on ${label}: ${formatPercent(item.baselineProbability)} vs. your ${formatPercent(item.fngProbability)} - outcome ${actual}.`;
+}
+
+function buildHeadline(aggregateBrier) {
+  const winner = lowestKey(aggregateBrier);
+  const sorted = Object.keys(aggregateBrier).sort((a, b) => aggregateBrier[a] - aggregateBrier[b]);
+  const delta = aggregateBrier[sorted[1]] - aggregateBrier[sorted[0]];
+  const labels = { ml: "ML", market: "Market", fng: "You" };
+  if (delta < 0.001) return `Three-way tie within a hair: ${aggregateBrier[winner].toFixed(3)} across the board.`;
+  return `Best calibration this run: ${labels[winner]}. ${labels[winner]} Brier ${aggregateBrier[winner].toFixed(3)} - beat ${labels[sorted[1]]} by ${delta.toFixed(3)}.`;
 }
 
 function safePayload(session, deals, turn, actions, results) {
