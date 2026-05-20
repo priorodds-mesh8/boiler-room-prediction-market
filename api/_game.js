@@ -109,7 +109,9 @@ async function submitActions(body) {
   }
 
   await store.saveProgress(session, deals, session.status === "settled" ? null : turn, fngActions.concat(agentActions));
-  return safePayload(session, deals, turn, fngActions.concat(agentActions), results);
+  const payload = safePayload(session, deals, turn, fngActions.concat(agentActions), results);
+  if (session.status === "settled") dumpSettledSession(payload);
+  return payload;
 }
 
 async function getResults(sessionId) {
@@ -750,6 +752,18 @@ function buildHeadline(aggregateBrier) {
   const spread = aggregateBrier[sorted[2]] - aggregateBrier[sorted[0]];
   if (spread < 0.001) return `Three-way tie within a hair: ${aggregateBrier[winner].toFixed(3)} across the board.`;
   return `Best calibration this run: ${labels[winner]}. ${labels[winner]} Brier ${aggregateBrier[winner].toFixed(3)} - beat ${labels[sorted[1]]} by ${delta.toFixed(3)}.`;
+}
+
+function dumpSettledSession(payload) {
+  try {
+    const sessionId = payload && payload.session && payload.session.sessionId;
+    if (!sessionId) return;
+    const dir = path.join(DATA_DIR, "sessions");
+    fs.mkdirSync(dir, { recursive: true });
+    fs.writeFileSync(path.join(dir, `${sessionId}.json`), `${JSON.stringify(payload, null, 2)}\n`);
+  } catch (error) {
+    console.warn("Unable to write settled-session telemetry dump.", error && error.message ? error.message : error);
+  }
 }
 
 function safePayload(session, deals, turn, actions, results) {
