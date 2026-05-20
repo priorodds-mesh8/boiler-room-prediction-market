@@ -3,6 +3,8 @@ const { __test } = require("../api/_game");
 const {
   buildResults,
   applyFngActions,
+  buildAttribution,
+  buildHeadline,
   lmsrCost,
   lmsrPrice,
   normalizeFngActions,
@@ -160,13 +162,49 @@ function testExplicitProbabilityStakeActions() {
   }
 }
 
+function attributionFixture(overrides) {
+  return Object.assign({
+    accountName: "Acme",
+    actualOutcome: true,
+    baselineProbability: 0.55,
+    marketProbability: 0.7,
+    fngProbability: 0.9,
+    brier: { ml: 0.2025, market: 0.09, fng: 0.01 }
+  }, overrides || {});
+}
+
+function testAttributionAndHeadline() {
+  assert(buildAttribution(attributionFixture()) === "You added information on Acme: your 90% beat the market's 70% - outcome True.", "You-best attribution matches template");
+  assert(buildAttribution(attributionFixture({
+    marketProbability: 0.9,
+    fngProbability: 0.82,
+    brier: { ml: 0.16, market: 0.01, fng: 0.0324 }
+  })) === "The market got Acme right (90%); you were close (82%).", "Market-best attribution matches template");
+  assert(buildAttribution(attributionFixture({
+    baselineProbability: 0.9,
+    marketProbability: 0.65,
+    fngProbability: 0.6,
+    brier: { ml: 0.01, market: 0.1225, fng: 0.16 }
+  })) === "ML was sharper on Acme: 90% vs. your 60%. Worth understanding what it saw.", "ML-best attribution matches template");
+  assert(buildAttribution(attributionFixture({
+    actualOutcome: false,
+    baselineProbability: 0.49,
+    marketProbability: 0.5,
+    fngProbability: 0.51,
+    brier: { ml: 0.2401, market: 0.25, fng: 0.2601 }
+  })) === "Acme was a coin-flip; nobody's edge was clear (False).", "Tie attribution matches template");
+  assert(buildHeadline({ ml: 0.18, market: 0.15, fng: 0.2 }) === "Best calibration this run: Market. Market Brier 0.150 - beat ML by 0.030.", "Headline picks correct winner");
+  assert(buildHeadline({ ml: 0.1231, market: 0.1232, fng: 0.1233 }) === "Three-way tie within a hair: 0.123 across the board.", "Headline tie matches template");
+}
+
 (async function run() {
   testLmsrMath();
   testQuoteTrade();
   await testSettlementPayouts();
   await testOutcomeSealing();
   testExplicitProbabilityStakeActions();
-  console.log("OK 5/5");
+  testAttributionAndHeadline();
+  console.log("OK 6/6");
 })().catch(error => {
   console.error(error);
   process.exit(1);

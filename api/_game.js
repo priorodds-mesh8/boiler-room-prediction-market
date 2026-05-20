@@ -728,11 +728,18 @@ function calibrationBinsFor(perDeal, probabilityKey, binCount) {
 function buildAttribution(item) {
   const briers = item.brier;
   const best = lowestKey(briers);
-  const actual = item.actualOutcome ? "true" : "false";
+  const sorted = Object.keys(briers).sort((a, b) => briers[a] - briers[b]);
+  const margin = briers[sorted[1]] - briers[sorted[0]];
+  const maxSpread = Math.max(briers.ml, briers.market, briers.fng) - Math.min(briers.ml, briers.market, briers.fng);
+  const actual = item.actualOutcome ? "True" : "False";
   const label = item.accountName || "this deal";
-  if (best === "fng") return `You added information on ${label}: your ${formatPercent(item.fngProbability)} beat the market's ${formatPercent(item.marketProbability)} - outcome ${actual}.`;
+  if (maxSpread <= 0.02) return `${label} was a coin-flip; nobody's edge was clear (${actual}).`;
+  if (best === "fng" && margin >= 0.02) return `You added information on ${label}: your ${formatPercent(item.fngProbability)} beat the market's ${formatPercent(item.marketProbability)} - outcome ${actual}.`;
+  if (best === "market" && margin >= 0.02 && briers.fng - briers.market <= 0.04) return `The market got ${label} right (${formatPercent(item.marketProbability)}); you were close (${formatPercent(item.fngProbability)}).`;
+  if (best === "ml" && briers.market - briers.ml >= 0.02 && briers.fng - briers.ml >= 0.02) return `ML was sharper on ${label}: ${formatPercent(item.baselineProbability)} vs. your ${formatPercent(item.fngProbability)}. Worth understanding what it saw.`;
   if (best === "market") return `The market was sharper on ${label}: ${formatPercent(item.marketProbability)} vs. your ${formatPercent(item.fngProbability)} - outcome ${actual}.`;
-  return `ML was sharper on ${label}: ${formatPercent(item.baselineProbability)} vs. your ${formatPercent(item.fngProbability)} - outcome ${actual}.`;
+  if (best === "fng") return `You were closest on ${label}: ${formatPercent(item.fngProbability)} vs. market ${formatPercent(item.marketProbability)} - outcome ${actual}.`;
+  return `ML was slightly sharper on ${label}: ${formatPercent(item.baselineProbability)} vs. your ${formatPercent(item.fngProbability)} - outcome ${actual}.`;
 }
 
 function buildHeadline(aggregateBrier) {
@@ -740,7 +747,8 @@ function buildHeadline(aggregateBrier) {
   const sorted = Object.keys(aggregateBrier).sort((a, b) => aggregateBrier[a] - aggregateBrier[b]);
   const delta = aggregateBrier[sorted[1]] - aggregateBrier[sorted[0]];
   const labels = { ml: "ML", market: "Market", fng: "You" };
-  if (delta < 0.001) return `Three-way tie within a hair: ${aggregateBrier[winner].toFixed(3)} across the board.`;
+  const spread = aggregateBrier[sorted[2]] - aggregateBrier[sorted[0]];
+  if (spread < 0.001) return `Three-way tie within a hair: ${aggregateBrier[winner].toFixed(3)} across the board.`;
   return `Best calibration this run: ${labels[winner]}. ${labels[winner]} Brier ${aggregateBrier[winner].toFixed(3)} - beat ${labels[sorted[1]]} by ${delta.toFixed(3)}.`;
 }
 
@@ -1203,6 +1211,8 @@ module.exports = {
     lmsrCost,
     lmsrPrice,
     applyFngActions,
+    buildAttribution,
+    buildHeadline,
     normalizeFngActions,
     qFromProbability,
     quoteTrade,
