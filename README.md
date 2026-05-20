@@ -160,3 +160,13 @@ For Vercel:
 3. Add `OPENAI_API_KEY` with your key value.
 4. Add `OPENAI_MODEL` only if you want to override the default.
 5. Redeploy the project.
+
+## Demo password gate
+
+Set `BOILER_ROOM_DEMO_PASSWORD` to require a shared password on `/api/*` routes:
+
+```bash
+BOILER_ROOM_DEMO_PASSWORD=hunter2 node server.js
+```
+
+The static UI remains public so it can prompt for the password. For Vercel, add `BOILER_ROOM_DEMO_PASSWORD` in Settings -> Environment Variables and redeploy.

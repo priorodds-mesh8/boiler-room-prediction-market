@@ -8,6 +8,10 @@ function sendJson(res, status, payload) {
   res.end(JSON.stringify(payload));
 }
 
+function demoPassword() {
+  return process.env.BOILER_ROOM_DEMO_PASSWORD || "";
+}
+
 function clampInteger(value, min, max) {
   if (!Number.isFinite(value)) return min;
   return Math.min(max, Math.max(min, Math.floor(value)));
@@ -111,6 +115,7 @@ function findOutputText(response) {
 
 module.exports = {
   clampInteger,
+  demoPassword,
   findOutputText,
   loadEnv,
   readJson,

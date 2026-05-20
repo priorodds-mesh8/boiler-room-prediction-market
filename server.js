@@ -22,6 +22,10 @@ const mimeTypes = {
 const server = http.createServer(async (req, res) => {
   try {
     const url = new URL(req.url, `http://${req.headers.host || "127.0.0.1"}`);
+    if (url.pathname.startsWith("/api/") && !authorizedDemoRequest(req, url)) {
+      sendJson(res, 401, { error: "Demo password required" });
+      return;
+    }
     if (req.method === "POST" && req.url === "/api/agent-decision") {
       await handleAgentDecision(req, res);
       return;
@@ -86,6 +90,12 @@ const server = http.createServer(async (req, res) => {
     sendJson(res, 500, { error: error.message || "Server error" });
   }
 });
+
+function authorizedDemoRequest(req, url) {
+  const password = process.env.BOILER_ROOM_DEMO_PASSWORD;
+  if (!password) return true;
+  return req.headers["x-boiler-room-key"] === password || url.searchParams.get("key") === password;
+}
 
 server.listen(port, "127.0.0.1", () => {
   console.log(`Boiler Room demo server running at http://127.0.0.1:${port}`);

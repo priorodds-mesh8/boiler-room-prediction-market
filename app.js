@@ -60,6 +60,7 @@
     onboardingStep: 0,
     showOnboarding: false,
     lrReport: { loading: false, loaded: false, error: "", data: null },
+    auth: { required: false, error: "" },
     toast: ""
   };
 
@@ -766,6 +767,7 @@
       '</main>',
       '</div>',
       ui.showOnboarding ? renderOnboardingOverlay() : '',
+      ui.auth.required ? renderAuthModal() : '',
       ui.toast ? '<div class="toast">' + escapeHtml(ui.toast) + '</div>' : ''
     ].join("");
     maybeAutoStartGame();
@@ -883,6 +885,20 @@
       console.warn("Unable to reset onboarding state.", error);
     }
     render();
+  }
+
+  function renderAuthModal() {
+    return [
+      '<div class="onboarding-backdrop" role="presentation">',
+      '<section class="onboarding-modal auth-modal" role="dialog" aria-modal="true" aria-labelledby="auth-title">',
+      '<h2 id="auth-title">Demo password</h2>',
+      '<p>Enter the shared Boiler Room demo password to unlock the API for this browser session.</p>',
+      '<input class="input" type="password" data-auth-key placeholder="Password" autofocus />',
+      ui.auth.error ? '<div class="war-error">' + escapeHtml(ui.auth.error) + '</div>' : '',
+      '<div class="onboarding-actions"><button class="primary-button" data-action="auth-submit">Unlock</button></div>',
+      '</section>',
+      '</div>'
+    ].join("");
   }
 
   function isAdvancedSetupRequested() {
@@ -1640,9 +1656,17 @@
         render();
       })
       .catch(function (error) {
+        if (isDemoAuthError(error)) {
+          requireDemoPassword(hasDemoKey() ? "Wrong password." : "");
+          return;
+        }
         ui.lrReport = { loading: false, loaded: false, error: error.message || "Unable to load LR-Test Report.", data: null };
         render();
       });
+  }
+
+  function isDemoAuthError(error) {
+    return /demo password required|wrong password|password required/i.test(error && error.message ? error.message : "");
   }
 
   function maybeRenderDebriefChart() {
@@ -1802,12 +1826,51 @@
     if (!window.fetch || window.location.protocol === "file:") {
       return Promise.reject(new Error("Run node server.js and open http://127.0.0.1:4173 to use the Boiler Room APIs."));
     }
-    return window.fetch(path, options).then(function (response) {
+    return apiFetch(path, options).then(function (response) {
       return response.json().catch(function () { return {}; }).then(function (body) {
+        if (response.status === 401) {
+          requireDemoPassword(hasDemoKey() ? "Wrong password." : "");
+          throw new Error(body.error || "Demo password required");
+        }
         if (!response.ok) throw new Error(body.error || "Game API request failed");
         return body;
       });
     });
+  }
+
+  function apiFetch(path, options) {
+    options = options || {};
+    var headers = Object.assign({}, options.headers || {});
+    var key = getDemoKey();
+    if (key) headers["X-Boiler-Room-Key"] = key;
+    return window.fetch(path, Object.assign({}, options, { headers: headers }));
+  }
+
+  function getDemoKey() {
+    try {
+      return sessionStorage.getItem("boiler-room-demo-key") || "";
+    } catch (error) {
+      return "";
+    }
+  }
+
+  function hasDemoKey() {
+    return !!getDemoKey();
+  }
+
+  function setDemoKey(value) {
+    try {
+      sessionStorage.setItem("boiler-room-demo-key", value);
+    } catch (error) {
+      console.warn("Unable to store demo password for this session.", error);
+    }
+  }
+
+  function requireDemoPassword(error) {
+    ui.auth.required = true;
+    ui.auth.error = error || "";
+    ui.game.loading = false;
+    render();
   }
 
   function startGameRun() {
@@ -1826,6 +1889,10 @@
       saveState();
       showToast("Boiler Room run started: " + payload.session.dealCount + " deal" + (payload.session.dealCount === 1 ? "" : "s") + ".");
     }).catch(function (error) {
+      if (isDemoAuthError(error)) {
+        requireDemoPassword(hasDemoKey() ? "Wrong password." : "");
+        return;
+      }
       ui.game.error = error.message || "Unable to start Boiler Room run.";
       showToast(ui.game.error);
     }).finally(function () {
@@ -2173,7 +2240,7 @@
     }
     var deal = state.simulation.deals.find(function (item) { return item.id === localDecision.dealId; });
     if (!deal) return Promise.resolve(localDecision);
-    return window.fetch("/api/agent-decision", {
+    return apiFetch("/api/agent-decision", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
@@ -2496,7 +2563,7 @@
     ui.sim.loadingSupabase = true;
     state.simulation.status = "Loading Supabase live deals";
     render();
-    window.fetch("/api/live-deals?limit=" + encodeURIComponent(count))
+    apiFetch("/api/live-deals?limit=" + encodeURIComponent(count))
       .then(function (response) {
         if (!response.ok) {
           return response.json().catch(function () { return {}; }).then(function (body) {
@@ -3084,6 +3151,22 @@
     if (action === "create-market") createMarket();
     if (action === "prefill-rule") prefillDefaultRule();
     if (action === "reset-demo") resetDemo();
+    if (action === "auth-submit") {
+      var keyInput = app.querySelector("[data-auth-key]");
+      var key = keyInput ? keyInput.value.trim() : "";
+      if (!key) {
+        ui.auth.error = "Password is required.";
+        render();
+        return;
+      }
+      setDemoKey(key);
+      ui.auth.required = false;
+      ui.auth.error = "";
+      ui.game.autoStartAttempted = false;
+      ui.lrReport = { loading: false, loaded: false, error: "", data: null };
+      render();
+      return;
+    }
     if (action === "onboarding-replay") {
       replayOnboarding();
       return;
