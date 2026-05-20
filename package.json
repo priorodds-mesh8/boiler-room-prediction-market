@@ -1,6 +1,6 @@
 {
   "name": "boiler-room",
-  "version": "0.1.0",
+  "version": "0.1.0-demo",
   "private": true,
   "description": "Internal prediction market mockup for enterprise sales teams.",
   "scripts": {
