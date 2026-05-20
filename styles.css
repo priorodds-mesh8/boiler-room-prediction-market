@@ -23,6 +23,117 @@
   --font: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
 }
 
+@media print {
+  @page {
+    size: letter;
+    margin: 0.45in;
+  }
+
+  body {
+    background: #fff;
+    color: #000;
+  }
+
+  .topbar,
+  .sidebar,
+  .war-actions,
+  .debrief-actions,
+  .onboarding-backdrop,
+  .toast,
+  .advance-dock {
+    display: none !important;
+  }
+
+  .content,
+  .war-room,
+  .war-panel,
+  .debrief-panel {
+    margin: 0 !important;
+    padding: 0 !important;
+    background: #fff !important;
+    border: 0 !important;
+    box-shadow: none !important;
+    color: #000 !important;
+  }
+
+  .run-header,
+  .hud-rail,
+  .debrief-hero,
+  .debrief-table-wrap,
+  .calibration-card {
+    page-break-inside: avoid;
+  }
+
+  .run-header,
+  .hud-rail {
+    display: none !important;
+  }
+
+  .debrief-hero {
+    padding: 0 0 10px !important;
+    background: #fff !important;
+    border: 0 !important;
+  }
+
+  .debrief-hero span,
+  .debrief-hero h2,
+  .debrief-hero p,
+  .panel-title,
+  .panel-subtitle,
+  .debrief-table,
+  .debrief-table th,
+  .debrief-table td,
+  .debrief-table small {
+    color: #000 !important;
+  }
+
+  .debrief-hero h2 {
+    font-size: 18pt !important;
+    margin: 4px 0 !important;
+  }
+
+  .debrief-table-wrap {
+    border-color: #aaa !important;
+    overflow: visible !important;
+  }
+
+  .debrief-table {
+    min-width: 0 !important;
+    font-size: 7.5pt !important;
+  }
+
+  .debrief-table th,
+  .debrief-table td {
+    padding: 4px !important;
+    border-color: #ccc !important;
+  }
+
+  .calibration-card {
+    margin-top: 10px !important;
+    border: 1px solid #aaa !important;
+    background: #fff !important;
+  }
+
+  .calibration-chart-wrap {
+    height: 220px !important;
+    padding: 0 !important;
+  }
+
+  .calibration-chart-wrap canvas {
+    max-height: 220px !important;
+  }
+
+  .debrief-panel::after {
+    content: "Boiler Room — Forecast Intelligence Practice Run";
+    display: block;
+    margin-top: 8px;
+    padding-top: 6px;
+    border-top: 1px solid #ccc;
+    color: #333;
+    font-size: 8pt;
+  }
+}
+
 * {
   box-sizing: border-box;
 }
