@@ -59,6 +59,7 @@
     },
     onboardingStep: 0,
     showOnboarding: false,
+    lrReport: { loading: false, loaded: false, error: "", data: null },
     toast: ""
   };
 
@@ -913,7 +914,16 @@
   }
 
   function renderView() {
+    if (currentUrlView() === "lr-report") return renderLrReport();
     return renderSimulation();
+  }
+
+  function currentUrlView() {
+    try {
+      return new URLSearchParams(window.location.search).get("view") || "";
+    } catch (error) {
+      return "";
+    }
   }
 
   function renderDashboard() {
@@ -1593,14 +1603,63 @@
     return Number.isFinite(number) ? number.toFixed(3) : "--";
   }
 
+  function renderLrReport() {
+    if (!ui.lrReport.loaded && !ui.lrReport.loading && !ui.lrReport.error) loadLrReport();
+    var report = ui.lrReport.data;
+    var body = ui.lrReport.loading ? '<div class="empty-state">Loading LR-Test Report...</div>' : '';
+    if (ui.lrReport.error) {
+      body = '<div class="war-error"><span>' + escapeHtml(ui.lrReport.error) + '</span><button class="secondary-button" data-action="lr-retry">Retry</button></div>';
+    } else if (report) {
+      body = [
+        '<div class="lr-hero"><span>Does this work?</span><h2>' + escapeHtml(report.verdict) + '</h2></div>',
+        '<div class="lr-kpi-grid">',
+        metricCard("Settled deals", formatNumber(report.n), "Synthetic Practice Runs"),
+        metricCard("LR statistic", Number(report.lr).toFixed(1), "2 x log-likelihood lift"),
+        metricCard("p-value", formatPValue(report.p), "Chi-square, 1 d.f."),
+        metricCard("95% CI", '[' + Number(report.ci[0]).toFixed(1) + ', ' + Number(report.ci[1]).toFixed(1) + ']', "Bootstrap"),
+        '</div>',
+        '<div class="calibration-card"><div class="panel-header"><div><div class="panel-title">Corpus calibration</div><div class="panel-subtitle">ML, market, and user probabilities across the seeded corpus</div></div></div><div class="calibration-chart-wrap"><canvas id="lr-calibration-chart" width="900" height="320" aria-label="LR report calibration curve"></canvas></div></div>',
+        '<p class="method-note">Likelihood-ratio test compares market-implied probability against ML baseline across ' + Number(report.n) + ' settled deals from synthetic Practice Runs. Chi-square(1) approximation.</p>',
+        '<div class="debrief-actions"><button class="secondary-button" data-action="back-to-debrief">Back to Debrief</button></div>'
+      ].join("");
+    }
+    return '<section class="content lr-report">' + body + '</section>';
+  }
+
+  function formatPValue(value) {
+    var number = Number(value);
+    if (!Number.isFinite(number)) return "--";
+    return number < 0.001 ? "<0.001" : number.toFixed(3);
+  }
+
+  function loadLrReport() {
+    ui.lrReport.loading = true;
+    gameApi("/api/report/lr")
+      .then(function (payload) {
+        ui.lrReport = { loading: false, loaded: true, error: "", data: payload };
+        render();
+      })
+      .catch(function (error) {
+        ui.lrReport = { loading: false, loaded: false, error: error.message || "Unable to load LR-Test Report.", data: null };
+        render();
+      });
+  }
+
   function maybeRenderDebriefChart() {
     var canvas = document.getElementById("calibration-chart");
     var game = state.game && state.game.session;
     var results = game && game.results;
-    if (!canvas || !results || !results.calibrationBins) return;
-    window.setTimeout(function () {
-      drawCalibrationChart(canvas, results.calibrationBins);
-    }, 0);
+    if (canvas && results && results.calibrationBins) {
+      window.setTimeout(function () {
+        drawCalibrationChart(canvas, results.calibrationBins);
+      }, 0);
+    }
+    var lrCanvas = document.getElementById("lr-calibration-chart");
+    if (lrCanvas && ui.lrReport.data && ui.lrReport.data.calibrationBins) {
+      window.setTimeout(function () {
+        drawCalibrationChart(lrCanvas, ui.lrReport.data.calibrationBins);
+      }, 0);
+    }
   }
 
   function drawCalibrationChart(canvas, bins) {
@@ -3102,6 +3161,15 @@
     }
     if (action === "open-lr-report") {
       window.location.href = "/?view=lr-report";
+      return;
+    }
+    if (action === "lr-retry") {
+      ui.lrReport = { loading: false, loaded: false, error: "", data: null };
+      loadLrReport();
+      return;
+    }
+    if (action === "back-to-debrief") {
+      window.location.href = "/";
       return;
     }
     if (action === "sim-start") startSimulation();

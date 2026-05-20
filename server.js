@@ -9,6 +9,7 @@ const gameStartHandler = require("./api/game/start");
 const gameSessionHandler = require("./api/game/session");
 const gameActionsHandler = require("./api/game/actions");
 const gameResultsHandler = require("./api/game/results");
+const lrReportHandler = require("./api/report/lr");
 
 const mimeTypes = {
   ".html": "text/html; charset=utf-8",
@@ -48,6 +49,11 @@ const server = http.createServer(async (req, res) => {
 
     if (url.pathname === "/api/game/results") {
       await gameResultsHandler(req, res);
+      return;
+    }
+
+    if (url.pathname === "/api/report/lr") {
+      await lrReportHandler(req, res);
       return;
     }
 
