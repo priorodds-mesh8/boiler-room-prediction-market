@@ -1395,19 +1395,26 @@
 
   function renderFngActionPanel(deal) {
     var pending = getPendingGameAction(deal.sessionDealId);
+    var probability = clamp(Number(pending.probability) || 50, 0, 100);
     return [
       '<div class="fng-card action-control">',
       '<div class="action-head"><span>Your forecast</span><strong>' + (pending.action ? escapeHtml(actionLabel(pending.action)) : "Open") + '</strong></div>',
+      '<div class="probability-control"><label for="prob-' + escapeAttr(deal.sessionDealId) + '">Probability <strong>' + probability + '%</strong></label><input id="prob-' + escapeAttr(deal.sessionDealId) + '" class="range" type="range" min="0" max="100" step="1" data-game-probability="' + escapeAttr(deal.sessionDealId) + '" value="' + probability + '" /></div>',
+      renderStakeSelector(deal, pending),
       '<div class="order-row">',
       ["BUY", "HOLD", "SELL"].map(function (choice) {
         return '<button class="order-button ' + choice.toLowerCase() + ' ' + (pending.action === choice ? "active" : "") + '" data-action="game-set-action" data-deal="' + escapeAttr(deal.sessionDealId) + '" data-choice="' + choice + '">' + actionLabel(choice) + '</button>';
       }).join(""),
       '</div>',
-      '<div class="confidence-row"><span>Confidence</span>' + [1, 2, 3, 4, 5].map(function (level) {
-        return '<button class="confidence-button ' + (Number(pending.confidence) === level ? "active" : "") + '" data-action="game-set-confidence" data-deal="' + escapeAttr(deal.sessionDealId) + '" data-confidence="' + level + '">' + level + '</button>';
-      }).join("") + '</div>',
       '</div>'
     ].join("");
+  }
+
+  function renderStakeSelector(deal, pending) {
+    var stake = Number(pending.stake) || 50;
+    return '<div class="stake-row"><span>Stake</span>' + [25, 50, 100, 250].map(function (amount) {
+      return '<button class="stake-button ' + (stake === amount ? "active" : "") + '" data-action="game-set-stake" data-deal="' + escapeAttr(deal.sessionDealId) + '" data-stake="' + amount + '">$' + amount + '</button>';
+    }).join("") + '</div>';
   }
 
   function renderDenseDealBoard(deals) {
@@ -1433,16 +1440,16 @@
 
   function renderCompactActionPanel(deal) {
     var pending = getPendingGameAction(deal.sessionDealId);
+    var probability = clamp(Number(pending.probability) || 50, 0, 100);
     return [
       '<div class="action-control compact">',
+      '<div class="compact-prob"><span>' + probability + '%</span><input class="range" type="range" min="0" max="100" step="1" data-game-probability="' + escapeAttr(deal.sessionDealId) + '" value="' + probability + '" /></div>',
+      renderStakeSelector(deal, pending),
       '<div class="order-row">',
       ["BUY", "HOLD", "SELL"].map(function (choice) {
         return '<button class="order-button ' + choice.toLowerCase() + ' ' + (pending.action === choice ? "active" : "") + '" data-action="game-set-action" data-deal="' + escapeAttr(deal.sessionDealId) + '" data-choice="' + choice + '">' + compactActionLabel(choice) + '</button>';
       }).join(""),
       '</div>',
-      '<div class="confidence-row"><span>C</span>' + [1, 2, 3, 4, 5].map(function (level) {
-        return '<button class="confidence-button ' + (Number(pending.confidence) === level ? "active" : "") + '" data-action="game-set-confidence" data-deal="' + escapeAttr(deal.sessionDealId) + '" data-confidence="' + level + '">' + level + '</button>';
-      }).join("") + '</div>',
       '</div>'
     ].join("");
   }
@@ -1583,21 +1590,21 @@
   }
 
   function getPendingGameAction(sessionDealId) {
-    if (!ui.game.pendingActions[sessionDealId]) ui.game.pendingActions[sessionDealId] = { action: "", confidence: 3 };
+    if (!ui.game.pendingActions[sessionDealId]) ui.game.pendingActions[sessionDealId] = { action: "", probability: 50, stake: 50 };
     return ui.game.pendingActions[sessionDealId];
   }
 
   function gameActionsReady(deals) {
     return deals.length > 0 && deals.every(function (deal) {
       var pending = ui.game.pendingActions[deal.sessionDealId];
-      return pending && pending.action && pending.confidence;
+      return pending && pending.action;
     });
   }
 
   function readyCount(deals) {
     return deals.filter(function (deal) {
       var pending = ui.game.pendingActions[deal.sessionDealId];
-      return pending && pending.action && pending.confidence;
+      return pending && pending.action;
     }).length;
   }
 
@@ -1605,7 +1612,11 @@
     ui.game.pendingActions = {};
     if (!game || !game.deals) return;
     game.deals.forEach(function (deal) {
-      ui.game.pendingActions[deal.sessionDealId] = { action: "", confidence: 3 };
+      ui.game.pendingActions[deal.sessionDealId] = {
+        action: "",
+        probability: Math.round(probabilityValue(deal.fngProbability, probabilityValue(deal.marketProbability, 0.5)) * 100),
+        stake: 50
+      };
     });
   }
 
@@ -1670,7 +1681,12 @@
     if (!game || !game.session || !gameActionsReady(game.deals || [])) return;
     var actions = game.deals.map(function (deal) {
       var pending = getPendingGameAction(deal.sessionDealId);
-      return { sessionDealId: deal.sessionDealId, action: pending.action, confidence: Number(pending.confidence) };
+      var action = { sessionDealId: deal.sessionDealId, action: pending.action };
+      if (pending.action !== "HOLD") {
+        action.probability = clamp(Number(pending.probability) || 50, 0, 100) / 100;
+        action.stake = Number(pending.stake) || 50;
+      }
+      return action;
     });
     ui.game.loading = true;
     render();
@@ -2955,9 +2971,9 @@
       render();
       return;
     }
-    if (action === "game-set-confidence") {
-      var confidenceDealId = actionTarget.getAttribute("data-deal");
-      getPendingGameAction(confidenceDealId).confidence = Number(actionTarget.getAttribute("data-confidence")) || 3;
+    if (action === "game-set-stake") {
+      var stakeDealId = actionTarget.getAttribute("data-deal");
+      getPendingGameAction(stakeDealId).stake = Number(actionTarget.getAttribute("data-stake")) || 50;
       render();
       return;
     }
@@ -2994,6 +3010,12 @@
     if (input === "tradeAmount") {
       ui.tradeAmount = event.target.value;
       render();
+    }
+    var probabilityDealId = event.target.getAttribute("data-game-probability");
+    if (probabilityDealId) {
+      getPendingGameAction(probabilityDealId).probability = clamp(Number(event.target.value) || 0, 0, 100);
+      render();
+      return;
     }
     var admin = event.target.getAttribute("data-admin");
     if (admin) {

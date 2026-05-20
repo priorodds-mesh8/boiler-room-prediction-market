@@ -2,8 +2,10 @@ const { __test } = require("../api/_game");
 
 const {
   buildResults,
+  applyFngActions,
   lmsrCost,
   lmsrPrice,
+  normalizeFngActions,
   qFromProbability,
   quoteTrade,
   safePayload,
@@ -135,12 +137,36 @@ async function testOutcomeSealing() {
   assert(settledPayload.results.forecastWinner, "settled results include forecast winner");
 }
 
+function testExplicitProbabilityStakeActions() {
+  const session = makeSession();
+  const deal = makeDeal();
+  const normalized = normalizeFngActions([{ sessionDealId: deal.session_deal_id, action: "BUY", probability: 0.65, stake: 50 }], [deal]);
+  assertClose(normalized[0].probability, 0.65, EPSILON, "new payload keeps explicit probability");
+  assertClose(normalized[0].stake, 50, EPSILON, "new payload keeps explicit stake");
+  const records = applyFngActions(session, [deal], normalized);
+  assertClose(deal.fng_probability, 0.65, EPSILON, "explicit probability sets user probability");
+  assert(records[0].metadata.stake_usd === 50, "metadata records stake");
+  assert(records[0].metadata.probability_pct === 65, "metadata records probability percent");
+
+  const oldWarn = console.warn;
+  console.warn = function () {};
+  try {
+    const legacy = normalizeFngActions([{ sessionDealId: deal.session_deal_id, action: "BUY", confidence: 3 }], [deal]);
+    assertClose(legacy[0].probability, 0.74, EPSILON, "legacy confidence maps to probability");
+    assertClose(legacy[0].stake, 115, EPSILON, "legacy confidence maps to stake");
+    assert(legacy[0].legacy === true, "legacy payload is marked");
+  } finally {
+    console.warn = oldWarn;
+  }
+}
+
 (async function run() {
   testLmsrMath();
   testQuoteTrade();
   await testSettlementPayouts();
   await testOutcomeSealing();
-  console.log("OK 4/4");
+  testExplicitProbabilityStakeActions();
+  console.log("OK 5/5");
 })().catch(error => {
   console.error(error);
   process.exit(1);

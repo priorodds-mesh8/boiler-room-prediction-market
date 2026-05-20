@@ -9,6 +9,8 @@ const DEFAULT_MAX_DAYS = 30;
 const VALID_MODES = new Set(["team", "focus", "silent"]);
 const VALID_COUNTS = new Set([1, 3, 5, 10]);
 const VALID_MAX_DAYS = new Set([5, 15, 30]);
+const VALID_FNG_STAKES = new Set([25, 50, 100, 250]);
+const LEGACY_CONFIDENCE_STAKES = [0, 35, 70, 115, 165, 230];
 const TARGETS = [
   "closed_won",
   "closed_won_by_original_date",
@@ -502,24 +504,44 @@ function normalizeFngActions(actions, deals) {
   const normalized = [];
   for (const deal of deals) {
     const action = byDeal.get(deal.session_deal_id);
-    if (!action) throw new PublicError(400, "FNG must submit an action for every active deal.");
+    if (!action) throw new PublicError(400, "You must submit an action for every active deal.");
     const choice = String(action.action || "").toUpperCase();
     if (!["BUY", "HOLD", "SELL"].includes(choice)) throw new PublicError(400, "Each action must be BUY, HOLD, or SELL.");
+    if (choice === "HOLD") {
+      normalized.push({ deal, action: choice, confidence: 0, probability: Number(deal.fng_probability || deal.market_probability || 0.5), stake: 0, legacy: false });
+      continue;
+    }
+    if (hasNumber(action.probability) || hasNumber(action.stake)) {
+      const probability = Number(action.probability);
+      const stake = Number(action.stake);
+      if (!Number.isFinite(probability) || probability < 0 || probability > 1) throw new PublicError(400, "Forecast probability must be between 0 and 1.");
+      if (!VALID_FNG_STAKES.has(stake)) throw new PublicError(400, "Forecast stake must be one of 25, 50, 100, or 250.");
+      normalized.push({ deal, action: choice, confidence: confidenceFromStake(stake), probability, stake, legacy: false });
+      continue;
+    }
     const confidence = clamp(Number(action.confidence || 3), 1, 5);
-    normalized.push({ deal, action: choice, confidence });
+    console.warn("Deprecated user action payload used; send probability and stake instead of confidence.");
+    normalized.push({
+      deal,
+      action: choice,
+      confidence,
+      probability: legacyProbability(choice, confidence),
+      stake: LEGACY_CONFIDENCE_STAKES[confidence],
+      legacy: true
+    });
   }
   return normalized;
 }
 
 function applyFngActions(session, deals, normalized) {
-  const requested = normalized.map(item => ({ ...item, requestedStake: item.action === "HOLD" ? 0 : fngStake(item.confidence, session.deal_count) }));
+  const requested = normalized.map(item => ({ ...item, requestedStake: item.action === "HOLD" ? 0 : Number(item.stake || 0) }));
   const total = requested.reduce((sum, item) => sum + item.requestedStake, 0);
   const scale = total > Number(session.fng_wallet) && total > 0 ? Number(session.fng_wallet) / total : 1;
   const records = [];
   for (const item of requested) {
     const stake = Math.round(item.requestedStake * scale);
     const before = item.deal.market_probability;
-    const implied = impliedFngProbability(item.action, item.confidence, before);
+    const implied = item.action === "HOLD" ? Number(item.deal.fng_probability || before) : Number(item.probability);
     if (stake > 0) {
       const side = item.action === "BUY" ? "YES" : "NO";
       const trade = quoteTrade(item.deal, side, stake);
@@ -540,11 +562,40 @@ function applyFngActions(session, deals, normalized) {
     item.deal.fng_state.lastAction = item.action;
     item.deal.fng_state.lastConfidence = item.confidence;
     item.deal.updated_at = nowIso();
-    records.push(makeAction(session.session_id, item.deal, session.current_day, "fng", "FNG", item.action, item.confidence, stake, item.action === "BUY" ? "YES" : item.action === "SELL" ? "NO" : "HOLD", before, item.deal.market_probability, implied, "FNG daily decision."));
+    records.push(makeAction(
+      session.session_id,
+      item.deal,
+      session.current_day,
+      "fng",
+      "You",
+      item.action,
+      item.confidence,
+      stake,
+      item.action === "BUY" ? "YES" : item.action === "SELL" ? "NO" : "HOLD",
+      before,
+      item.deal.market_probability,
+      implied,
+      "User daily forecast.",
+      {
+        probability_pct: Math.round(implied * 100),
+        stake_usd: stake,
+        legacy_confidence_payload: !!item.legacy
+      }
+    ));
   }
   session.pnl = deals.reduce((sum, deal) => sum + Number(deal.fng_pnl || 0), 0);
   session.updated_at = nowIso();
   return records;
+}
+
+function legacyProbability(action, confidence) {
+  if (action === "BUY") return clamp(0.5 + 0.08 * confidence, 0, 1);
+  if (action === "SELL") return clamp(0.5 - 0.08 * confidence, 0, 1);
+  return 0.5;
+}
+
+function confidenceFromStake(stake) {
+  return [25, 50, 100, 250].indexOf(Number(stake)) + 1;
 }
 
 async function settleSession(session, deals, store) {
@@ -733,7 +784,7 @@ function probabilitySnapshots(deals) {
   }));
 }
 
-function makeAction(sessionId, deal, day, actorType, actorName, action, confidence, stake, side, before, after, implied, rationale) {
+function makeAction(sessionId, deal, day, actorType, actorName, action, confidence, stake, side, before, after, implied, rationale, metadata) {
   return {
     action_id: makeId("act"),
     session_id: sessionId,
@@ -749,7 +800,7 @@ function makeAction(sessionId, deal, day, actorType, actorName, action, confiden
     probability_after: after,
     implied_probability: implied,
     rationale,
-    metadata: {},
+    metadata: metadata || {},
     created_at: nowIso()
   };
 }
@@ -1068,6 +1119,8 @@ module.exports = {
     buildResults,
     lmsrCost,
     lmsrPrice,
+    applyFngActions,
+    normalizeFngActions,
     qFromProbability,
     quoteTrade,
     safePayload,

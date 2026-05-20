@@ -1594,7 +1594,10 @@ button {
 .intel-foot,
 .deal-card-head,
 .forecast-footer,
-.confidence-row {
+.confidence-row,
+.stake-row,
+.probability-control label,
+.compact-prob {
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -1951,7 +1954,8 @@ button {
 }
 
 .order-button,
-.confidence-button {
+.confidence-button,
+.stake-button {
   min-height: 36px;
   border: 1px solid var(--wr-line-strong);
   border-radius: 8px;
@@ -1987,22 +1991,51 @@ button {
   font-weight: 760;
 }
 
-.confidence-row span {
+.confidence-row span,
+.stake-row span {
   margin-right: auto;
 }
 
-.confidence-button {
+.probability-control {
+  display: grid;
+  gap: 7px;
+  color: var(--wr-muted);
+  font-size: 12px;
+  font-weight: 760;
+}
+
+.probability-control strong,
+.compact-prob span {
+  color: #fff;
+}
+
+.stake-row {
+  color: var(--wr-muted);
+  font-size: 12px;
+  font-weight: 760;
+  flex-wrap: wrap;
+}
+
+.confidence-button,
+.stake-button {
   width: 34px;
   min-height: 32px;
   padding: 0;
 }
 
 .confidence-button.active,
-.confidence-button:hover {
+.confidence-button:hover,
+.stake-button.active,
+.stake-button:hover {
   background: #e2e8f0;
   color: #fff;
   border-color: #e2e8f0;
   color: #0f172a;
+}
+
+.stake-button {
+  width: auto;
+  padding: 0 9px;
 }
 
 .submit-day {
@@ -2112,15 +2145,23 @@ button {
   padding: 0;
 }
 
-.action-control.compact .confidence-row {
+.action-control.compact .confidence-row,
+.action-control.compact .stake-row,
+.action-control.compact .compact-prob {
   gap: 4px;
   flex-wrap: nowrap;
 }
 
-.action-control.compact .confidence-button {
+.action-control.compact .confidence-button,
+.action-control.compact .stake-button {
   width: 26px;
   min-height: 26px;
   font-size: 11px;
+}
+
+.action-control.compact .stake-button {
+  width: auto;
+  padding: 0 6px;
 }
 
 .advance-dock {
