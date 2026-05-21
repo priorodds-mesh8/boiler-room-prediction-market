@@ -816,8 +816,8 @@
     return [
       {
         icon: "1",
-        title: "Three forecasts",
-        bodyHtml: "Every deal has three probabilities: the <strong>ML baseline</strong> from a calibrated model, the <strong>market price</strong> from your team's positions, and <strong>your</strong> forecast. They rarely agree. The disagreement is the signal."
+        title: "Four signal layers",
+        bodyHtml: "Every deal starts with an <strong>ML prior</strong>, then AI agents and humans add judgment through the <strong>consensus market</strong>. Your forecast is scored separately so the system can tell who added signal and who added noise."
       },
       {
         icon: "2",
@@ -1299,7 +1299,7 @@
     var selectedMode = modes.find(function (mode) { return mode.id === ui.game.mode; }) || modes[0];
     return [
       '<section class="war-room-setup">',
-      '<div class="war-room-copy"><div class="setup-kicker"><span class="reticle"></span> Boiler Room Practice Run</div><h2 class="sim-title">Boiler Room — Forecast Intelligence</h2><div class="sim-subtitle"><p>Surface deal-slip risk before it surprises leadership.</p><p>Boiler Room turns live deal signals into a sharper forecast of what will actually close. Agents and users evaluate pipeline risk, forecast deal outcomes, and expose disagreement before it surprises leadership. The result is a faster, more honest read on revenue than CRM probability alone.</p><p>Boiler Room works by turning each sales deal into a live forecast: users and agents mark whether they think the deal outcome is underpriced or overpriced. As forecasts and new deal signals come in, the market price becomes a live probability that captures disagreement faster than a static CRM forecast.</p></div><div class="setup-contract"><span>Run setup</span><strong>' + Number(ui.game.dealCount) + ' deal' + (Number(ui.game.dealCount) === 1 ? "" : "s") + ' | ' + escapeHtml(selectedMode.title) + ' | Day 1 / ' + Number(ui.game.maxDays) + '</strong></div></div>',
+      '<div class="war-room-copy"><div class="setup-kicker"><span class="reticle"></span> Forecast market simulator</div><h2 class="sim-title">Trade the close probability before the quarter surprises you.</h2><div class="sim-subtitle"><p>Each deal becomes a binary market: YES if it closes on target, NO if it slips or loses.</p><p>Start with the ML prior, read the daily intel, then buy YES, buy NO, or skip. The market consensus updates as agents and humans add signal.</p></div><div class="setup-contract"><span>Run setup</span><strong>' + Number(ui.game.dealCount) + ' deal' + (Number(ui.game.dealCount) === 1 ? "" : "s") + ' | ' + escapeHtml(selectedMode.title) + ' | Day 1 / ' + Number(ui.game.maxDays) + '</strong></div></div>',
       '<div class="setup-board">',
       '<div class="setup-group"><div class="setup-label">Gameplay mode</div><div class="mode-grid">',
       modes.map(function (mode) {
@@ -1312,7 +1312,7 @@
       '<div class="setup-group"><div class="setup-label">Run length</div><div class="count-card-grid duration-grid">' + durations.map(function (item) {
         return '<button class="count-card ' + (Number(ui.game.maxDays) === item.days ? "active" : "") + '" data-action="game-days" data-days="' + item.days + '"><span>' + item.days + '</span><strong>' + escapeHtml(item.label) + '</strong><small>' + escapeHtml(item.body) + '</small><em>' + escapeHtml(item.meta) + '</em></button>';
       }).join("") + '</div></div>',
-      '<div class="setup-footer"><div><span>Your wallet</span><strong>1,500</strong></div><div><span>Win condition</span><strong>Lowest forecast error</strong></div></div>',
+      '<div class="setup-footer"><div><span>Your wallet</span><strong>1,500</strong></div><div><span>Win condition</span><strong>Lowest Brier score</strong></div></div>',
       '<button class="primary-button war-start" data-action="game-start" ' + (ui.game.loading ? "disabled" : "") + '>' + (ui.game.loading ? "Assigning run..." : "Start Practice Run") + '</button>',
       ui.game.error ? '<div class="war-error"><span>' + escapeHtml(ui.game.error) + '</span><button class="secondary-button" data-action="game-start">Retry</button></div>' : '',
       '</div>',
@@ -1331,7 +1331,7 @@
     return [
       '<section class="war-room">',
       '<div class="run-header">',
-      '<div><div class="setup-kicker"><span class="reticle"></span> Boiler Room | ' + escapeHtml(modeLabel(session.mode)) + ' | ' + escapeHtml(game.source || "local") + '</div><h2 class="sim-title">Day ' + session.currentDay + ' / ' + session.maxDays + '</h2><div class="sim-subtitle">' + escapeHtml(turn.summary || "Review the priority stack and make every forecast call.") + '</div></div>',
+      '<div><div class="setup-kicker"><span class="reticle"></span> Boiler Room markets | ' + escapeHtml(modeLabel(session.mode)) + ' | ' + escapeHtml(game.source || "local") + '</div><h2 class="sim-title">Day ' + session.currentDay + ' / ' + session.maxDays + '</h2><div class="sim-subtitle">' + escapeHtml(turn.summary || "Review the intel, price the markets, and submit your forecast book.") + '</div></div>',
       '<div class="war-actions"><button class="secondary-button" data-action="game-refresh">Refresh</button><button class="secondary-button" data-action="game-new">New run</button></div>',
       '</div>',
       renderWarHud(session, deals, allReady, floorMode),
@@ -1346,7 +1346,7 @@
       '<div class="hud-rail">',
       hudCell("PLAYER", "You", "Probability desk", "player"),
       hudCell("CLOCK", "Day " + session.currentDay + " / " + session.maxDays, floorMode ? "Floor mode" : "Card mode", "clock"),
-      hudCell("WALLET", formatNumber(session.fngWallet || 0), "Run capital", "wallet"),
+      hudCell("BALANCE", "$" + formatNumber(session.fngWallet || 0), "Run capital", "wallet"),
       hudCell("P&L", formatSignedNumber(session.pnl || 0), "Secondary score", Number(session.pnl || 0) >= 0 ? "pnl up" : "pnl down"),
       hudCell("MODE", modeLabel(session.mode), floorMode ? "10-deal density" : "Tactical board", "mode"),
       hudCell("LEADER", leaderLabel(session.forecastLeader), session.status === "settled" ? "Final" : "Live proxy", "leader"),
@@ -1362,11 +1362,11 @@
   function renderActiveGameBoard(session, deals, turn, allReady, floorMode) {
     return [
       '<div class="war-grid ' + (floorMode ? "floor-mode" : "card-mode") + '">',
-      '<section class="war-panel priority-panel"><div class="panel-header"><div><div class="panel-title">Priority Stack</div><div class="panel-subtitle">Ranked by ML, market, and your disagreement</div></div><span class="pill amber">' + (turn.cards || []).length + ' cards</span></div><div class="intel-stack">' + renderIntelCards(turn.cards || []) + '</div></section>',
-      '<section class="war-panel deal-board-panel ' + (floorMode ? "dense-panel" : "") + '"><div class="panel-header"><div><div class="panel-title">Active Deals</div><div class="panel-subtitle">' + (floorMode ? "Dense forecast-floor read; every row still needs a call" : "Forecast readout and your call live in the same card") + '</div></div><span class="pill ' + (allReady ? "green" : "amber") + '">' + readyCount(deals) + ' / ' + deals.length + ' ready</span></div>',
+      '<section class="war-panel priority-panel"><div class="panel-header"><div><div class="panel-title">Market Intel</div><div class="panel-subtitle">Evidence that should move price today</div></div><span class="pill amber">' + (turn.cards || []).length + ' updates</span></div><div class="intel-stack">' + renderIntelCards(turn.cards || []) + '</div></section>',
+      '<section class="war-panel deal-board-panel ' + (floorMode ? "dense-panel" : "") + '"><div class="panel-header"><div><div class="panel-title">Markets</div><div class="panel-subtitle">' + (floorMode ? "Compact market list; every row still needs a call" : "Binary close markets with a Polymarket-style order ticket") + '</div></div><span class="pill ' + (allReady ? "green" : "amber") + '">' + readyCount(deals) + ' / ' + deals.length + ' ready</span></div>',
       renderProbabilityLegend(),
       floorMode ? renderDenseDealBoard(deals) : '<div class="deal-card-grid">' + deals.map(renderGameDealPanel).join("") + '</div>',
-      '<div class="advance-dock"><div><strong>' + (allReady ? "Round ready" : "Forecasts incomplete") + '</strong><span>' + (allReady ? "Submit your full forecast book to reveal the next day of intel." : "Forecast or skip every active deal before the clock advances.") + '</span></div><button class="primary-button submit-day" data-action="game-submit-day" ' + (!allReady || ui.game.loading ? "disabled" : "") + '>' + (ui.game.loading ? "Submitting..." : "End day") + '</button></div>',
+      '<div class="advance-dock"><div><strong>' + (allReady ? "Order book ready" : "Markets incomplete") + '</strong><span>' + (allReady ? "Submit your forecast book to reveal the next day of intel." : "Buy YES, buy NO, or skip every market before advancing.") + '</span></div><button class="primary-button submit-day" data-action="game-submit-day" ' + (!allReady || ui.game.loading ? "disabled" : "") + '>' + (ui.game.loading ? "Submitting..." : "Submit day") + '</button></div>',
       '</section>',
       '</div>'
     ].join("");
@@ -1408,11 +1408,23 @@
       '<article class="deal-card">',
       '<div class="deal-card-head"><div><div class="deal-title">' + escapeHtml(deal.accountName) + '</div><div class="deal-meta">' + escapeHtml(deal.targetLabel) + ' | ' + escapeHtml((deal.context && deal.context.stage) || "Unknown") + ' | ' + formatCurrency(Number((deal.context && deal.context.amount) || 0)) + '</div></div><span class="status-pill ' + outcomeClass(deal) + '">' + outcomeLabel(deal) + '</span></div>',
       '<div class="deal-question">' + escapeHtml(deal.marketQuestion || "") + '</div>',
+      renderYesNoQuote(deal),
       renderProbabilityStrip(deal),
-      '<div class="deal-readout"><span>ML <strong>' + formatPercent(deal.baselineProbability) + '</strong></span><span>Market <strong>' + formatPercent(deal.marketProbability) + '</strong></span><span>You <strong>' + formatPercent(deal.fngProbability) + '</strong></span></div>',
+      '<div class="deal-readout"><span>ML prior <strong>' + formatPercent(deal.baselineProbability) + '</strong></span><span>Market <strong>' + formatPercent(deal.marketProbability) + '</strong></span><span>Your mark <strong>' + formatPercent(deal.fngProbability) + '</strong></span></div>',
       renderFngActionPanel(deal),
       '<div class="forecast-footer"><span class="delta ' + (move >= 0 ? "up" : "down") + '">' + formatSignedPercent(move) + ' vs ML</span><span>Your P&L <strong class="' + (deal.fngPnl >= 0 ? "delta up" : "delta down") + '">' + formatSignedNumber(deal.fngPnl || 0) + '</strong></span></div>',
       '</article>'
+    ].join("");
+  }
+
+  function renderYesNoQuote(deal) {
+    var yes = probabilityValue(deal.marketProbability, 0.5);
+    var no = 1 - yes;
+    return [
+      '<div class="market-quote-row" aria-label="Current market prices">',
+      '<div class="quote-chip yes"><span>YES</span><strong>' + formatCents(yes) + '</strong><small>closes on target</small></div>',
+      '<div class="quote-chip no"><span>NO</span><strong>' + formatCents(no) + '</strong><small>slips or loses</small></div>',
+      '</div>'
     ].join("");
   }
 
@@ -1425,8 +1437,8 @@
     var probability = clamp(Number(pending.probability) || 50, 0, 100);
     return [
       '<div class="fng-card action-control">',
-      '<div class="action-head"><span>Your forecast</span><strong>' + (pending.action ? escapeHtml(actionLabel(pending.action)) : "Open") + '</strong></div>',
-      '<div class="probability-control"><label for="prob-' + escapeAttr(deal.sessionDealId) + '">Probability <strong>' + probability + '%</strong></label><input id="prob-' + escapeAttr(deal.sessionDealId) + '" class="range" type="range" min="0" max="100" step="1" data-game-probability="' + escapeAttr(deal.sessionDealId) + '" value="' + probability + '" /></div>',
+      '<div class="action-head"><span>Order ticket</span><strong>' + (pending.action ? escapeHtml(compactActionLabel(pending.action)) : "Choose side") + '</strong></div>',
+      '<div class="probability-control"><label for="prob-' + escapeAttr(deal.sessionDealId) + '">Your probability <strong>' + probability + '%</strong></label><input id="prob-' + escapeAttr(deal.sessionDealId) + '" class="range" type="range" min="0" max="100" step="1" data-game-probability="' + escapeAttr(deal.sessionDealId) + '" value="' + probability + '" /></div>',
       renderStakeSelector(deal, pending),
       '<div class="order-row">',
       ["BUY", "HOLD", "SELL"].map(function (choice) {
@@ -1447,7 +1459,7 @@
   function renderDenseDealBoard(deals) {
     return [
       '<div class="dense-deal-board">',
-      '<div class="dense-header"><span>Deal / target</span><span>Probability strip</span><span>Read</span><span>Your forecast</span></div>',
+      '<div class="dense-header"><span>Deal / target</span><span>Probability strip</span><span>Read</span><span>Order ticket</span></div>',
       deals.map(renderDenseDealRow).join(""),
       '</div>'
     ].join("");
@@ -1459,7 +1471,7 @@
       '<article class="dense-deal-row">',
       '<div class="dense-account"><div class="deal-title">' + escapeHtml(deal.accountName) + '</div><div class="deal-meta">' + escapeHtml(deal.targetLabel) + ' | ' + escapeHtml((deal.context && deal.context.stage) || "Unknown") + '</div></div>',
       '<div class="dense-prob">' + renderProbabilityStrip(deal, { mini: true }) + '</div>',
-      '<div class="dense-read"><span>MKT <strong>' + formatPercent(deal.marketProbability) + '</strong></span><span class="delta ' + (move >= 0 ? "up" : "down") + '">' + formatSignedPercent(move) + '</span><span>Your P&L <strong class="' + (deal.fngPnl >= 0 ? "delta up" : "delta down") + '">' + formatSignedNumber(deal.fngPnl || 0) + '</strong></span></div>',
+      '<div class="dense-read"><span>Consensus <strong>' + formatPercent(deal.marketProbability) + '</strong></span><span class="delta ' + (move >= 0 ? "up" : "down") + '">' + formatSignedPercent(move) + '</span><span>Your P&L <strong class="' + (deal.fngPnl >= 0 ? "delta up" : "delta down") + '">' + formatSignedNumber(deal.fngPnl || 0) + '</strong></span></div>',
       '<div class="dense-action">' + renderCompactActionPanel(deal) + '</div>',
       '</article>'
     ].join("");
@@ -1484,8 +1496,8 @@
   function renderProbabilityLegend() {
     return [
       '<div class="probability-legend">',
-      '<span><i class="prob-dot ml"></i>ML</span>',
-      '<span><i class="prob-dot market"></i>Market</span>',
+      '<span><i class="prob-dot ml"></i>ML prior</span>',
+      '<span><i class="prob-dot market"></i>Consensus</span>',
       '<span><i class="prob-dot fng"></i>You</span>',
       '<span><i class="prob-dot target"></i>Target line</span>',
       '</div>'
@@ -1516,7 +1528,7 @@
   function probabilityMarkers(deal) {
     var markers = [
       { label: "ML", className: "ml", value: probabilityValue(deal.baselineProbability, 0.5) },
-      { label: "MKT", className: "market", value: probabilityValue(deal.marketProbability, 0.5) },
+      { label: "CONS", className: "market", value: probabilityValue(deal.marketProbability, 0.5) },
       { label: "You", className: "fng", value: probabilityValue(deal.fngProbability, probabilityValue(deal.marketProbability, 0.5)) }
     ].sort(function (a, b) {
       return a.value - b.value;
@@ -1539,7 +1551,7 @@
     var actual = deal.actualOutcome ? 1 : 0;
     return [
       { label: "ML", className: "ml", value: probabilityValue(deal.baselineProbability, 0.5) },
-      { label: "MKT", className: "market", value: probabilityValue(deal.marketProbability, 0.5) },
+      { label: "CONS", className: "market", value: probabilityValue(deal.marketProbability, 0.5) },
       { label: "You", className: "fng", value: probabilityValue(deal.fngProbability, probabilityValue(deal.marketProbability, 0.5)) }
     ].map(function (item) {
       var from = Math.round(Math.min(actual, item.value) * 1000) / 10;
@@ -1565,20 +1577,20 @@
   }
 
   function renderGameResults(results) {
-    var errors = results.aggregateErrors || {};
+    var brier = results.aggregateBrier || {};
     return [
       '<section class="war-panel results-panel">',
-      '<div class="winner-banner"><div><span>Forecast winner</span><strong>' + leaderLabel(results.forecastWinner) + '</strong><small>Lowest aggregate probability error wins the run.</small></div><div class="winner-score">Your P&L <strong class="' + (results.fngPnl >= 0 ? "delta up" : "delta down") + '">' + formatSignedNumber(results.fngPnl || 0) + '</strong></div></div>',
+      '<div class="winner-banner"><div><span>Forecast winner</span><strong>' + leaderLabel(results.forecastWinner) + '</strong><small>Lowest aggregate Brier score wins the run.</small></div><div class="winner-score">Your P&L <strong class="' + (results.fngPnl >= 0 ? "delta up" : "delta down") + '">' + formatSignedNumber(results.fngPnl || 0) + '</strong></div></div>',
       '<div class="results-grid">',
-      metricCard("ML error", formatPercent(errors.ml || 0), "Average absolute error"),
-      metricCard("Market error", formatPercent(errors.market || 0), "Average absolute error"),
-      metricCard("Your error", formatPercent(errors.fng || 0), "Average absolute error"),
+      metricCard("ML Brier", formatBrier(brier.ml), "Average squared forecast error"),
+      metricCard("Consensus Brier", formatBrier(brier.market), "Average squared forecast error"),
+      metricCard("Your Brier", formatBrier(brier.fng), "Average squared forecast error"),
       metricCard("Agent P&L", formatSignedNumber(results.agentPnl || 0), "Market desk outcome"),
       '</div>',
       '<div class="pnl-leaderboard">',
-      pnlRow("You", results.fngPnl || 0, errors.fng, results.forecastWinner === "fng"),
-      pnlRow("Market", results.agentPnl || 0, errors.market, results.forecastWinner === "market"),
-      pnlRow("ML baseline", 0, errors.ml, results.forecastWinner === "ml"),
+      pnlRow("You", results.fngPnl || 0, brier.fng, results.forecastWinner === "fng"),
+      pnlRow("Consensus", results.agentPnl || 0, brier.market, results.forecastWinner === "market"),
+      pnlRow("ML baseline", 0, brier.ml, results.forecastWinner === "ml"),
       '</div>',
       '<div class="settlement-list">',
       (results.perDeal || []).map(function (item) {
@@ -1602,8 +1614,8 @@
     var perDeal = results.perDeal || [];
     return [
       '<section class="war-panel debrief-panel" data-view-name="debrief">',
-      '<div class="debrief-hero"><div><span>Settlement Debrief</span><h2>' + escapeHtml(results.headline || "Run settled.") + '</h2><p>Aggregate Brier - ML ' + formatBrier(aggregate.ml) + ' | Market ' + formatBrier(aggregate.market) + ' | You ' + formatBrier(aggregate.fng) + '</p></div></div>',
-      '<div class="debrief-table-wrap"><table class="debrief-table"><thead><tr><th>Deal</th><th>Outcome</th><th>ML</th><th>Market</th><th>You</th><th>Brier ML</th><th>Brier Market</th><th>Brier You</th><th>Attribution</th></tr></thead><tbody>',
+      '<div class="debrief-hero"><div><span>Settlement Debrief</span><h2>' + escapeHtml(results.headline || "Run settled.") + '</h2><p>Aggregate Brier - ML prior ' + formatBrier(aggregate.ml) + ' | Consensus ' + formatBrier(aggregate.market) + ' | You ' + formatBrier(aggregate.fng) + '</p></div></div>',
+      '<div class="debrief-table-wrap"><table class="debrief-table"><thead><tr><th>Deal</th><th>Outcome</th><th>ML prior</th><th>Consensus</th><th>You</th><th>Brier ML</th><th>Brier Consensus</th><th>Brier You</th><th>Attribution</th></tr></thead><tbody>',
       perDeal.map(function (item) {
         return '<tr><td><strong>' + escapeHtml(item.accountName) + '</strong><small>' + escapeHtml(item.targetLabel || item.target || "") + '</small></td><td><span class="outcome-token ' + (item.actualOutcome ? "yes" : "no") + '">' + (item.actualOutcome ? "Close" : "Slip") + '</span></td><td>' + formatPercent(item.baselineProbability) + '</td><td>' + formatPercent(item.marketProbability) + '</td><td>' + formatPercent(item.fngProbability) + '</td><td>' + formatBrier(item.brier && item.brier.ml) + '</td><td>' + formatBrier(item.brier && item.brier.market) + '</td><td>' + formatBrier(item.brier && item.brier.fng) + '</td><td>' + escapeHtml(item.attribution || "") + '</td></tr>';
       }).join(""),
@@ -1771,8 +1783,8 @@
     });
   }
 
-  function pnlRow(label, pnl, error, active) {
-    return '<div class="pnl-row ' + (active ? "active" : "") + '"><span>' + escapeHtml(label) + '</span><strong class="' + (pnl >= 0 ? "delta up" : "delta down") + '">' + (label === "ML baseline" ? "--" : formatSignedNumber(pnl || 0)) + '</strong><small>Error ' + formatPercent(error || 0) + '</small></div>';
+  function pnlRow(label, pnl, brier, active) {
+    return '<div class="pnl-row ' + (active ? "active" : "") + '"><span>' + escapeHtml(label) + '</span><strong class="' + (pnl >= 0 ? "delta up" : "delta down") + '">' + (label === "ML baseline" ? "--" : formatSignedNumber(pnl || 0)) + '</strong><small>Brier ' + formatBrier(brier) + '</small></div>';
   }
 
   function modeLabel(mode) {
@@ -1780,15 +1792,15 @@
   }
 
   function leaderLabel(value) {
-    return { ml: "ML baseline", market: "Market", fng: "You" }[value] || "Pending";
+    return { ml: "ML prior", market: "Consensus", fng: "You" }[value] || "Pending";
   }
 
   function actionLabel(action) {
-    return { BUY: "Forecast: will close", SELL: "Forecast: won't close", HOLD: "Skip this day" }[action] || action;
+    return { BUY: "Buy YES", SELL: "Buy NO", HOLD: "Skip" }[action] || action;
   }
 
   function compactActionLabel(action) {
-    return { BUY: "Close", SELL: "Slip", HOLD: "Skip" }[action] || action;
+    return { BUY: "YES", SELL: "NO", HOLD: "Skip" }[action] || action;
   }
 
   function getPendingGameAction(sessionDealId) {
@@ -3092,6 +3104,10 @@
 
   function formatPercent(value) {
     return Math.round(value * 100) + "%";
+  }
+
+  function formatCents(value) {
+    return Math.round(clamp(Number(value) || 0, 0, 1) * 100) + "¢";
   }
 
   function formatSignedPercent(value) {

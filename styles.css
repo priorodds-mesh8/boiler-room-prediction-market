@@ -2686,3 +2686,430 @@ button {
     flex-wrap: wrap;
   }
 }
+
+/* Polymarket-inspired demo skin for the active Boiler Room path. */
+.topbar {
+  min-height: 62px;
+  background: rgba(255, 255, 255, 0.94);
+}
+
+.page-title {
+  font-size: 18px;
+}
+
+.page-kicker {
+  font-size: 12px;
+}
+
+.war-room-setup,
+.war-room {
+  --wr-bg: #f7f8fb;
+  --wr-panel: #ffffff;
+  --wr-panel-2: #f4f6f8;
+  --wr-card: #ffffff;
+  --wr-card-2: #f8fafc;
+  --wr-line: #e4e7ec;
+  --wr-line-strong: #cfd6df;
+  --wr-ink: #111827;
+  --wr-muted: #667085;
+  --wr-teal: #16a3a3;
+  --wr-green: #00a66c;
+  --wr-amber: #d99600;
+  --wr-red: #e6485f;
+  --wr-blue: #2563eb;
+  background: var(--wr-bg);
+  border: 1px solid var(--wr-line);
+  color: var(--wr-ink);
+  box-shadow: 0 12px 34px rgba(15, 23, 42, 0.06);
+}
+
+.war-room-setup {
+  align-items: stretch;
+}
+
+.war-room-copy .sim-title,
+.run-header .sim-title,
+.war-panel .panel-title,
+.deal-title,
+.advance-dock strong,
+.hud-cell strong,
+.winner-banner strong,
+.pnl-row > strong,
+.settlement-outcome strong,
+.debrief-hero h2,
+.lr-hero h2,
+.deal-readout strong,
+.probability-control strong,
+.compact-prob span,
+.action-head strong,
+.setup-contract strong,
+.setup-footer strong {
+  color: var(--wr-ink);
+}
+
+.sim-title {
+  font-size: 30px;
+  max-width: 780px;
+}
+
+.setup-kicker {
+  color: var(--wr-blue);
+}
+
+.reticle {
+  border-color: var(--wr-blue);
+  border-radius: 999px;
+}
+
+.reticle::before,
+.reticle::after {
+  background: var(--wr-blue);
+}
+
+.war-room-copy .sim-subtitle,
+.run-header .sim-subtitle,
+.war-panel .panel-subtitle,
+.deal-meta,
+.deal-question,
+.advance-dock span,
+.hud-cell span,
+.hud-cell small,
+.intel-head,
+.intel-foot,
+.intel-body,
+.deal-readout span,
+.action-head,
+.probability-control,
+.stake-row,
+.setup-contract span,
+.setup-footer span {
+  color: var(--wr-muted);
+}
+
+.setup-board,
+.setup-contract,
+.setup-footer div,
+.war-panel,
+.hud-cell,
+.intel-card,
+.deal-card,
+.settlement-card,
+.fng-card,
+.advance-dock,
+.calibration-card,
+.pnl-row,
+.dense-deal-row {
+  background: #fff;
+  border-color: var(--wr-line);
+  box-shadow: 0 1px 2px rgba(15, 23, 42, 0.04);
+}
+
+.setup-board {
+  box-shadow: 0 18px 50px rgba(15, 23, 42, 0.08);
+}
+
+.mode-card,
+.count-card {
+  background: #fff;
+  color: var(--wr-ink);
+}
+
+.mode-card span,
+.count-card small,
+.mode-card em,
+.count-card em,
+.mode-card .mode-tag {
+  color: var(--wr-muted);
+}
+
+.count-card span {
+  color: var(--wr-blue);
+}
+
+.mode-card.active,
+.mode-card:hover,
+.count-card.active,
+.count-card:hover {
+  border-color: var(--wr-blue);
+  background: #f5f9ff;
+  box-shadow: inset 0 0 0 1px rgba(37, 99, 235, 0.12);
+}
+
+.hud-rail {
+  grid-template-columns: repeat(7, minmax(112px, 1fr));
+}
+
+.hud-cell {
+  padding: 10px 12px;
+}
+
+.hud-cell.player,
+.pnl-row.active {
+  border-color: rgba(37, 99, 235, 0.34);
+  background: #f5f9ff;
+}
+
+.hud-cell.pnl.up strong,
+.hud-cell.ready strong,
+.intel-impact.up,
+.delta.up {
+  color: var(--wr-green);
+}
+
+.hud-cell.pnl.down strong,
+.hud-cell.locked strong,
+.intel-impact.down,
+.delta.down {
+  color: var(--wr-red);
+}
+
+.war-grid {
+  grid-template-columns: minmax(280px, 0.58fr) minmax(0, 1.42fr);
+}
+
+.war-panel {
+  box-shadow: none;
+}
+
+.intel-card {
+  border-left-width: 3px;
+}
+
+.intel-badge,
+.status-pill,
+.prob-marker-label {
+  background: #f8fafc;
+  color: var(--wr-ink);
+  border-color: var(--wr-line);
+}
+
+.intel-title {
+  color: var(--wr-ink);
+}
+
+.deal-card-grid {
+  grid-template-columns: repeat(auto-fit, minmax(360px, 1fr));
+  gap: 12px;
+}
+
+.deal-card {
+  gap: 14px;
+  padding: 14px;
+}
+
+.deal-question {
+  background: #f8fafc;
+  border-color: var(--wr-line);
+  color: #344054;
+  font-size: 13px;
+}
+
+.market-quote-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+.quote-chip {
+  min-width: 0;
+  border: 1px solid var(--wr-line);
+  border-radius: 8px;
+  padding: 10px 12px;
+  background: #fff;
+  display: grid;
+  gap: 2px;
+}
+
+.quote-chip span {
+  font-size: 11px;
+  font-weight: 850;
+  color: var(--wr-muted);
+}
+
+.quote-chip strong {
+  font-size: 28px;
+  line-height: 1;
+}
+
+.quote-chip small {
+  color: var(--wr-muted);
+  font-size: 11px;
+}
+
+.quote-chip.yes {
+  border-color: rgba(0, 166, 108, 0.28);
+  background: #f2fbf7;
+}
+
+.quote-chip.yes strong {
+  color: var(--wr-green);
+}
+
+.quote-chip.no {
+  border-color: rgba(230, 72, 95, 0.26);
+  background: #fff5f6;
+}
+
+.quote-chip.no strong {
+  color: var(--wr-red);
+}
+
+.prob-track {
+  background: linear-gradient(90deg, #fff0f2, #f2f4f7 50%, #effaf5);
+  border: 1px solid var(--wr-line);
+  box-shadow: none;
+}
+
+.prob-tick {
+  background: #cbd5e1;
+}
+
+.prob-marker {
+  width: 9px;
+  height: 9px;
+  top: 34px;
+  border: 2px solid #fff;
+  box-shadow: 0 0 0 1px var(--wr-line-strong);
+}
+
+.prob-marker-label {
+  box-shadow: 0 1px 2px rgba(15, 23, 42, 0.08);
+}
+
+.prob-marker-label strong {
+  color: var(--wr-ink);
+}
+
+.prob-scale {
+  color: var(--wr-muted);
+}
+
+.deal-readout span {
+  background: #f8fafc;
+}
+
+.fng-card {
+  background: #f9fafb;
+}
+
+.order-row {
+  grid-template-columns: 1fr 0.72fr 1fr;
+}
+
+.order-button,
+.confidence-button,
+.stake-button {
+  background: #fff;
+  color: var(--wr-ink);
+  border-color: var(--wr-line-strong);
+}
+
+.order-button.buy {
+  color: var(--wr-green);
+}
+
+.order-button.sell {
+  color: var(--wr-red);
+}
+
+.order-button.buy.active,
+.order-button.buy:hover {
+  background: var(--wr-green);
+  border-color: var(--wr-green);
+  color: #fff;
+}
+
+.order-button.hold.active,
+.order-button.hold:hover {
+  background: #eef4ff;
+  border-color: #84adff;
+  color: #1d4ed8;
+}
+
+.order-button.sell.active,
+.order-button.sell:hover {
+  background: var(--wr-red);
+  border-color: var(--wr-red);
+  color: #fff;
+}
+
+.stake-button.active,
+.stake-button:hover {
+  background: #111827;
+  color: #fff;
+  border-color: #111827;
+}
+
+.advance-dock {
+  background: #fff;
+}
+
+.primary-button {
+  background: #111827;
+  border-color: #111827;
+}
+
+.primary-button:hover {
+  background: #000;
+}
+
+.secondary-button,
+.back-button {
+  background: #fff;
+  border-color: var(--line);
+}
+
+.debrief-panel,
+.results-panel {
+  background: #fff;
+}
+
+.debrief-hero,
+.winner-banner,
+.lr-hero {
+  background: #f5f9ff;
+  border-color: #dbe7ff;
+}
+
+.debrief-hero span,
+.lr-hero span {
+  color: var(--wr-blue);
+}
+
+.debrief-hero p,
+.debrief-table,
+.debrief-table small,
+.winner-banner span,
+.winner-banner small,
+.winner-score,
+.pnl-row span,
+.pnl-row small,
+.settlement-outcome span,
+.settlement-outcome small {
+  color: var(--wr-muted);
+}
+
+.debrief-table {
+  color: var(--wr-ink);
+}
+
+@media (max-width: 1040px) {
+  .hud-rail {
+    grid-template-columns: repeat(2, minmax(150px, 1fr));
+  }
+}
+
+@media (max-width: 760px) {
+  .sim-title {
+    font-size: 24px;
+  }
+
+  .market-quote-row,
+  .order-row {
+    grid-template-columns: 1fr;
+  }
+
+  .deal-card-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
