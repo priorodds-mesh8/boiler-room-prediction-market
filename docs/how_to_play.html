@@ -1,0 +1,639 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Boiler Room - How to Play</title>
+    <style>
+      :root {
+        color-scheme: dark;
+        --bg: #070b0f;
+        --ink: #f4f7fb;
+        --muted: #9eadb9;
+        --soft: #718391;
+        --line: rgba(255, 255, 255, 0.12);
+        --panel: #101820;
+        --panel-2: #151f29;
+        --cyan: #42d9d0;
+        --blue: #75aaff;
+        --green: #79dc96;
+        --amber: #f6bd5c;
+        --red: #ff817d;
+        --violet: #b89cff;
+        --shadow: 0 24px 70px rgba(0, 0, 0, 0.36);
+        font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      html {
+        scroll-behavior: smooth;
+      }
+
+      body {
+        margin: 0;
+        background:
+          linear-gradient(180deg, rgba(66, 217, 208, 0.1), transparent 280px),
+          linear-gradient(90deg, rgba(117, 170, 255, 0.08), transparent 48%),
+          var(--bg);
+        color: var(--ink);
+        line-height: 1.55;
+      }
+
+      a {
+        color: var(--cyan);
+        text-decoration: none;
+      }
+
+      a:hover {
+        text-decoration: underline;
+      }
+
+      .topbar {
+        position: sticky;
+        top: 0;
+        z-index: 10;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 18px;
+        padding: 14px clamp(18px, 3vw, 40px);
+        background: rgba(7, 11, 15, 0.9);
+        border-bottom: 1px solid var(--line);
+        backdrop-filter: blur(16px);
+      }
+
+      .brand {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        min-width: 0;
+      }
+
+      .mark {
+        width: 38px;
+        height: 38px;
+        display: grid;
+        place-items: center;
+        border: 1px solid rgba(66, 217, 208, 0.36);
+        border-radius: 8px;
+        color: var(--cyan);
+        font-weight: 900;
+        background: rgba(66, 217, 208, 0.1);
+      }
+
+      .brand strong,
+      .brand span {
+        display: block;
+      }
+
+      .brand span {
+        color: var(--muted);
+        font-size: 13px;
+      }
+
+      .nav {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: flex-end;
+        gap: 8px;
+      }
+
+      .nav a,
+      .button {
+        min-height: 34px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        padding: 7px 11px;
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        color: var(--ink);
+        background: rgba(255, 255, 255, 0.045);
+        font-size: 13px;
+        font-weight: 800;
+      }
+
+      .button.primary {
+        color: #dcfffb;
+        background: rgba(66, 217, 208, 0.13);
+        border-color: rgba(66, 217, 208, 0.34);
+      }
+
+      .hero {
+        max-width: 1180px;
+        margin: 0 auto;
+        padding: 58px clamp(18px, 3vw, 40px) 24px;
+        display: grid;
+        grid-template-columns: minmax(0, 1.05fr) minmax(300px, 0.95fr);
+        gap: 30px;
+        align-items: end;
+      }
+
+      .eyebrow {
+        display: inline-flex;
+        padding: 5px 9px;
+        border: 1px solid rgba(246, 189, 92, 0.34);
+        border-radius: 8px;
+        color: #ffe4ac;
+        background: rgba(246, 189, 92, 0.08);
+        font-size: 12px;
+        font-weight: 900;
+        text-transform: uppercase;
+      }
+
+      h1 {
+        margin: 18px 0 16px;
+        max-width: 860px;
+        font-size: clamp(40px, 6vw, 76px);
+        line-height: 0.96;
+        letter-spacing: 0;
+      }
+
+      h2 {
+        margin: 0 0 10px;
+        font-size: clamp(28px, 4vw, 44px);
+        line-height: 1;
+      }
+
+      h3 {
+        margin: 0 0 8px;
+        font-size: 18px;
+      }
+
+      p {
+        margin: 0;
+        color: #c9d5df;
+      }
+
+      .lede {
+        max-width: 760px;
+        font-size: 18px;
+      }
+
+      .hero-actions {
+        display: flex;
+        gap: 10px;
+        flex-wrap: wrap;
+        margin-top: 24px;
+      }
+
+      .signal-board {
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        background: rgba(16, 24, 32, 0.82);
+        box-shadow: var(--shadow);
+        overflow: hidden;
+      }
+
+      .signal-board header {
+        padding: 18px;
+        border-bottom: 1px solid var(--line);
+        background: rgba(255, 255, 255, 0.04);
+      }
+
+      .signal-board header strong,
+      .signal-board header span {
+        display: block;
+      }
+
+      .signal-board header span {
+        color: var(--muted);
+        font-size: 13px;
+      }
+
+      .signal-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .signal {
+        min-height: 130px;
+        padding: 18px;
+        border-right: 1px solid var(--line);
+        border-bottom: 1px solid var(--line);
+      }
+
+      .signal:nth-child(2n) {
+        border-right: 0;
+      }
+
+      .signal span {
+        display: block;
+        color: var(--muted);
+        font-size: 12px;
+        font-weight: 900;
+        text-transform: uppercase;
+      }
+
+      .signal strong {
+        display: block;
+        margin: 5px 0;
+        font-size: 24px;
+      }
+
+      .ml strong { color: var(--blue); }
+      .agent strong { color: var(--violet); }
+      .human strong { color: var(--amber); }
+      .consensus strong { color: var(--cyan); }
+
+      main {
+        max-width: 1180px;
+        margin: 0 auto;
+        padding: 12px clamp(18px, 3vw, 40px) 72px;
+      }
+
+      section {
+        margin-top: 34px;
+        padding-top: 16px;
+        border-top: 1px solid var(--line);
+      }
+
+      .section-head {
+        display: grid;
+        grid-template-columns: minmax(220px, 0.38fr) minmax(0, 0.62fr);
+        gap: 26px;
+        align-items: start;
+        margin-bottom: 18px;
+      }
+
+      .kicker {
+        color: var(--amber);
+        font-size: 12px;
+        font-weight: 900;
+        text-transform: uppercase;
+      }
+
+      .cards {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 12px;
+      }
+
+      .cards.two {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .card {
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        background: rgba(16, 24, 32, 0.78);
+        padding: 18px;
+      }
+
+      .card p,
+      li {
+        color: var(--muted);
+      }
+
+      .tag {
+        display: inline-flex;
+        margin-bottom: 10px;
+        padding: 4px 8px;
+        border-radius: 8px;
+        border: 1px solid var(--line);
+        color: var(--ink);
+        font-size: 12px;
+        font-weight: 900;
+      }
+
+      .steps {
+        counter-reset: step;
+        display: grid;
+        gap: 12px;
+      }
+
+      .step {
+        position: relative;
+        display: grid;
+        grid-template-columns: 54px minmax(0, 1fr);
+        gap: 16px;
+        align-items: start;
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        padding: 16px;
+        background: rgba(21, 31, 41, 0.72);
+      }
+
+      .step::before {
+        counter-increment: step;
+        content: counter(step);
+        width: 42px;
+        height: 42px;
+        display: grid;
+        place-items: center;
+        border-radius: 8px;
+        background: rgba(66, 217, 208, 0.12);
+        color: var(--cyan);
+        font-weight: 900;
+      }
+
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        overflow: hidden;
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        background: rgba(16, 24, 32, 0.78);
+      }
+
+      th,
+      td {
+        padding: 13px 14px;
+        text-align: left;
+        border-bottom: 1px solid var(--line);
+        vertical-align: top;
+      }
+
+      th {
+        color: var(--soft);
+        font-size: 12px;
+        text-transform: uppercase;
+      }
+
+      td {
+        color: #d6e0e8;
+      }
+
+      code {
+        padding: 2px 5px;
+        border: 1px solid var(--line);
+        border-radius: 6px;
+        background: rgba(255, 255, 255, 0.06);
+        color: #e7fbff;
+      }
+
+      .callout {
+        border: 1px solid rgba(66, 217, 208, 0.28);
+        border-radius: 8px;
+        padding: 20px;
+        background: rgba(66, 217, 208, 0.08);
+      }
+
+      .formula {
+        margin-top: 12px;
+        padding: 14px;
+        border-radius: 8px;
+        border: 1px solid var(--line);
+        background: rgba(0, 0, 0, 0.22);
+        color: #e9f9fb;
+        font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+        overflow-x: auto;
+      }
+
+      @media (max-width: 880px) {
+        .topbar,
+        .hero,
+        .section-head {
+          grid-template-columns: 1fr;
+          display: grid;
+        }
+
+        .topbar {
+          align-items: start;
+        }
+
+        .nav {
+          justify-content: flex-start;
+        }
+
+        .cards,
+        .cards.two,
+        .signal-grid {
+          grid-template-columns: 1fr;
+        }
+
+        .signal {
+          border-right: 0;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <header class="topbar">
+      <div class="brand">
+        <div class="mark">BR</div>
+        <div>
+          <strong>Boiler Room</strong>
+          <span>How to play the consensus intelligence game</span>
+        </div>
+      </div>
+      <nav class="nav">
+        <a href="#play">Play</a>
+        <a href="#signals">Signals</a>
+        <a href="#scoring">Scoring</a>
+        <a href="#evaluation">Evaluation</a>
+        <a class="button primary" href="http://127.0.0.1:4173/">Open app</a>
+      </nav>
+    </header>
+
+    <div class="hero">
+      <div>
+        <span class="eyebrow">Practice Run Guide</span>
+        <h1>Forecasting as human-plus-AI signal consolidation.</h1>
+        <p class="lede">
+          Boiler Room turns enterprise sales uncertainty into a live market where ML, AI agents, and human sales judgment combine into one consensus probability. The game is not about making the biggest trade. It is about discovering who adds signal and who adds noise.
+        </p>
+        <div class="hero-actions">
+          <a class="button primary" href="#play">Start with the rules</a>
+          <a class="button" href="#theory">Read the theory</a>
+        </div>
+      </div>
+
+      <aside class="signal-board">
+        <header>
+          <strong>The four signal layers</strong>
+          <span>Each layer can reduce uncertainty or create disorder.</span>
+        </header>
+        <div class="signal-grid">
+          <div class="signal ml">
+            <span>Layer 1</span>
+            <strong>ML Prior</strong>
+            <p>Historical pattern recognition from the baseline model.</p>
+          </div>
+          <div class="signal agent">
+            <span>Layer 2</span>
+            <strong>AI Agents</strong>
+            <p>Role-specific reads from process, risk, and deal context.</p>
+          </div>
+          <div class="signal human">
+            <span>Layer 3</span>
+            <strong>Human Read</strong>
+            <p>Rep, manager, and VP judgment from field reality.</p>
+          </div>
+          <div class="signal consensus">
+            <span>Layer 4</span>
+            <strong>Consensus</strong>
+            <p>The compressed probability after human and AI action.</p>
+          </div>
+        </div>
+      </aside>
+    </div>
+
+    <main>
+      <section id="play">
+        <div class="section-head">
+          <div>
+            <div class="kicker">What you are doing</div>
+            <h2>Play the probability desk.</h2>
+          </div>
+          <p>
+            Each run gives you a set of live sales-deal questions. For every deal, you set an honest probability and decide whether to buy, sell, or hold. Your probability is scored separately, while your trade can move the consensus market.
+          </p>
+        </div>
+
+        <div class="steps">
+          <div class="step">
+            <div>
+              <h3>Pick a run shape.</h3>
+              <p>Choose Team, Agent Focus, or Silent Market; then select deal count and run length. Longer runs give signals more time to accumulate.</p>
+            </div>
+          </div>
+          <div class="step">
+            <div>
+              <h3>Read the ML prior and consensus market.</h3>
+              <p>The ML prior is the machine-only starting point. Consensus is the live price after market activity.</p>
+            </div>
+          </div>
+          <div class="step">
+            <div>
+              <h3>Inspect the priority stack.</h3>
+              <p>Cards surface metric, process, agent, and rumor signals. Rumors are intentionally noisy; process and role-specific cards should matter more.</p>
+            </div>
+          </div>
+          <div class="step">
+            <div>
+              <h3>Submit your forecast book.</h3>
+              <p>Set probability, choose BUY, SELL, or HOLD, and size the stake. Stake affects market movement and P&amp;L. Probability affects calibration score.</p>
+            </div>
+          </div>
+          <div class="step">
+            <div>
+              <h3>Settle and learn.</h3>
+              <p>At the end, hidden outcomes resolve. The debrief compares ML prior, consensus market, and your forecast with Brier score.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="signals">
+        <div class="section-head">
+          <div>
+            <div class="kicker">The product theory</div>
+            <h2>The market is the intelligence layer.</h2>
+          </div>
+          <p>
+            Older corporate prediction markets were often human-only aggregation systems. Boiler Room's bet is that the stronger enterprise workflow combines broad ML priors, tireless AI-agent decomposition, and human social intelligence inside the same market.
+          </p>
+        </div>
+
+        <div class="cards">
+          <article class="card">
+            <span class="tag">ML Prior</span>
+            <h3>Machine pattern recognition</h3>
+            <p>The model sees broad trends across historical deal data, stages, dates, amounts, process status, and similar outcomes.</p>
+          </article>
+          <article class="card">
+            <span class="tag">AI Agent Read</span>
+            <h3>Structured decomposition</h3>
+            <p>Agents read the deal through sales, legal, security, procurement, and technical lenses. They can be scored and tuned like contributors.</p>
+          </article>
+          <article class="card">
+            <span class="tag">Human Read</span>
+            <h3>Social context</h3>
+            <p>Reps and VPs know champion politics, buyer mood, sandbagging, urgency, and executive pressure that raw CRM often misses.</p>
+          </article>
+        </div>
+
+        <div class="callout" style="margin-top: 14px">
+          <h3>The important claim</h3>
+          <p>The goal is not to prove that markets always beat ML. The goal is to measure whether human-plus-AI consensus increases information signal over isolated machine learning, isolated agents, or isolated human judgment.</p>
+          <div class="formula">signal lift = Brier(earlier signal layer) - Brier(later signal layer)</div>
+        </div>
+      </section>
+
+      <section id="scoring">
+        <div class="section-head">
+          <div>
+            <div class="kicker">How winning works</div>
+            <h2>Lower Brier wins.</h2>
+          </div>
+          <p>
+            Brier score is squared forecast error. It rewards calibrated probabilities, not bravado. A 70% forecast on a true outcome scores 0.090. A 30% forecast on that same true outcome scores 0.490.
+          </p>
+        </div>
+
+        <table>
+          <thead>
+            <tr>
+              <th>Score</th>
+              <th>What it answers</th>
+              <th>Why it matters</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Brier</td>
+              <td>Was the probability calibrated?</td>
+              <td>Primary game score and best single measure for honest forecasting.</td>
+            </tr>
+            <tr>
+              <td>Log loss</td>
+              <td>Did overconfidence get punished?</td>
+              <td>Useful for evaluating whether a layer is dangerously certain.</td>
+            </tr>
+            <tr>
+              <td>Directional accuracy</td>
+              <td>Was the forecast on the right side of 50%?</td>
+              <td>Easy to explain, but less important than calibration.</td>
+            </tr>
+            <tr>
+              <td>Signal lift</td>
+              <td>Did a new layer improve on the prior layer?</td>
+              <td>Core proof metric for human-plus-AI consensus.</td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+
+      <section id="evaluation">
+        <div class="section-head">
+          <div>
+            <div class="kicker">How we test it</div>
+            <h2>Run 500 scenarios.</h2>
+          </div>
+          <p>
+            The evaluator runs deterministic games across modes, deal counts, run lengths, and FNG policies. It checks mechanical health and measures ML prior, AI-agent market, final consensus market, and FNG performance.
+          </p>
+        </div>
+
+        <div class="cards two">
+          <article class="card">
+            <span class="tag">Command</span>
+            <h3><code>npm run evaluate:gameplay</code></h3>
+            <p>Generates summary JSON, Markdown, run-level CSV, and deal-level CSV under <code>data/generated/evaluation/</code>.</p>
+          </article>
+          <article class="card">
+            <span class="tag">Acceptance</span>
+            <h3>On track means measurable signal.</h3>
+            <p>500/500 scenarios should settle, scoring should be internally consistent, and consensus should be evaluated against both ML prior and AI-agent market.</p>
+          </article>
+        </div>
+      </section>
+
+      <section id="theory">
+        <div class="section-head">
+          <div>
+            <div class="kicker">Talk track</div>
+            <h2>The short version.</h2>
+          </div>
+          <p>
+            Boiler Room is a revenue-forecasting game and evaluation loop for measuring information signal. ML supplies the prior, AI agents decompose the deal, humans add field intelligence, and the consensus market compresses the combined judgment into a live probability. Settlement tells us whether that combination reduced entropy or added noise.
+          </p>
+        </div>
+      </section>
+    </main>
+  </body>
+</html>

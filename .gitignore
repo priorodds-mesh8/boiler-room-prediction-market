@@ -11,6 +11,13 @@ node_modules/
 
 # Generated dataset/model artifacts are reproducible and too large for GitHub.
 data/generated/
+!data/generated/
+data/generated/*
+!data/generated/evaluation/
+!data/generated/evaluation/gameplay_500_summary.json
+!data/generated/evaluation/gameplay_500_summary.md
+!data/generated/evaluation/gameplay_500_runs.csv
+!data/generated/evaluation/gameplay_500_deals.csv
 models/
 
 # Python cache files

@@ -7,7 +7,8 @@
     "dev": "node server.js",
     "start": "node server.js",
     "check": "node --check app.js && node --check server.js && node --check api/_utils.js && node --check api/live-deals.js && node --check api/agent-decision.js && node --check api/_game.js && node --check api/game/start.js && node --check api/game/session.js && node --check api/game/actions.js && node --check api/game/results.js && node --check api/report/lr.js",
-    "test:smoke": "node tests/smoke.js"
+    "test:smoke": "node tests/smoke.js",
+    "evaluate:gameplay": "node scripts/evaluate_gameplay.js --count 500 --seed 4260521"
   },
   "engines": {
     "node": ">=18"

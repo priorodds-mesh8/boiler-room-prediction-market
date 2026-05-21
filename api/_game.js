@@ -479,11 +479,15 @@ function applyAgentPhase(session, deal, cards, day) {
 }
 
 function applyAgentTrade(session, deal, agent, cards, day, silent) {
-  const belief = agentBelief(deal, agent.role, day) + cards.reduce((sum, item) => sum + Number(item.impact || 0) * 0.25, 0);
+  const read = agentBeliefRead(deal, agent.role, day);
+  const cardSignal = cards.reduce((sum, item) => sum + roleCardWeight(agent.role, item) * Number(item.impact || 0), 0);
+  const belief = clamp(read.probability + cardSignal * read.reliability, 0.02, 0.98);
   const edge = clamp(belief, 0.02, 0.98) - deal.market_probability;
-  if (Math.abs(edge) < (silent ? 0.035 : 0.045)) return null;
+  const threshold = agentTradeThreshold(read.reliability, silent);
+  if (Math.abs(edge) < threshold) return null;
   const side = edge >= 0 ? "YES" : "NO";
-  const stake = clamp(Math.round((28 + Math.abs(edge) * 520 + day * 1.5) / 5) * 5, 20, 220);
+  const signalStrength = clamp(Math.abs(edge) / 0.22, 0, 1);
+  const stake = agentStake(read.reliability, signalStrength, day, silent);
   const before = deal.market_probability;
   const trade = quoteTrade(deal, side, stake);
   if (side === "YES") {
@@ -498,7 +502,14 @@ function applyAgentTrade(session, deal, agent, cards, day, silent) {
   deal.agent_state.cost += stake;
   deal.agent_state.trades += 1;
   deal.updated_at = nowIso();
-  return makeAction(session.session_id, deal, day, "agent", agent.name, side === "YES" ? "BUY" : "SELL", confidenceFromEdge(edge), stake, side, before, deal.market_probability, clamp(belief, 0.02, 0.98), silent ? "Aggregate agent market moved." : `${agent.role} traded on a ${formatPercent(Math.abs(edge))} edge.`);
+  return makeAction(session.session_id, deal, day, "agent", agent.name, side === "YES" ? "BUY" : "SELL", confidenceFromEdge(edge), stake, side, before, deal.market_probability, clamp(belief, 0.02, 0.98), silent ? "Aggregate agent market moved." : `${agent.role} traded on a ${formatPercent(Math.abs(edge))} edge.`, {
+    role: agent.role,
+    reliability: read.reliability,
+    signal_strength: signalStrength,
+    ml_anchor: Number(deal.baseline_probability),
+    role_signal: read.roleSignal,
+    card_signal: cardSignal
+  });
 }
 
 function normalizeFngActions(actions, deals) {
@@ -667,7 +678,7 @@ function buildResults(session, deals) {
   const aggregateBrier = { ml: totals.brierMl / count, market: totals.brierMarket / count, fng: totals.brierFng / count };
   return {
     status: session.status,
-    forecastWinner: lowestKey(aggregateErrors),
+    forecastWinner: lowestKey(aggregateBrier),
     aggregateErrors,
     aggregateBrier,
     calibrationBins: buildCalibrationBins(perDeal),
@@ -736,11 +747,11 @@ function buildAttribution(item) {
   const actual = item.actualOutcome ? "True" : "False";
   const label = item.accountName || "this deal";
   if (maxSpread <= 0.02) return `${label} was a coin-flip; nobody's edge was clear (${actual}).`;
-  if (best === "fng" && margin >= 0.02) return `You added information on ${label}: your ${formatPercent(item.fngProbability)} beat the market's ${formatPercent(item.marketProbability)} - outcome ${actual}.`;
-  if (best === "market" && margin >= 0.02 && briers.fng - briers.market <= 0.04) return `The market got ${label} right (${formatPercent(item.marketProbability)}); you were close (${formatPercent(item.fngProbability)}).`;
+  if (best === "fng" && margin >= 0.02) return `You added information on ${label}: your ${formatPercent(item.fngProbability)} beat the consensus ${formatPercent(item.marketProbability)} - outcome ${actual}.`;
+  if (best === "market" && margin >= 0.02 && briers.fng - briers.market <= 0.04) return `The consensus got ${label} right (${formatPercent(item.marketProbability)}); you were close (${formatPercent(item.fngProbability)}).`;
   if (best === "ml" && briers.market - briers.ml >= 0.02 && briers.fng - briers.ml >= 0.02) return `ML was sharper on ${label}: ${formatPercent(item.baselineProbability)} vs. your ${formatPercent(item.fngProbability)}. Worth understanding what it saw.`;
-  if (best === "market") return `The market was sharper on ${label}: ${formatPercent(item.marketProbability)} vs. your ${formatPercent(item.fngProbability)} - outcome ${actual}.`;
-  if (best === "fng") return `You were closest on ${label}: ${formatPercent(item.fngProbability)} vs. market ${formatPercent(item.marketProbability)} - outcome ${actual}.`;
+  if (best === "market") return `The consensus was sharper on ${label}: ${formatPercent(item.marketProbability)} vs. your ${formatPercent(item.fngProbability)} - outcome ${actual}.`;
+  if (best === "fng") return `You were closest on ${label}: ${formatPercent(item.fngProbability)} vs. consensus ${formatPercent(item.marketProbability)} - outcome ${actual}.`;
   return `ML was slightly sharper on ${label}: ${formatPercent(item.baselineProbability)} vs. your ${formatPercent(item.fngProbability)} - outcome ${actual}.`;
 }
 
@@ -748,7 +759,7 @@ function buildHeadline(aggregateBrier) {
   const winner = lowestKey(aggregateBrier);
   const sorted = Object.keys(aggregateBrier).sort((a, b) => aggregateBrier[a] - aggregateBrier[b]);
   const delta = aggregateBrier[sorted[1]] - aggregateBrier[sorted[0]];
-  const labels = { ml: "ML", market: "Market", fng: "You" };
+  const labels = { ml: "ML prior", market: "Consensus", fng: "You" };
   const spread = aggregateBrier[sorted[2]] - aggregateBrier[sorted[0]];
   if (spread < 0.001) return `Three-way tie within a hair: ${aggregateBrier[winner].toFixed(3)} across the board.`;
   return `Best calibration this run: ${labels[winner]}. ${labels[winner]} Brier ${aggregateBrier[winner].toFixed(3)} - beat ${labels[sorted[1]]} by ${delta.toFixed(3)}.`;
@@ -915,19 +926,108 @@ function card(kind, title, body, impact, tone, badge) {
 }
 
 function agentBelief(deal, role, day) {
+  return agentBeliefRead(deal, role, day).probability;
+}
+
+function agentBeliefRead(deal, role, day) {
   const p = deal.observable_payload || {};
-  let belief = Number(deal.baseline_probability);
-  belief += statusImpact(p.legal_status) * 0.4;
-  belief += statusImpact(p.security_review_status) * 0.4;
-  belief += statusImpact(p.procurement_status) * 0.45;
-  belief += p.budget_confirmed ? 0.045 : -0.025;
-  belief += p.economic_buyer_identified ? 0.04 : -0.035;
-  belief += (numeric(p.buyer_sentiment_score) - 0.5) * 0.08;
-  if (/SE|Solution/i.test(role)) belief += statusImpact(p.security_review_status) * 0.35;
-  if (/Legal/i.test(role)) belief += statusImpact(p.legal_status) * 0.35;
-  if (/BDR/i.test(role)) belief += (numeric(p.activity_count_last_14_days) - 5) * 0.006;
-  belief += (((day + deal.sort_order) % 5) - 2) * 0.012;
-  return clamp(belief, 0.02, 0.98);
+  const profile = agentRoleProfile(role);
+  const baseline = clamp(Number(deal.baseline_probability), 0.02, 0.98);
+  const market = clamp(Number(deal.market_probability || baseline), 0.02, 0.98);
+  const direction = targetSignalDirection(deal.target);
+  const processSignal = direction * (
+    statusImpact(p.legal_status) * profile.legal
+    + statusImpact(p.security_review_status) * profile.security
+    + statusImpact(p.procurement_status) * profile.procurement
+  );
+  const salesSignal = direction * (
+    (p.budget_confirmed ? 0.045 : -0.025) * profile.budget
+    + (p.economic_buyer_identified ? 0.04 : -0.035) * profile.buyer
+    + clamp((numeric(p.champion_strength) - 3) * 0.025, -0.06, 0.06) * profile.champion
+    + (numeric(p.buyer_sentiment_score) - 0.5) * 0.08 * profile.sentiment
+  );
+  const activitySignal = direction * clamp((numeric(p.activity_count_last_14_days) - 5) * 0.006, -0.05, 0.05) * profile.activity;
+  const timingSignal = -direction * clamp(numeric(p.close_date_change_count), 0, 5) * 0.012 * profile.timing;
+  const rawSignal = processSignal + salesSignal + activitySignal + timingSignal;
+  const cappedSignal = clamp(rawSignal, -profile.maxSignal, profile.maxSignal);
+  const roleSignal = clamp(baseline + cappedSignal, 0.02, 0.98);
+  const deterministicNoise = ((((day + deal.sort_order + hash(`${role}:${deal.deal_id}`).charCodeAt(0)) % 5) - 2) * 0.006) * profile.noise;
+  const blended = baseline * 0.68 + roleSignal * 0.22 + market * 0.1 + deterministicNoise;
+  const maxDeviation = profile.maxDeviation;
+  return {
+    probability: clamp(blended, baseline - maxDeviation, baseline + maxDeviation),
+    reliability: profile.reliability,
+    roleSignal,
+    rawSignal: cappedSignal
+  };
+}
+
+function agentRoleProfile(role) {
+  const text = String(role || "Agent");
+  if (/SE|Solution|Technical|Security/i.test(text)) {
+    return roleProfile(0.74, { security: 1.25, procurement: 0.35, legal: 0.25, budget: 0.35, buyer: 0.35, champion: 0.4, sentiment: 0.45, activity: 0.35, timing: 0.55, noise: 0.55, maxSignal: 0.18, maxDeviation: 0.11 });
+  }
+  if (/Legal|Counsel/i.test(text)) {
+    return roleProfile(0.78, { legal: 1.4, procurement: 0.45, security: 0.25, budget: 0.25, buyer: 0.25, champion: 0.2, sentiment: 0.25, activity: 0.2, timing: 0.5, noise: 0.45, maxSignal: 0.18, maxDeviation: 0.1 });
+  }
+  if (/VP|Manager|Forecast|Sales Manager/i.test(text)) {
+    return roleProfile(0.68, { legal: 0.65, procurement: 0.75, security: 0.6, budget: 0.8, buyer: 0.8, champion: 0.75, sentiment: 0.75, activity: 0.45, timing: 0.9, noise: 0.65, maxSignal: 0.16, maxDeviation: 0.1 });
+  }
+  if (/BDR|SDR|Business Development/i.test(text)) {
+    return roleProfile(0.5, { legal: 0.15, procurement: 0.2, security: 0.15, budget: 0.25, buyer: 0.35, champion: 0.45, sentiment: 0.55, activity: 1.2, timing: 0.35, noise: 1.1, maxSignal: 0.12, maxDeviation: 0.06 });
+  }
+  if (/AE|Account Executive|Closer|Rep/i.test(text)) {
+    return roleProfile(0.7, { legal: 0.45, procurement: 0.7, security: 0.35, budget: 0.95, buyer: 0.9, champion: 1.05, sentiment: 1, activity: 0.7, timing: 0.75, noise: 0.7, maxSignal: 0.17, maxDeviation: 0.11 });
+  }
+  if (/Aggregate/i.test(text)) {
+    return roleProfile(0.64, { legal: 0.65, procurement: 0.65, security: 0.65, budget: 0.65, buyer: 0.65, champion: 0.65, sentiment: 0.65, activity: 0.55, timing: 0.65, noise: 0.5, maxSignal: 0.14, maxDeviation: 0.08 });
+  }
+  return roleProfile(0.58, { legal: 0.45, procurement: 0.45, security: 0.45, budget: 0.5, buyer: 0.5, champion: 0.5, sentiment: 0.5, activity: 0.45, timing: 0.45, noise: 0.8, maxSignal: 0.12, maxDeviation: 0.07 });
+}
+
+function roleProfile(reliability, overrides) {
+  return {
+    reliability,
+    legal: 0.4,
+    security: 0.4,
+    procurement: 0.4,
+    budget: 0.4,
+    buyer: 0.4,
+    champion: 0.4,
+    sentiment: 0.4,
+    activity: 0.4,
+    timing: 0.4,
+    noise: 0.7,
+    maxSignal: 0.14,
+    maxDeviation: 0.08,
+    ...overrides
+  };
+}
+
+function targetSignalDirection(target) {
+  return target === "slipped_to_next_quarter" ? -1 : 1;
+}
+
+function roleCardWeight(role, card) {
+  const text = `${role || ""} ${card && card.title || ""} ${card && card.kind || ""}`;
+  if (/rumor|gossip/i.test(text)) return 0.04;
+  if (/SE|Solution|Technical|Security/i.test(role || "")) return /security|technical|implementation/i.test(text) ? 0.16 : 0.07;
+  if (/Legal|Counsel/i.test(role || "")) return /legal|redline|approval/i.test(text) ? 0.18 : 0.06;
+  if (/VP|Manager|Forecast|Sales Manager/i.test(role || "")) return /forecast|pipeline|budget|procurement|close/i.test(text) ? 0.13 : 0.08;
+  if (/BDR|SDR|Business Development/i.test(role || "")) return /activity|logged|calendar|buyer|sentiment/i.test(text) ? 0.12 : 0.04;
+  if (/AE|Account Executive|Closer|Rep/i.test(role || "")) return /champion|buyer|budget|procurement|next step|sentiment/i.test(text) ? 0.14 : 0.07;
+  return 0.07;
+}
+
+function agentTradeThreshold(reliability, silent) {
+  const base = silent ? 0.055 : 0.06;
+  return clamp(base - reliability * 0.025, 0.035, 0.06);
+}
+
+function agentStake(reliability, signalStrength, day, silent) {
+  const maxStake = silent ? 120 : 160;
+  const raw = 18 + maxStake * reliability * signalStrength + Math.min(day, 30) * 0.45;
+  return clamp(Math.round(raw / 5) * 5, 20, silent ? 140 : 180);
 }
 
 function cardPriority(card, deal) {

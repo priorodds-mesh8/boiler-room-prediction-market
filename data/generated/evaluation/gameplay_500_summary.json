@@ -1,0 +1,2333 @@
+{
+  "generatedAt": "2026-05-21T22:32:53.593Z",
+  "requestedScenarios": 500,
+  "completedScenarios": 500,
+  "failedScenarios": 0,
+  "resolvedDeals": 2359,
+  "definitionOfWorking": {
+    "mechanicalHealthPass": true,
+    "scoringIntegrityPass": true,
+    "noLeakagePolicy": "Action policies use only pre-settlement payload fields; oracle_shadow is report-only.",
+    "primaryScore": "Brier score",
+    "directionalRightThreshold": 0.5
+  },
+  "overall": {
+    "n": 2359,
+    "rightOff": {
+      "mlRight": 1617,
+      "mlOff": 742,
+      "agentMarketRight": 1491,
+      "agentMarketOff": 868,
+      "consensusMarketRight": 1521,
+      "consensusMarketOff": 838,
+      "marketRight": 1521,
+      "marketOff": 838,
+      "fngRight": 1379,
+      "fngOff": 980
+    },
+    "brier": {
+      "ml": {
+        "mean": 0.2354827899881713,
+        "median": 0.249448304704,
+        "p10": 0.18474867097599998,
+        "p90": 0.2750016528359999
+      },
+      "agentMarket": {
+        "mean": 0.23635844776584644,
+        "median": 0.24234772389648324,
+        "p10": 0.18474867097599998,
+        "p90": 0.27716659454703635
+      },
+      "consensusMarket": {
+        "mean": 0.23626630684844785,
+        "median": 0.24113185458290426,
+        "p10": 0.1792275158247394,
+        "p90": 0.2809694252583544
+      },
+      "market": {
+        "mean": 0.23626630684844785,
+        "median": 0.24113185458290426,
+        "p10": 0.1792275158247394,
+        "p90": 0.2809694252583544
+      },
+      "fng": {
+        "mean": 0.28183935949650835,
+        "median": 0.23338664480159751,
+        "p10": 0.06082127845610899,
+        "p90": 0.5176340334361772
+      },
+      "oracleShadow": {
+        "mean": 0.002500000000000094,
+        "median": 0.0025000000000000005,
+        "p10": 0.0025000000000000005,
+        "p90": 0.0025000000000000044
+      }
+    },
+    "logLoss": {
+      "ml": 0.6639216134601535,
+      "agentMarket": 0.6656798910027593,
+      "consensusMarket": 0.665562339844832,
+      "market": 0.665562339844832,
+      "fng": 0.8804873906045904
+    },
+    "perDealBrierWinners": {
+      "market": 430,
+      "ml": 917,
+      "fng": 1012
+    },
+    "signalLayerWinners": {
+      "agentMarket": 518,
+      "ml": 828,
+      "fng": 1012,
+      "consensusMarket": 1
+    },
+    "agentMarketBeatsMl": 1069,
+    "consensusMarketBeatsMl": 1153,
+    "consensusMarketBeatsAgentMarket": 375,
+    "marketBeatsMl": 1153,
+    "fngBeatsMl": 1023,
+    "fngBeatsMarket": 1108,
+    "avgAgentMarketMoveFromMl": 0.009082092337567802,
+    "avgConsensusMarketMoveFromMl": 0.00737437199113056,
+    "avgHumanConsensusDelta": -0.0017077203464372394,
+    "avgMarketMoveFromMl": 0.00737437199113056,
+    "avgFngMoveFromMl": 0.0029678594458437814
+  },
+  "policies": {
+    "hold_ml": {
+      "n": 342,
+      "rightOff": {
+        "mlRight": 234,
+        "mlOff": 108,
+        "agentMarketRight": 236,
+        "agentMarketOff": 106,
+        "consensusMarketRight": 234,
+        "consensusMarketOff": 108,
+        "marketRight": 234,
+        "marketOff": 108,
+        "fngRight": 234,
+        "fngOff": 108
+      },
+      "brier": {
+        "ml": {
+          "mean": 0.23551966296257976,
+          "median": 0.249448304704,
+          "p10": 0.18474867097599998,
+          "p90": 0.2750016528359999
+        },
+        "agentMarket": {
+          "mean": 0.23488873467958343,
+          "median": 0.24145370847476472,
+          "p10": 0.18474867097599998,
+          "p90": 0.2750016528359999
+        },
+        "consensusMarket": {
+          "mean": 0.23489963841102726,
+          "median": 0.24145370847476472,
+          "p10": 0.18474867097599998,
+          "p90": 0.2750016528359999
+        },
+        "market": {
+          "mean": 0.23489963841102726,
+          "median": 0.24145370847476472,
+          "p10": 0.18474867097599998,
+          "p90": 0.2750016528359999
+        },
+        "fng": {
+          "mean": 0.23551966296257976,
+          "median": 0.249448304704,
+          "p10": 0.18474867097599998,
+          "p90": 0.2750016528359999
+        },
+        "oracleShadow": {
+          "mean": 0.002500000000000025,
+          "median": 0.0025000000000000005,
+          "p10": 0.0025000000000000005,
+          "p90": 0.0025000000000000044
+        }
+      },
+      "logLoss": {
+        "ml": 0.6639954735810023,
+        "agentMarket": 0.6627504456260872,
+        "consensusMarket": 0.6627721971027499,
+        "market": 0.6627721971027499,
+        "fng": 0.6639954735810023
+      },
+      "perDealBrierWinners": {
+        "market": 82,
+        "ml": 260
+      },
+      "signalLayerWinners": {
+        "agentMarket": 82,
+        "ml": 260
+      },
+      "agentMarketBeatsMl": 82,
+      "consensusMarketBeatsMl": 82,
+      "consensusMarketBeatsAgentMarket": 4,
+      "marketBeatsMl": 82,
+      "fngBeatsMl": 0,
+      "fngBeatsMarket": 68,
+      "avgAgentMarketMoveFromMl": 0.006090752442590368,
+      "avgConsensusMarketMoveFromMl": 0.005528824234818476,
+      "avgHumanConsensusDelta": -0.0005619282077718936,
+      "avgMarketMoveFromMl": 0.005528824234818476,
+      "avgFngMoveFromMl": 0
+    },
+    "follow_market": {
+      "n": 342,
+      "rightOff": {
+        "mlRight": 234,
+        "mlOff": 108,
+        "agentMarketRight": 226,
+        "agentMarketOff": 116,
+        "consensusMarketRight": 218,
+        "consensusMarketOff": 124,
+        "marketRight": 218,
+        "marketOff": 124,
+        "fngRight": 200,
+        "fngOff": 142
+      },
+      "brier": {
+        "ml": {
+          "mean": 0.23551966296257976,
+          "median": 0.249448304704,
+          "p10": 0.18474867097599998,
+          "p90": 0.2750016528359999
+        },
+        "agentMarket": {
+          "mean": 0.23771779548957836,
+          "median": 0.24499607229524473,
+          "p10": 0.18505105751103576,
+          "p90": 0.27722047331720173
+        },
+        "consensusMarket": {
+          "mean": 0.2378689443435318,
+          "median": 0.2450259060450831,
+          "p10": 0.18306158975743006,
+          "p90": 0.2790287734780883
+        },
+        "market": {
+          "mean": 0.2378689443435318,
+          "median": 0.2450259060450831,
+          "p10": 0.18306158975743006,
+          "p90": 0.2790287734780883
+        },
+        "fng": {
+          "mean": 0.24178062469446746,
+          "median": 0.23890063864640393,
+          "p10": 0.15932813051557515,
+          "p90": 0.3140722076349972
+        },
+        "oracleShadow": {
+          "mean": 0.002500000000000025,
+          "median": 0.0025000000000000005,
+          "p10": 0.0025000000000000005,
+          "p90": 0.0025000000000000044
+        }
+      },
+      "logLoss": {
+        "ml": 0.6639954735810023,
+        "agentMarket": 0.6684182734149671,
+        "consensusMarket": 0.6686713492323658,
+        "market": 0.6686713492323658,
+        "fng": 0.6762830393014593
+      },
+      "perDealBrierWinners": {
+        "ml": 138,
+        "market": 48,
+        "fng": 156
+      },
+      "signalLayerWinners": {
+        "agentMarket": 58,
+        "ml": 128,
+        "fng": 156
+      },
+      "agentMarketBeatsMl": 166,
+      "consensusMarketBeatsMl": 178,
+      "consensusMarketBeatsAgentMarket": 54,
+      "marketBeatsMl": 178,
+      "fngBeatsMl": 166,
+      "fngBeatsMarket": 168,
+      "avgAgentMarketMoveFromMl": 0.018021942541585394,
+      "avgConsensusMarketMoveFromMl": 0.021633044367486226,
+      "avgHumanConsensusDelta": 0.0036111018259008423,
+      "avgMarketMoveFromMl": 0.021633044367486226,
+      "avgFngMoveFromMl": 0.0408695865840279
+    },
+    "calibrated_blend": {
+      "n": 342,
+      "rightOff": {
+        "mlRight": 234,
+        "mlOff": 108,
+        "agentMarketRight": 220,
+        "agentMarketOff": 122,
+        "consensusMarketRight": 234,
+        "consensusMarketOff": 108,
+        "marketRight": 234,
+        "marketOff": 108,
+        "fngRight": 192,
+        "fngOff": 150
+      },
+      "brier": {
+        "ml": {
+          "mean": 0.23551966296257976,
+          "median": 0.249448304704,
+          "p10": 0.18474867097599998,
+          "p90": 0.2750016528359999
+        },
+        "agentMarket": {
+          "mean": 0.23682629382600393,
+          "median": 0.24287966824201218,
+          "p10": 0.18727345418054547,
+          "p90": 0.2738117248282185
+        },
+        "consensusMarket": {
+          "mean": 0.2352829629553869,
+          "median": 0.24536971657768572,
+          "p10": 0.18474867097599998,
+          "p90": 0.2724234054637955
+        },
+        "market": {
+          "mean": 0.2352829629553869,
+          "median": 0.24536971657768572,
+          "p10": 0.18474867097599998,
+          "p90": 0.2724234054637955
+        },
+        "fng": {
+          "mean": 0.241024387108374,
+          "median": 0.23770714772484,
+          "p10": 0.18474867097599998,
+          "p90": 0.2939061919567317
+        },
+        "oracleShadow": {
+          "mean": 0.002500000000000025,
+          "median": 0.0025000000000000005,
+          "p10": 0.0025000000000000005,
+          "p90": 0.0025000000000000044
+        }
+      },
+      "logLoss": {
+        "ml": 0.6639954735810023,
+        "agentMarket": 0.6666405741619505,
+        "consensusMarket": 0.6635140687730016,
+        "market": 0.6635140687730016,
+        "fng": 0.6749981572041039
+      },
+      "perDealBrierWinners": {
+        "ml": 116,
+        "fng": 130,
+        "market": 96
+      },
+      "signalLayerWinners": {
+        "agentMarket": 114,
+        "ml": 98,
+        "fng": 130
+      },
+      "agentMarketBeatsMl": 146,
+      "consensusMarketBeatsMl": 158,
+      "consensusMarketBeatsAgentMarket": 60,
+      "marketBeatsMl": 158,
+      "fngBeatsMl": 130,
+      "fngBeatsMarket": 140,
+      "avgAgentMarketMoveFromMl": 0.010165709469883644,
+      "avgConsensusMarketMoveFromMl": 0.00932082699164218,
+      "avgHumanConsensusDelta": -0.0008448824782414717,
+      "avgMarketMoveFromMl": 0.00932082699164218,
+      "avgFngMoveFromMl": -0.003764509137964143
+    },
+    "high_conviction": {
+      "n": 342,
+      "rightOff": {
+        "mlRight": 234,
+        "mlOff": 108,
+        "agentMarketRight": 208,
+        "agentMarketOff": 134,
+        "consensusMarketRight": 208,
+        "consensusMarketOff": 134,
+        "marketRight": 208,
+        "marketOff": 134,
+        "fngRight": 208,
+        "fngOff": 134
+      },
+      "brier": {
+        "ml": {
+          "mean": 0.23551966296257976,
+          "median": 0.249448304704,
+          "p10": 0.18474867097599998,
+          "p90": 0.2750016528359999
+        },
+        "agentMarket": {
+          "mean": 0.23466709817386794,
+          "median": 0.2373494091765215,
+          "p10": 0.17552554745410803,
+          "p90": 0.28853957806399844
+        },
+        "consensusMarket": {
+          "mean": 0.2322354909825403,
+          "median": 0.23724415136056737,
+          "p10": 0.14033985103989083,
+          "p90": 0.3452435582336146
+        },
+        "market": {
+          "mean": 0.2322354909825403,
+          "median": 0.23724415136056737,
+          "p10": 0.14033985103989083,
+          "p90": 0.3452435582336146
+        },
+        "fng": {
+          "mean": 0.24143607996603797,
+          "median": 0.11068834902935795,
+          "p10": 0.06750851097599997,
+          "p90": 0.4972105891728512
+        },
+        "oracleShadow": {
+          "mean": 0.002500000000000025,
+          "median": 0.0025000000000000005,
+          "p10": 0.0025000000000000005,
+          "p90": 0.0025000000000000044
+        }
+      },
+      "logLoss": {
+        "ml": 0.6639954735810023,
+        "agentMarket": 0.6622180148613122,
+        "consensusMarket": 0.6569783891303931,
+        "market": 0.6569783891303931,
+        "fng": 0.6755250639148251
+      },
+      "perDealBrierWinners": {
+        "ml": 116,
+        "fng": 208,
+        "market": 18
+      },
+      "signalLayerWinners": {
+        "ml": 112,
+        "fng": 208,
+        "agentMarket": 22
+      },
+      "agentMarketBeatsMl": 178,
+      "consensusMarketBeatsMl": 182,
+      "consensusMarketBeatsAgentMarket": 80,
+      "marketBeatsMl": 182,
+      "fngBeatsMl": 208,
+      "fngBeatsMarket": 208,
+      "avgAgentMarketMoveFromMl": 0.004582718876332301,
+      "avgConsensusMarketMoveFromMl": -0.0026566284719921726,
+      "avgHumanConsensusDelta": -0.007239347348324475,
+      "avgMarketMoveFromMl": -0.0026566284719921726,
+      "avgFngMoveFromMl": -0.0055578743067016614
+    },
+    "contrarian": {
+      "n": 307,
+      "rightOff": {
+        "mlRight": 213,
+        "mlOff": 94,
+        "agentMarketRight": 177,
+        "agentMarketOff": 130,
+        "consensusMarketRight": 213,
+        "consensusMarketOff": 94,
+        "marketRight": 213,
+        "marketOff": 94,
+        "fngRight": 212,
+        "fngOff": 95
+      },
+      "brier": {
+        "ml": {
+          "mean": 0.23523632958595836,
+          "median": 0.249448304704,
+          "p10": 0.18474867097599998,
+          "p90": 0.2750016528359999
+        },
+        "agentMarket": {
+          "mean": 0.23441774896945175,
+          "median": 0.23993154016528218,
+          "p10": 0.18452023559373562,
+          "p90": 0.2750016528359999
+        },
+        "consensusMarket": {
+          "mean": 0.2277449525077788,
+          "median": 0.22877295399001632,
+          "p10": 0.18100567172085869,
+          "p90": 0.2744318655077104
+        },
+        "market": {
+          "mean": 0.2277449525077788,
+          "median": 0.22877295399001632,
+          "p10": 0.18100567172085869,
+          "p90": 0.2744318655077104
+        },
+        "fng": {
+          "mean": 0.22142695736445334,
+          "median": 0.206290041703881,
+          "p10": 0.1552544083210536,
+          "p90": 0.31085642539465363
+        },
+        "oracleShadow": {
+          "mean": 0.0025000000000000217,
+          "median": 0.0025000000000000005,
+          "p10": 0.0025000000000000005,
+          "p90": 0.0025000000000000044
+        }
+      },
+      "logLoss": {
+        "ml": 0.6634279295252908,
+        "agentMarket": 0.6618012018813008,
+        "consensusMarket": 0.6483816385557734,
+        "market": 0.6483816385557734,
+        "fng": 0.6352591908552606
+      },
+      "perDealBrierWinners": {
+        "fng": 194,
+        "market": 53,
+        "ml": 60
+      },
+      "signalLayerWinners": {
+        "fng": 194,
+        "agentMarket": 78,
+        "ml": 35
+      },
+      "agentMarketBeatsMl": 144,
+      "consensusMarketBeatsMl": 207,
+      "consensusMarketBeatsAgentMarket": 102,
+      "marketBeatsMl": 207,
+      "fngBeatsMl": 194,
+      "fngBeatsMarket": 194,
+      "avgAgentMarketMoveFromMl": 0.0004641872010849083,
+      "avgConsensusMarketMoveFromMl": -0.006208496382687927,
+      "avgHumanConsensusDelta": -0.006672683583772835,
+      "avgMarketMoveFromMl": -0.006208496382687927,
+      "avgFngMoveFromMl": -0.022722504812187946
+    },
+    "optimistic": {
+      "n": 171,
+      "rightOff": {
+        "mlRight": 117,
+        "mlOff": 54,
+        "agentMarketRight": 96,
+        "agentMarketOff": 75,
+        "consensusMarketRight": 96,
+        "consensusMarketOff": 75,
+        "marketRight": 96,
+        "marketOff": 75,
+        "fngRight": 72,
+        "fngOff": 99
+      },
+      "brier": {
+        "ml": {
+          "mean": 0.23551966296257845,
+          "median": 0.249448304704,
+          "p10": 0.18474867097599998,
+          "p90": 0.2750016528359999
+        },
+        "agentMarket": {
+          "mean": 0.24443326783026886,
+          "median": 0.24290719735752256,
+          "p10": 0.1759278476709033,
+          "p90": 0.3269908685113571
+        },
+        "consensusMarket": {
+          "mean": 0.25175355278690437,
+          "median": 0.24290719735752256,
+          "p10": 0.17199119544426972,
+          "p90": 0.3333309916282748
+        },
+        "market": {
+          "mean": 0.25175355278690437,
+          "median": 0.24290719735752256,
+          "p10": 0.17199119544426972,
+          "p90": 0.3333309916282748
+        },
+        "fng": {
+          "mean": 0.5561894736842091,
+          "median": 0.9603999999999999,
+          "p10": 0.0004000000000000007,
+          "p90": 0.9603999999999999
+        },
+        "oracleShadow": {
+          "mean": 0.0025000000000000022,
+          "median": 0.0025000000000000005,
+          "p10": 0.0025000000000000005,
+          "p90": 0.0025000000000000044
+        }
+      },
+      "logLoss": {
+        "ml": 0.6639954735810035,
+        "agentMarket": 0.6819520579688348,
+        "consensusMarket": 0.6982420491747978,
+        "market": 0.6982420491747978,
+        "fng": 2.273361827276301
+      },
+      "perDealBrierWinners": {
+        "ml": 78,
+        "fng": 72,
+        "market": 21
+      },
+      "signalLayerWinners": {
+        "ml": 78,
+        "fng": 72,
+        "agentMarket": 21
+      },
+      "agentMarketBeatsMl": 84,
+      "consensusMarketBeatsMl": 85,
+      "consensusMarketBeatsAgentMarket": 3,
+      "marketBeatsMl": 85,
+      "fngBeatsMl": 72,
+      "fngBeatsMarket": 72,
+      "avgAgentMarketMoveFromMl": 0.03658666785784917,
+      "avgConsensusMarketMoveFromMl": 0.04483820054623268,
+      "avgHumanConsensusDelta": 0.008251532688383507,
+      "avgMarketMoveFromMl": 0.04483820054623268,
+      "avgFngMoveFromMl": 0.483636684210527
+    },
+    "pessimistic": {
+      "n": 171,
+      "rightOff": {
+        "mlRight": 117,
+        "mlOff": 54,
+        "agentMarketRight": 111,
+        "agentMarketOff": 60,
+        "consensusMarketRight": 108,
+        "consensusMarketOff": 63,
+        "marketRight": 108,
+        "marketOff": 63,
+        "fngRight": 99,
+        "fngOff": 72
+      },
+      "brier": {
+        "ml": {
+          "mean": 0.23551966296257845,
+          "median": 0.249448304704,
+          "p10": 0.18474867097599998,
+          "p90": 0.2750016528359999
+        },
+        "agentMarket": {
+          "mean": 0.23557162641813836,
+          "median": 0.23687178350793034,
+          "p10": 0.17190051292140837,
+          "p90": 0.3021963967701098
+        },
+        "consensusMarket": {
+          "mean": 0.23411626830684867,
+          "median": 0.24016581790885314,
+          "p10": 0.16483976288292487,
+          "p90": 0.30496491009850624
+        },
+        "market": {
+          "mean": 0.23411626830684867,
+          "median": 0.24016581790885314,
+          "p10": 0.16483976288292487,
+          "p90": 0.30496491009850624
+        },
+        "fng": {
+          "mean": 0.4040938564638939,
+          "median": 0.0004,
+          "p10": 0.0004,
+          "p90": 0.9603999999999999
+        },
+        "oracleShadow": {
+          "mean": 0.0025000000000000022,
+          "median": 0.0025000000000000005,
+          "p10": 0.0025000000000000005,
+          "p90": 0.0025000000000000044
+        }
+      },
+      "logLoss": {
+        "ml": 0.6639954735810035,
+        "agentMarket": 0.6640609126732118,
+        "consensusMarket": 0.6606639502704006,
+        "market": 0.6606639502704006,
+        "fng": 1.649273130046371
+      },
+      "perDealBrierWinners": {
+        "fng": 99,
+        "ml": 34,
+        "market": 38
+      },
+      "signalLayerWinners": {
+        "fng": 99,
+        "ml": 33,
+        "agentMarket": 39
+      },
+      "agentMarketBeatsMl": 99,
+      "consensusMarketBeatsMl": 100,
+      "consensusMarketBeatsAgentMarket": 15,
+      "marketBeatsMl": 100,
+      "fngBeatsMl": 99,
+      "fngBeatsMarket": 99,
+      "avgAgentMarketMoveFromMl": -0.013440397828338902,
+      "avgConsensusMarketMoveFromMl": -0.025811647748329492,
+      "avgHumanConsensusDelta": -0.012371249919990604,
+      "avgMarketMoveFromMl": -0.025811647748329492,
+      "avgFngMoveFromMl": -0.47609729342650753
+    },
+    "noisy": {
+      "n": 171,
+      "rightOff": {
+        "mlRight": 117,
+        "mlOff": 54,
+        "agentMarketRight": 112,
+        "agentMarketOff": 59,
+        "consensusMarketRight": 110,
+        "consensusMarketOff": 61,
+        "marketRight": 110,
+        "marketOff": 61,
+        "fngRight": 84,
+        "fngOff": 87
+      },
+      "brier": {
+        "ml": {
+          "mean": 0.23551966296257845,
+          "median": 0.249448304704,
+          "p10": 0.18474867097599998,
+          "p90": 0.2750016528359999
+        },
+        "agentMarket": {
+          "mean": 0.2350658669867384,
+          "median": 0.23439135806446817,
+          "p10": 0.18847619717704436,
+          "p90": 0.27917736870698573
+        },
+        "consensusMarket": {
+          "mean": 0.2390108272725749,
+          "median": 0.23825138345069624,
+          "p10": 0.18611596002140757,
+          "p90": 0.3038216168118362
+        },
+        "market": {
+          "mean": 0.2390108272725749,
+          "median": 0.23825138345069624,
+          "p10": 0.18611596002140757,
+          "p90": 0.3038216168118362
+        },
+        "fng": {
+          "mean": 0.257002040469094,
+          "median": 0.25744572107678754,
+          "p10": 0.1329366527565791,
+          "p90": 0.4002463213234475
+        },
+        "oracleShadow": {
+          "mean": 0.0025000000000000022,
+          "median": 0.0025000000000000005,
+          "p10": 0.0025000000000000005,
+          "p90": 0.0025000000000000044
+        }
+      },
+      "logLoss": {
+        "ml": 0.6639954735810035,
+        "agentMarket": 0.6630711432061503,
+        "consensusMarket": 0.6710510733672345,
+        "market": 0.6710510733672345,
+        "fng": 0.7075723234956907
+      },
+      "perDealBrierWinners": {
+        "fng": 77,
+        "ml": 61,
+        "market": 33
+      },
+      "signalLayerWinners": {
+        "fng": 77,
+        "agentMarket": 52,
+        "ml": 42
+      },
+      "agentMarketBeatsMl": 86,
+      "consensusMarketBeatsMl": 81,
+      "consensusMarketBeatsAgentMarket": 35,
+      "marketBeatsMl": 81,
+      "fngBeatsMl": 77,
+      "fngBeatsMarket": 80,
+      "avgAgentMarketMoveFromMl": 0.0103806051313449,
+      "avgConsensusMarketMoveFromMl": 0.010743217678700847,
+      "avgHumanConsensusDelta": 0.0003626125473559432,
+      "avgMarketMoveFromMl": 0.010743217678700847,
+      "avgFngMoveFromMl": 0.0032680614014955435
+    },
+    "random": {
+      "n": 171,
+      "rightOff": {
+        "mlRight": 117,
+        "mlOff": 54,
+        "agentMarketRight": 105,
+        "agentMarketOff": 66,
+        "consensusMarketRight": 100,
+        "consensusMarketOff": 71,
+        "marketRight": 100,
+        "marketOff": 71,
+        "fngRight": 78,
+        "fngOff": 93
+      },
+      "brier": {
+        "ml": {
+          "mean": 0.23551966296257845,
+          "median": 0.249448304704,
+          "p10": 0.18474867097599998,
+          "p90": 0.2750016528359999
+        },
+        "agentMarket": {
+          "mean": 0.23651494615785185,
+          "median": 0.2415084492059432,
+          "p10": 0.18422907821758883,
+          "p90": 0.2821081795923779
+        },
+        "consensusMarket": {
+          "mean": 0.2450395322580651,
+          "median": 0.2415084492059432,
+          "p10": 0.1796019533212552,
+          "p90": 0.30977370024924306
+        },
+        "market": {
+          "mean": 0.2450395322580651,
+          "median": 0.2415084492059432,
+          "p10": 0.1796019533212552,
+          "p90": 0.30977370024924306
+        },
+        "fng": {
+          "mean": 0.3537251265945421,
+          "median": 0.3352813047217114,
+          "p10": 0.022115315096815868,
+          "p90": 0.7930880486199315
+        },
+        "oracleShadow": {
+          "mean": 0.0025000000000000022,
+          "median": 0.0025000000000000005,
+          "p10": 0.0025000000000000005,
+          "p90": 0.0025000000000000044
+        }
+      },
+      "logLoss": {
+        "ml": 0.6639954735810035,
+        "agentMarket": 0.6659834565608355,
+        "consensusMarket": 0.6837638816188965,
+        "market": 0.6837638816188965,
+        "fng": 0.9943014315510303
+      },
+      "perDealBrierWinners": {
+        "fng": 76,
+        "ml": 54,
+        "market": 41
+      },
+      "signalLayerWinners": {
+        "fng": 76,
+        "agentMarket": 52,
+        "ml": 42,
+        "consensusMarket": 1
+      },
+      "agentMarketBeatsMl": 84,
+      "consensusMarketBeatsMl": 80,
+      "consensusMarketBeatsAgentMarket": 22,
+      "marketBeatsMl": 80,
+      "fngBeatsMl": 77,
+      "fngBeatsMarket": 79,
+      "avgAgentMarketMoveFromMl": 0.013207897789995043,
+      "avgConsensusMarketMoveFromMl": 0.015456176662891018,
+      "avgHumanConsensusDelta": 0.002248278872895987,
+      "avgMarketMoveFromMl": 0.015456176662891018,
+      "avgFngMoveFromMl": 0.007834921711709176
+    }
+  },
+  "modes": {
+    "team": {
+      "runs": 167,
+      "completionRate": 1,
+      "avgActionsSubmitted": 77.8443113772455,
+      "avgBuys": 21.580838323353294,
+      "avgHolds": 34.80239520958084,
+      "avgSells": 21.461077844311376
+    },
+    "focus": {
+      "runs": 167,
+      "completionRate": 1,
+      "avgActionsSubmitted": 77.8443113772455,
+      "avgBuys": 21.077844311377245,
+      "avgHolds": 35.43712574850299,
+      "avgSells": 21.32934131736527
+    },
+    "silent": {
+      "runs": 166,
+      "completionRate": 1,
+      "avgActionsSubmitted": 77.40963855421687,
+      "avgBuys": 18.53012048192771,
+      "avgHolds": 36.13855421686747,
+      "avgSells": 22.740963855421686
+    }
+  },
+  "runWinners": {
+    "market": 147,
+    "ml": 216,
+    "fng": 137
+  },
+  "forecastWinnerField": {
+    "market": 147,
+    "ml": 216,
+    "fng": 137
+  },
+  "signalLayerWinners": {
+    "agentMarket": 518,
+    "ml": 828,
+    "fng": 1012,
+    "consensusMarket": 1
+  },
+  "scoringIntegrity": {
+    "mismatches": 0,
+    "runWinnerMismatches": 0,
+    "perDealWinnerMismatches": 0,
+    "note": "The current result field may use absolute-error winners while the headline uses aggregate Brier; this flags any divergence."
+  },
+  "lrMarketVsMl": {
+    "logL_ml": -1566.1910861525023,
+    "logL_agent_market": -1570.3388628755092,
+    "logL_market": -1570.0615596939588,
+    "lrAgentMarketVsMl": -8.295553446013855,
+    "lrConsensusMarketVsMl": -7.740947082912953,
+    "lrConsensusMarketVsAgentMarket": 0.554606363100902,
+    "lr": -7.740947082912953
+  },
+  "subsets": {
+    "minN": 30,
+    "bestConsensusLiftVsMl": [
+      {
+        "name": "Stage: Technical Validation",
+        "category": "stage",
+        "n": 248,
+        "mlBrier": 0.26357442602500075,
+        "agentMarketBrier": 0.23910989525525778,
+        "consensusMarketBrier": 0.24490360079574222,
+        "fngBrier": 0.3076714671410631,
+        "agentLiftVsMl": 0.024464530769742976,
+        "consensusLiftVsMl": 0.01867082522925853,
+        "consensusLiftVsAgentMarket": -0.005793705540484445,
+        "consensusAccuracy": 0.5887096774193549,
+        "mlAccuracy": 0
+      },
+      {
+        "name": "Forecast: Best Case",
+        "category": "forecast",
+        "n": 248,
+        "mlBrier": 0.26357442602500075,
+        "agentMarketBrier": 0.23910989525525778,
+        "consensusMarketBrier": 0.24490360079574222,
+        "fngBrier": 0.3076714671410631,
+        "agentLiftVsMl": 0.024464530769742976,
+        "consensusLiftVsMl": 0.01867082522925853,
+        "consensusLiftVsAgentMarket": -0.005793705540484445,
+        "consensusAccuracy": 0.5887096774193549,
+        "mlAccuracy": 0
+      },
+      {
+        "name": "Stage: Qualified",
+        "category": "stage",
+        "n": 248,
+        "mlBrier": 0.2750016528359981,
+        "agentMarketBrier": 0.25822156558454235,
+        "consensusMarketBrier": 0.2595552537308543,
+        "fngBrier": 0.3222202283924153,
+        "agentLiftVsMl": 0.016780087251455744,
+        "consensusLiftVsMl": 0.015446399105143782,
+        "consensusLiftVsAgentMarket": -0.001333688146311962,
+        "consensusAccuracy": 0.3951612903225806,
+        "mlAccuracy": 0
+      },
+      {
+        "name": "Forecast: Omitted",
+        "category": "forecast",
+        "n": 248,
+        "mlBrier": 0.2750016528359981,
+        "agentMarketBrier": 0.25822156558454235,
+        "consensusMarketBrier": 0.2595552537308543,
+        "fngBrier": 0.3222202283924153,
+        "agentLiftVsMl": 0.016780087251455744,
+        "consensusLiftVsMl": 0.015446399105143782,
+        "consensusLiftVsAgentMarket": -0.001333688146311962,
+        "consensusAccuracy": 0.3951612903225806,
+        "mlAccuracy": 0
+      },
+      {
+        "name": "Low-value deals",
+        "category": "amount",
+        "n": 870,
+        "mlBrier": 0.2329458281638557,
+        "agentMarketBrier": 0.22150520651069686,
+        "consensusMarketBrier": 0.22303962373434513,
+        "fngBrier": 0.27461140577131604,
+        "agentLiftVsMl": 0.011440621653158844,
+        "consensusLiftVsMl": 0.009906204429510568,
+        "consensusLiftVsAgentMarket": -0.0015344172236482767,
+        "consensusAccuracy": 0.6954022988505747,
+        "mlAccuracy": 0.4298850574712644
+      },
+      {
+        "name": "Target: slipped_to_next_quarter",
+        "category": "target",
+        "n": 742,
+        "mlBrier": 0.25493616330050506,
+        "agentMarketBrier": 0.24406487453735712,
+        "consensusMarketBrier": 0.24635829515887778,
+        "fngBrier": 0.3054236989911444,
+        "agentLiftVsMl": 0.01087128876314794,
+        "consensusLiftVsMl": 0.008577868141627282,
+        "consensusLiftVsAgentMarket": -0.0022934206215206587,
+        "consensusAccuracy": 0.5202156334231806,
+        "mlAccuracy": 0.16576819407008087
+      },
+      {
+        "name": "Policy: contrarian",
+        "category": "policy",
+        "n": 307,
+        "mlBrier": 0.23523632958595778,
+        "agentMarketBrier": 0.23441774896945203,
+        "consensusMarketBrier": 0.22774495250777904,
+        "fngBrier": 0.2214269573644535,
+        "agentLiftVsMl": 0.0008185806165057485,
+        "consensusLiftVsMl": 0.007491377078178735,
+        "consensusLiftVsAgentMarket": 0.006672796461672986,
+        "consensusAccuracy": 0.6938110749185668,
+        "mlAccuracy": 0.6938110749185668
+      },
+      {
+        "name": "Target: legal_approved_by_date",
+        "category": "target",
+        "n": 500,
+        "mlBrier": 0.24944830470400256,
+        "agentMarketBrier": 0.24342939298557564,
+        "consensusMarketBrier": 0.2428081769287378,
+        "fngBrier": 0.28826752239065534,
+        "agentLiftVsMl": 0.006018911718426917,
+        "consensusLiftVsMl": 0.006640127775264765,
+        "consensusLiftVsAgentMarket": 0.0006212160568378478,
+        "consensusAccuracy": 0.688,
+        "mlAccuracy": 1
+      },
+      {
+        "name": "Deal count: 1",
+        "category": "setup",
+        "n": 126,
+        "mlBrier": 0.24944830470399995,
+        "agentMarketBrier": 0.24274406052147016,
+        "consensusMarketBrier": 0.24304029681067169,
+        "fngBrier": 0.29065876645772254,
+        "agentLiftVsMl": 0.006704244182529795,
+        "consensusLiftVsMl": 0.006408007893328266,
+        "consensusLiftVsAgentMarket": -0.0002962362892015291,
+        "consensusAccuracy": 0.7142857142857143,
+        "mlAccuracy": 1
+      },
+      {
+        "name": "Deal count: 5",
+        "category": "setup",
+        "n": 625,
+        "mlBrier": 0.23847330244100132,
+        "agentMarketBrier": 0.23423740420750525,
+        "consensusMarketBrier": 0.23308051478708808,
+        "fngBrier": 0.2776887025364639,
+        "agentLiftVsMl": 0.0042358982334960715,
+        "consensusLiftVsMl": 0.005392787653913239,
+        "consensusLiftVsAgentMarket": 0.0011568894204171676,
+        "consensusAccuracy": 0.6592,
+        "mlAccuracy": 0.6
+      },
+      {
+        "name": "Policy: high_conviction",
+        "category": "policy",
+        "n": 342,
+        "mlBrier": 0.2355196629625792,
+        "agentMarketBrier": 0.23466709817386788,
+        "consensusMarketBrier": 0.23223549098254,
+        "fngBrier": 0.24143607996603786,
+        "agentLiftVsMl": 0.0008525647887113186,
+        "consensusLiftVsMl": 0.003284171980039191,
+        "consensusLiftVsAgentMarket": 0.0024316071913278725,
+        "consensusAccuracy": 0.6081871345029239,
+        "mlAccuracy": 0.6842105263157895
+      },
+      {
+        "name": "Forecast: Pipeline",
+        "category": "forecast",
+        "n": 497,
+        "mlBrier": 0.20003152149075962,
+        "agentMarketBrier": 0.1988431548567803,
+        "consensusMarketBrier": 0.19775364946469118,
+        "fngBrier": 0.23493876859205706,
+        "agentLiftVsMl": 0.0011883666339793097,
+        "consensusLiftVsMl": 0.0022778720260684393,
+        "consensusLiftVsAgentMarket": 0.0010895053920891296,
+        "consensusAccuracy": 0.9396378269617707,
+        "mlAccuracy": 1
+      }
+    ],
+    "worstConsensusLiftVsMl": [
+      {
+        "name": "Human moved consensus >= 5pp",
+        "category": "human",
+        "n": 176,
+        "mlBrier": 0.2315945540761873,
+        "agentMarketBrier": 0.23281808583454094,
+        "consensusMarketBrier": 0.2482566320682585,
+        "fngBrier": 0.29743969385349806,
+        "agentLiftVsMl": -0.0012235317583536576,
+        "consensusLiftVsMl": -0.0166620779920712,
+        "consensusLiftVsAgentMarket": -0.015438546233717543,
+        "consensusAccuracy": 0.5681818181818182,
+        "mlAccuracy": 0.7386363636363636
+      },
+      {
+        "name": "Policy: optimistic",
+        "category": "policy",
+        "n": 171,
+        "mlBrier": 0.2355196629625787,
+        "agentMarketBrier": 0.2444332678302689,
+        "consensusMarketBrier": 0.25175355278690437,
+        "fngBrier": 0.5561894736842095,
+        "agentLiftVsMl": -0.008913604867690189,
+        "consensusLiftVsMl": -0.016233889824325665,
+        "consensusLiftVsAgentMarket": -0.0073202849566354755,
+        "consensusAccuracy": 0.5614035087719298,
+        "mlAccuracy": 0.6842105263157895
+      },
+      {
+        "name": "High-value deals",
+        "category": "amount",
+        "n": 620,
+        "mlBrier": 0.22798693606956585,
+        "agentMarketBrier": 0.24658616696976435,
+        "consensusMarketBrier": 0.2441062899506561,
+        "fngBrier": 0.280796564206887,
+        "agentLiftVsMl": -0.018599230900198493,
+        "consensusLiftVsMl": -0.01611935388109026,
+        "consensusLiftVsAgentMarket": 0.002479877019108234,
+        "consensusAccuracy": 0.5580645161290323,
+        "mlAccuracy": 0.8016129032258065
+      },
+      {
+        "name": "Consensus disagrees with ML >= 5pp",
+        "category": "disagreement",
+        "n": 365,
+        "mlBrier": 0.23610432038794563,
+        "agentMarketBrier": 0.24145830314569638,
+        "consensusMarketBrier": 0.2494729168564495,
+        "fngBrier": 0.3383194334879753,
+        "agentLiftVsMl": -0.005353982757750758,
+        "consensusLiftVsMl": -0.013368596468503885,
+        "consensusLiftVsAgentMarket": -0.008014613710753127,
+        "consensusAccuracy": 0.5068493150684932,
+        "mlAccuracy": 0.673972602739726
+      },
+      {
+        "name": "Stage: Business Case",
+        "category": "stage",
+        "n": 748,
+        "mlBrier": 0.20217106432000148,
+        "agentMarketBrier": 0.2156695884906266,
+        "consensusMarketBrier": 0.21380600167321126,
+        "fngBrier": 0.24879452151285464,
+        "agentLiftVsMl": -0.013498524170625109,
+        "consensusLiftVsMl": -0.011634937353209779,
+        "consensusLiftVsAgentMarket": 0.0018635868174153303,
+        "consensusAccuracy": 0.7606951871657754,
+        "mlAccuracy": 1
+      },
+      {
+        "name": "Target: closed_above_threshold",
+        "category": "target",
+        "n": 1117,
+        "mlBrier": 0.216308966930284,
+        "agentMarketBrier": 0.2280740777798807,
+        "consensusMarketBrier": 0.22663408628758563,
+        "fngBrier": 0.26329534754296946,
+        "agentLiftVsMl": -0.011765110849596694,
+        "consensusLiftVsMl": -0.010325119357301626,
+        "consensusLiftVsAgentMarket": 0.0014399914922950674,
+        "consensusAccuracy": 0.7081468218442256,
+        "mlAccuracy": 0.8898836168307968
+      },
+      {
+        "name": "Policy: random",
+        "category": "policy",
+        "n": 171,
+        "mlBrier": 0.23551966296257867,
+        "agentMarketBrier": 0.23651494615785168,
+        "consensusMarketBrier": 0.24503953225806496,
+        "fngBrier": 0.3537251265945422,
+        "agentLiftVsMl": -0.0009952831952730057,
+        "consensusLiftVsMl": -0.009519869295486288,
+        "consensusLiftVsAgentMarket": -0.008524586100213283,
+        "consensusAccuracy": 0.5847953216374269,
+        "mlAccuracy": 0.6842105263157895
+      },
+      {
+        "name": "Deal count: 3",
+        "category": "setup",
+        "n": 378,
+        "mlBrier": 0.217930144448001,
+        "agentMarketBrier": 0.22522784329577267,
+        "consensusMarketBrier": 0.22438617776722053,
+        "fngBrier": 0.2633894520674103,
+        "agentLiftVsMl": -0.0072976988477716775,
+        "consensusLiftVsMl": -0.00645603331921954,
+        "consensusLiftVsAgentMarket": 0.0008416655285521379,
+        "consensusAccuracy": 0.753968253968254,
+        "mlAccuracy": 1
+      },
+      {
+        "name": "Consensus disagrees with ML >= 3pp",
+        "category": "disagreement",
+        "n": 745,
+        "mlBrier": 0.23769173534597113,
+        "agentMarketBrier": 0.2423332410726907,
+        "consensusMarketBrier": 0.24402822675685484,
+        "fngBrier": 0.31321835722505625,
+        "agentLiftVsMl": -0.004641505726719564,
+        "consensusLiftVsMl": -0.006336491410883716,
+        "consensusLiftVsAgentMarket": -0.001694985684164152,
+        "consensusAccuracy": 0.5624161073825503,
+        "mlAccuracy": 0.6483221476510067
+      },
+      {
+        "name": "Policy: noisy",
+        "category": "policy",
+        "n": 171,
+        "mlBrier": 0.23551966296257867,
+        "agentMarketBrier": 0.23506586698673823,
+        "consensusMarketBrier": 0.23901082727257486,
+        "fngBrier": 0.2570020404690941,
+        "agentLiftVsMl": 0.00045379597584044307,
+        "consensusLiftVsMl": -0.0034911643099961864,
+        "consensusLiftVsAgentMarket": -0.0039449602858366295,
+        "consensusAccuracy": 0.6432748538011696,
+        "mlAccuracy": 0.6842105263157895
+      },
+      {
+        "name": "Stage: Procurement",
+        "category": "stage",
+        "n": 246,
+        "mlBrier": 0.2148602124009999,
+        "agentMarketBrier": 0.21896717330871232,
+        "consensusMarketBrier": 0.21778370475212472,
+        "fngBrier": 0.2631946723540851,
+        "agentLiftVsMl": -0.004106960907712426,
+        "consensusLiftVsMl": -0.0029234923511248234,
+        "consensusLiftVsAgentMarket": 0.0011834685565876024,
+        "consensusAccuracy": 0.9024390243902439,
+        "mlAccuracy": 1
+      },
+      {
+        "name": "Deal count: 10",
+        "category": "setup",
+        "n": 1230,
+        "mlBrier": 0.23792683460360056,
+        "agentMarketBrier": 0.24020270264913532,
+        "consensusMarketBrier": 0.24084214920276906,
+        "fngBrier": 0.2887149532616337,
+        "agentLiftVsMl": -0.002275868045534757,
+        "consensusLiftVsMl": -0.0029153145991684948,
+        "consensusLiftVsAgentMarket": -0.0006394465536337379,
+        "consensusAccuracy": 0.5967479674796748,
+        "mlAccuracy": 0.6
+      }
+    ],
+    "bestConsensusLiftVsAgentMarket": [
+      {
+        "name": "Policy: contrarian",
+        "category": "policy",
+        "n": 307,
+        "mlBrier": 0.23523632958595778,
+        "agentMarketBrier": 0.23441774896945203,
+        "consensusMarketBrier": 0.22774495250777904,
+        "fngBrier": 0.2214269573644535,
+        "agentLiftVsMl": 0.0008185806165057485,
+        "consensusLiftVsMl": 0.007491377078178735,
+        "consensusLiftVsAgentMarket": 0.006672796461672986,
+        "consensusAccuracy": 0.6938110749185668,
+        "mlAccuracy": 0.6938110749185668
+      },
+      {
+        "name": "High-value deals",
+        "category": "amount",
+        "n": 620,
+        "mlBrier": 0.22798693606956585,
+        "agentMarketBrier": 0.24658616696976435,
+        "consensusMarketBrier": 0.2441062899506561,
+        "fngBrier": 0.280796564206887,
+        "agentLiftVsMl": -0.018599230900198493,
+        "consensusLiftVsMl": -0.01611935388109026,
+        "consensusLiftVsAgentMarket": 0.002479877019108234,
+        "consensusAccuracy": 0.5580645161290323,
+        "mlAccuracy": 0.8016129032258065
+      },
+      {
+        "name": "Policy: high_conviction",
+        "category": "policy",
+        "n": 342,
+        "mlBrier": 0.2355196629625792,
+        "agentMarketBrier": 0.23466709817386788,
+        "consensusMarketBrier": 0.23223549098254,
+        "fngBrier": 0.24143607996603786,
+        "agentLiftVsMl": 0.0008525647887113186,
+        "consensusLiftVsMl": 0.003284171980039191,
+        "consensusLiftVsAgentMarket": 0.0024316071913278725,
+        "consensusAccuracy": 0.6081871345029239,
+        "mlAccuracy": 0.6842105263157895
+      },
+      {
+        "name": "Stage: Business Case",
+        "category": "stage",
+        "n": 748,
+        "mlBrier": 0.20217106432000148,
+        "agentMarketBrier": 0.2156695884906266,
+        "consensusMarketBrier": 0.21380600167321126,
+        "fngBrier": 0.24879452151285464,
+        "agentLiftVsMl": -0.013498524170625109,
+        "consensusLiftVsMl": -0.011634937353209779,
+        "consensusLiftVsAgentMarket": 0.0018635868174153303,
+        "consensusAccuracy": 0.7606951871657754,
+        "mlAccuracy": 1
+      },
+      {
+        "name": "Policy: calibrated_blend",
+        "category": "policy",
+        "n": 342,
+        "mlBrier": 0.23551966296257917,
+        "agentMarketBrier": 0.23682629382600362,
+        "consensusMarketBrier": 0.2352829629553869,
+        "fngBrier": 0.24102438710837396,
+        "agentLiftVsMl": -0.0013066308634244461,
+        "consensusLiftVsMl": 0.0002367000071922809,
+        "consensusLiftVsAgentMarket": 0.001543330870616727,
+        "consensusAccuracy": 0.6842105263157895,
+        "mlAccuracy": 0.6842105263157895
+      },
+      {
+        "name": "Policy: pessimistic",
+        "category": "policy",
+        "n": 171,
+        "mlBrier": 0.2355196629625787,
+        "agentMarketBrier": 0.23557162641813828,
+        "consensusMarketBrier": 0.23411626830684867,
+        "fngBrier": 0.40409385646389356,
+        "agentLiftVsMl": -0.000051963455559578264,
+        "consensusLiftVsMl": 0.001403394655730028,
+        "consensusLiftVsAgentMarket": 0.0014553581112896063,
+        "consensusAccuracy": 0.631578947368421,
+        "mlAccuracy": 0.6842105263157895
+      },
+      {
+        "name": "Target: closed_above_threshold",
+        "category": "target",
+        "n": 1117,
+        "mlBrier": 0.216308966930284,
+        "agentMarketBrier": 0.2280740777798807,
+        "consensusMarketBrier": 0.22663408628758563,
+        "fngBrier": 0.26329534754296946,
+        "agentLiftVsMl": -0.011765110849596694,
+        "consensusLiftVsMl": -0.010325119357301626,
+        "consensusLiftVsAgentMarket": 0.0014399914922950674,
+        "consensusAccuracy": 0.7081468218442256,
+        "mlAccuracy": 0.8898836168307968
+      },
+      {
+        "name": "Run length: 15",
+        "category": "setup",
+        "n": 798,
+        "mlBrier": 0.23551966296258017,
+        "agentMarketBrier": 0.2367080277882755,
+        "consensusMarketBrier": 0.23541724110145748,
+        "fngBrier": 0.28533560365342003,
+        "agentLiftVsMl": -0.001188364825695315,
+        "consensusLiftVsMl": 0.00010242186112269236,
+        "consensusLiftVsAgentMarket": 0.0012907866868180073,
+        "consensusAccuracy": 0.6553884711779449,
+        "mlAccuracy": 0.6842105263157895
+      },
+      {
+        "name": "Stage: Procurement",
+        "category": "stage",
+        "n": 246,
+        "mlBrier": 0.2148602124009999,
+        "agentMarketBrier": 0.21896717330871232,
+        "consensusMarketBrier": 0.21778370475212472,
+        "fngBrier": 0.2631946723540851,
+        "agentLiftVsMl": -0.004106960907712426,
+        "consensusLiftVsMl": -0.0029234923511248234,
+        "consensusLiftVsAgentMarket": 0.0011834685565876024,
+        "consensusAccuracy": 0.9024390243902439,
+        "mlAccuracy": 1
+      },
+      {
+        "name": "Deal count: 5",
+        "category": "setup",
+        "n": 625,
+        "mlBrier": 0.23847330244100132,
+        "agentMarketBrier": 0.23423740420750525,
+        "consensusMarketBrier": 0.23308051478708808,
+        "fngBrier": 0.2776887025364639,
+        "agentLiftVsMl": 0.0042358982334960715,
+        "consensusLiftVsMl": 0.005392787653913239,
+        "consensusLiftVsAgentMarket": 0.0011568894204171676,
+        "consensusAccuracy": 0.6592,
+        "mlAccuracy": 0.6
+      },
+      {
+        "name": "Forecast: Pipeline",
+        "category": "forecast",
+        "n": 497,
+        "mlBrier": 0.20003152149075962,
+        "agentMarketBrier": 0.1988431548567803,
+        "consensusMarketBrier": 0.19775364946469118,
+        "fngBrier": 0.23493876859205706,
+        "agentLiftVsMl": 0.0011883666339793097,
+        "consensusLiftVsMl": 0.0022778720260684393,
+        "consensusLiftVsAgentMarket": 0.0010895053920891296,
+        "consensusAccuracy": 0.9396378269617707,
+        "mlAccuracy": 1
+      },
+      {
+        "name": "Run length: 30",
+        "category": "setup",
+        "n": 763,
+        "mlBrier": 0.23540566119767486,
+        "agentMarketBrier": 0.23648991856001023,
+        "consensusMarketBrier": 0.23558946401514505,
+        "fngBrier": 0.28498790093030385,
+        "agentLiftVsMl": -0.0010842573623353613,
+        "consensusLiftVsMl": -0.00018380281747018556,
+        "consensusLiftVsAgentMarket": 0.0009004545448651757,
+        "consensusAccuracy": 0.6304062909567497,
+        "mlAccuracy": 0.6880733944954128
+      }
+    ],
+    "worstConsensusLiftVsAgentMarket": [
+      {
+        "name": "Human moved consensus >= 5pp",
+        "category": "human",
+        "n": 176,
+        "mlBrier": 0.2315945540761873,
+        "agentMarketBrier": 0.23281808583454094,
+        "consensusMarketBrier": 0.2482566320682585,
+        "fngBrier": 0.29743969385349806,
+        "agentLiftVsMl": -0.0012235317583536576,
+        "consensusLiftVsMl": -0.0166620779920712,
+        "consensusLiftVsAgentMarket": -0.015438546233717543,
+        "consensusAccuracy": 0.5681818181818182,
+        "mlAccuracy": 0.7386363636363636
+      },
+      {
+        "name": "Policy: random",
+        "category": "policy",
+        "n": 171,
+        "mlBrier": 0.23551966296257867,
+        "agentMarketBrier": 0.23651494615785168,
+        "consensusMarketBrier": 0.24503953225806496,
+        "fngBrier": 0.3537251265945422,
+        "agentLiftVsMl": -0.0009952831952730057,
+        "consensusLiftVsMl": -0.009519869295486288,
+        "consensusLiftVsAgentMarket": -0.008524586100213283,
+        "consensusAccuracy": 0.5847953216374269,
+        "mlAccuracy": 0.6842105263157895
+      },
+      {
+        "name": "Consensus disagrees with ML >= 5pp",
+        "category": "disagreement",
+        "n": 365,
+        "mlBrier": 0.23610432038794563,
+        "agentMarketBrier": 0.24145830314569638,
+        "consensusMarketBrier": 0.2494729168564495,
+        "fngBrier": 0.3383194334879753,
+        "agentLiftVsMl": -0.005353982757750758,
+        "consensusLiftVsMl": -0.013368596468503885,
+        "consensusLiftVsAgentMarket": -0.008014613710753127,
+        "consensusAccuracy": 0.5068493150684932,
+        "mlAccuracy": 0.673972602739726
+      },
+      {
+        "name": "Policy: optimistic",
+        "category": "policy",
+        "n": 171,
+        "mlBrier": 0.2355196629625787,
+        "agentMarketBrier": 0.2444332678302689,
+        "consensusMarketBrier": 0.25175355278690437,
+        "fngBrier": 0.5561894736842095,
+        "agentLiftVsMl": -0.008913604867690189,
+        "consensusLiftVsMl": -0.016233889824325665,
+        "consensusLiftVsAgentMarket": -0.0073202849566354755,
+        "consensusAccuracy": 0.5614035087719298,
+        "mlAccuracy": 0.6842105263157895
+      },
+      {
+        "name": "Stage: Technical Validation",
+        "category": "stage",
+        "n": 248,
+        "mlBrier": 0.26357442602500075,
+        "agentMarketBrier": 0.23910989525525778,
+        "consensusMarketBrier": 0.24490360079574222,
+        "fngBrier": 0.3076714671410631,
+        "agentLiftVsMl": 0.024464530769742976,
+        "consensusLiftVsMl": 0.01867082522925853,
+        "consensusLiftVsAgentMarket": -0.005793705540484445,
+        "consensusAccuracy": 0.5887096774193549,
+        "mlAccuracy": 0
+      },
+      {
+        "name": "Forecast: Best Case",
+        "category": "forecast",
+        "n": 248,
+        "mlBrier": 0.26357442602500075,
+        "agentMarketBrier": 0.23910989525525778,
+        "consensusMarketBrier": 0.24490360079574222,
+        "fngBrier": 0.3076714671410631,
+        "agentLiftVsMl": 0.024464530769742976,
+        "consensusLiftVsMl": 0.01867082522925853,
+        "consensusLiftVsAgentMarket": -0.005793705540484445,
+        "consensusAccuracy": 0.5887096774193549,
+        "mlAccuracy": 0
+      },
+      {
+        "name": "Policy: noisy",
+        "category": "policy",
+        "n": 171,
+        "mlBrier": 0.23551966296257867,
+        "agentMarketBrier": 0.23506586698673823,
+        "consensusMarketBrier": 0.23901082727257486,
+        "fngBrier": 0.2570020404690941,
+        "agentLiftVsMl": 0.00045379597584044307,
+        "consensusLiftVsMl": -0.0034911643099961864,
+        "consensusLiftVsAgentMarket": -0.0039449602858366295,
+        "consensusAccuracy": 0.6432748538011696,
+        "mlAccuracy": 0.6842105263157895
+      },
+      {
+        "name": "Target: slipped_to_next_quarter",
+        "category": "target",
+        "n": 742,
+        "mlBrier": 0.25493616330050506,
+        "agentMarketBrier": 0.24406487453735712,
+        "consensusMarketBrier": 0.24635829515887778,
+        "fngBrier": 0.3054236989911444,
+        "agentLiftVsMl": 0.01087128876314794,
+        "consensusLiftVsMl": 0.008577868141627282,
+        "consensusLiftVsAgentMarket": -0.0022934206215206587,
+        "consensusAccuracy": 0.5202156334231806,
+        "mlAccuracy": 0.16576819407008087
+      },
+      {
+        "name": "Run length: 5",
+        "category": "setup",
+        "n": 798,
+        "mlBrier": 0.23551966296258015,
+        "agentMarketBrier": 0.23588316321215833,
+        "consensusMarketBrier": 0.23776252933956307,
+        "fngBrier": 0.27533266782832333,
+        "agentLiftVsMl": -0.0003635002495781803,
+        "consensusLiftVsMl": -0.002242866376982927,
+        "consensusLiftVsAgentMarket": -0.0018793661274047468,
+        "consensusAccuracy": 0.6478696741854637,
+        "mlAccuracy": 0.6842105263157895
+      },
+      {
+        "name": "Consensus disagrees with ML >= 3pp",
+        "category": "disagreement",
+        "n": 745,
+        "mlBrier": 0.23769173534597113,
+        "agentMarketBrier": 0.2423332410726907,
+        "consensusMarketBrier": 0.24402822675685484,
+        "fngBrier": 0.31321835722505625,
+        "agentLiftVsMl": -0.004641505726719564,
+        "consensusLiftVsMl": -0.006336491410883716,
+        "consensusLiftVsAgentMarket": -0.001694985684164152,
+        "consensusAccuracy": 0.5624161073825503,
+        "mlAccuracy": 0.6483221476510067
+      },
+      {
+        "name": "Low-value deals",
+        "category": "amount",
+        "n": 870,
+        "mlBrier": 0.2329458281638557,
+        "agentMarketBrier": 0.22150520651069686,
+        "consensusMarketBrier": 0.22303962373434513,
+        "fngBrier": 0.27461140577131604,
+        "agentLiftVsMl": 0.011440621653158844,
+        "consensusLiftVsMl": 0.009906204429510568,
+        "consensusLiftVsAgentMarket": -0.0015344172236482767,
+        "consensusAccuracy": 0.6954022988505747,
+        "mlAccuracy": 0.4298850574712644
+      },
+      {
+        "name": "Stage: Qualified",
+        "category": "stage",
+        "n": 248,
+        "mlBrier": 0.2750016528359981,
+        "agentMarketBrier": 0.25822156558454235,
+        "consensusMarketBrier": 0.2595552537308543,
+        "fngBrier": 0.3222202283924153,
+        "agentLiftVsMl": 0.016780087251455744,
+        "consensusLiftVsMl": 0.015446399105143782,
+        "consensusLiftVsAgentMarket": -0.001333688146311962,
+        "consensusAccuracy": 0.3951612903225806,
+        "mlAccuracy": 0
+      }
+    ],
+    "all": [
+      {
+        "name": "Stage: Technical Validation",
+        "category": "stage",
+        "n": 248,
+        "mlBrier": 0.26357442602500075,
+        "agentMarketBrier": 0.23910989525525778,
+        "consensusMarketBrier": 0.24490360079574222,
+        "fngBrier": 0.3076714671410631,
+        "agentLiftVsMl": 0.024464530769742976,
+        "consensusLiftVsMl": 0.01867082522925853,
+        "consensusLiftVsAgentMarket": -0.005793705540484445,
+        "consensusAccuracy": 0.5887096774193549,
+        "mlAccuracy": 0
+      },
+      {
+        "name": "Forecast: Best Case",
+        "category": "forecast",
+        "n": 248,
+        "mlBrier": 0.26357442602500075,
+        "agentMarketBrier": 0.23910989525525778,
+        "consensusMarketBrier": 0.24490360079574222,
+        "fngBrier": 0.3076714671410631,
+        "agentLiftVsMl": 0.024464530769742976,
+        "consensusLiftVsMl": 0.01867082522925853,
+        "consensusLiftVsAgentMarket": -0.005793705540484445,
+        "consensusAccuracy": 0.5887096774193549,
+        "mlAccuracy": 0
+      },
+      {
+        "name": "Stage: Qualified",
+        "category": "stage",
+        "n": 248,
+        "mlBrier": 0.2750016528359981,
+        "agentMarketBrier": 0.25822156558454235,
+        "consensusMarketBrier": 0.2595552537308543,
+        "fngBrier": 0.3222202283924153,
+        "agentLiftVsMl": 0.016780087251455744,
+        "consensusLiftVsMl": 0.015446399105143782,
+        "consensusLiftVsAgentMarket": -0.001333688146311962,
+        "consensusAccuracy": 0.3951612903225806,
+        "mlAccuracy": 0
+      },
+      {
+        "name": "Forecast: Omitted",
+        "category": "forecast",
+        "n": 248,
+        "mlBrier": 0.2750016528359981,
+        "agentMarketBrier": 0.25822156558454235,
+        "consensusMarketBrier": 0.2595552537308543,
+        "fngBrier": 0.3222202283924153,
+        "agentLiftVsMl": 0.016780087251455744,
+        "consensusLiftVsMl": 0.015446399105143782,
+        "consensusLiftVsAgentMarket": -0.001333688146311962,
+        "consensusAccuracy": 0.3951612903225806,
+        "mlAccuracy": 0
+      },
+      {
+        "name": "Low-value deals",
+        "category": "amount",
+        "n": 870,
+        "mlBrier": 0.2329458281638557,
+        "agentMarketBrier": 0.22150520651069686,
+        "consensusMarketBrier": 0.22303962373434513,
+        "fngBrier": 0.27461140577131604,
+        "agentLiftVsMl": 0.011440621653158844,
+        "consensusLiftVsMl": 0.009906204429510568,
+        "consensusLiftVsAgentMarket": -0.0015344172236482767,
+        "consensusAccuracy": 0.6954022988505747,
+        "mlAccuracy": 0.4298850574712644
+      },
+      {
+        "name": "Target: slipped_to_next_quarter",
+        "category": "target",
+        "n": 742,
+        "mlBrier": 0.25493616330050506,
+        "agentMarketBrier": 0.24406487453735712,
+        "consensusMarketBrier": 0.24635829515887778,
+        "fngBrier": 0.3054236989911444,
+        "agentLiftVsMl": 0.01087128876314794,
+        "consensusLiftVsMl": 0.008577868141627282,
+        "consensusLiftVsAgentMarket": -0.0022934206215206587,
+        "consensusAccuracy": 0.5202156334231806,
+        "mlAccuracy": 0.16576819407008087
+      },
+      {
+        "name": "Policy: contrarian",
+        "category": "policy",
+        "n": 307,
+        "mlBrier": 0.23523632958595778,
+        "agentMarketBrier": 0.23441774896945203,
+        "consensusMarketBrier": 0.22774495250777904,
+        "fngBrier": 0.2214269573644535,
+        "agentLiftVsMl": 0.0008185806165057485,
+        "consensusLiftVsMl": 0.007491377078178735,
+        "consensusLiftVsAgentMarket": 0.006672796461672986,
+        "consensusAccuracy": 0.6938110749185668,
+        "mlAccuracy": 0.6938110749185668
+      },
+      {
+        "name": "Target: legal_approved_by_date",
+        "category": "target",
+        "n": 500,
+        "mlBrier": 0.24944830470400256,
+        "agentMarketBrier": 0.24342939298557564,
+        "consensusMarketBrier": 0.2428081769287378,
+        "fngBrier": 0.28826752239065534,
+        "agentLiftVsMl": 0.006018911718426917,
+        "consensusLiftVsMl": 0.006640127775264765,
+        "consensusLiftVsAgentMarket": 0.0006212160568378478,
+        "consensusAccuracy": 0.688,
+        "mlAccuracy": 1
+      },
+      {
+        "name": "Deal count: 1",
+        "category": "setup",
+        "n": 126,
+        "mlBrier": 0.24944830470399995,
+        "agentMarketBrier": 0.24274406052147016,
+        "consensusMarketBrier": 0.24304029681067169,
+        "fngBrier": 0.29065876645772254,
+        "agentLiftVsMl": 0.006704244182529795,
+        "consensusLiftVsMl": 0.006408007893328266,
+        "consensusLiftVsAgentMarket": -0.0002962362892015291,
+        "consensusAccuracy": 0.7142857142857143,
+        "mlAccuracy": 1
+      },
+      {
+        "name": "Deal count: 5",
+        "category": "setup",
+        "n": 625,
+        "mlBrier": 0.23847330244100132,
+        "agentMarketBrier": 0.23423740420750525,
+        "consensusMarketBrier": 0.23308051478708808,
+        "fngBrier": 0.2776887025364639,
+        "agentLiftVsMl": 0.0042358982334960715,
+        "consensusLiftVsMl": 0.005392787653913239,
+        "consensusLiftVsAgentMarket": 0.0011568894204171676,
+        "consensusAccuracy": 0.6592,
+        "mlAccuracy": 0.6
+      },
+      {
+        "name": "Policy: high_conviction",
+        "category": "policy",
+        "n": 342,
+        "mlBrier": 0.2355196629625792,
+        "agentMarketBrier": 0.23466709817386788,
+        "consensusMarketBrier": 0.23223549098254,
+        "fngBrier": 0.24143607996603786,
+        "agentLiftVsMl": 0.0008525647887113186,
+        "consensusLiftVsMl": 0.003284171980039191,
+        "consensusLiftVsAgentMarket": 0.0024316071913278725,
+        "consensusAccuracy": 0.6081871345029239,
+        "mlAccuracy": 0.6842105263157895
+      },
+      {
+        "name": "Forecast: Pipeline",
+        "category": "forecast",
+        "n": 497,
+        "mlBrier": 0.20003152149075962,
+        "agentMarketBrier": 0.1988431548567803,
+        "consensusMarketBrier": 0.19775364946469118,
+        "fngBrier": 0.23493876859205706,
+        "agentLiftVsMl": 0.0011883666339793097,
+        "consensusLiftVsMl": 0.0022778720260684393,
+        "consensusLiftVsAgentMarket": 0.0010895053920891296,
+        "consensusAccuracy": 0.9396378269617707,
+        "mlAccuracy": 1
+      },
+      {
+        "name": "Policy: pessimistic",
+        "category": "policy",
+        "n": 171,
+        "mlBrier": 0.2355196629625787,
+        "agentMarketBrier": 0.23557162641813828,
+        "consensusMarketBrier": 0.23411626830684867,
+        "fngBrier": 0.40409385646389356,
+        "agentLiftVsMl": -0.000051963455559578264,
+        "consensusLiftVsMl": 0.001403394655730028,
+        "consensusLiftVsAgentMarket": 0.0014553581112896063,
+        "consensusAccuracy": 0.631578947368421,
+        "mlAccuracy": 0.6842105263157895
+      },
+      {
+        "name": "Policy: hold_ml",
+        "category": "policy",
+        "n": 342,
+        "mlBrier": 0.23551966296257917,
+        "agentMarketBrier": 0.234888734679583,
+        "consensusMarketBrier": 0.23489963841102685,
+        "fngBrier": 0.23551966296257917,
+        "agentLiftVsMl": 0.0006309282829961849,
+        "consensusLiftVsMl": 0.0006200245515523284,
+        "consensusLiftVsAgentMarket": -0.00001090373144385648,
+        "consensusAccuracy": 0.6842105263157895,
+        "mlAccuracy": 0.6842105263157895
+      },
+      {
+        "name": "Policy: calibrated_blend",
+        "category": "policy",
+        "n": 342,
+        "mlBrier": 0.23551966296257917,
+        "agentMarketBrier": 0.23682629382600362,
+        "consensusMarketBrier": 0.2352829629553869,
+        "fngBrier": 0.24102438710837396,
+        "agentLiftVsMl": -0.0013066308634244461,
+        "consensusLiftVsMl": 0.0002367000071922809,
+        "consensusLiftVsAgentMarket": 0.001543330870616727,
+        "consensusAccuracy": 0.6842105263157895,
+        "mlAccuracy": 0.6842105263157895
+      },
+      {
+        "name": "Run length: 15",
+        "category": "setup",
+        "n": 798,
+        "mlBrier": 0.23551966296258017,
+        "agentMarketBrier": 0.2367080277882755,
+        "consensusMarketBrier": 0.23541724110145748,
+        "fngBrier": 0.28533560365342003,
+        "agentLiftVsMl": -0.001188364825695315,
+        "consensusLiftVsMl": 0.00010242186112269236,
+        "consensusLiftVsAgentMarket": 0.0012907866868180073,
+        "consensusAccuracy": 0.6553884711779449,
+        "mlAccuracy": 0.6842105263157895
+      },
+      {
+        "name": "Human moved consensus >= 2pp",
+        "category": "human",
+        "n": 591,
+        "mlBrier": 0.23510506879075077,
+        "agentMarketBrier": 0.23564859230940682,
+        "consensusMarketBrier": 0.23524999127441112,
+        "fngBrier": 0.247319653517647,
+        "agentLiftVsMl": -0.0005435235186560528,
+        "consensusLiftVsMl": -0.00014492248366035354,
+        "consensusLiftVsAgentMarket": 0.0003986010349956992,
+        "consensusAccuracy": 0.6649746192893401,
+        "mlAccuracy": 0.7174280879864636
+      },
+      {
+        "name": "Run length: 30",
+        "category": "setup",
+        "n": 763,
+        "mlBrier": 0.23540566119767486,
+        "agentMarketBrier": 0.23648991856001023,
+        "consensusMarketBrier": 0.23558946401514505,
+        "fngBrier": 0.28498790093030385,
+        "agentLiftVsMl": -0.0010842573623353613,
+        "consensusLiftVsMl": -0.00018380281747018556,
+        "consensusLiftVsAgentMarket": 0.0009004545448651757,
+        "consensusAccuracy": 0.6304062909567497,
+        "mlAccuracy": 0.6880733944954128
+      },
+      {
+        "name": "Mode: team",
+        "category": "mode",
+        "n": 788,
+        "mlBrier": 0.23548911509911544,
+        "agentMarketBrier": 0.2357361434347306,
+        "consensusMarketBrier": 0.23595680955657206,
+        "fngBrier": 0.2850985237707441,
+        "agentLiftVsMl": -0.000247028335615157,
+        "consensusLiftVsMl": -0.00046769445745661886,
+        "consensusLiftVsAgentMarket": -0.00022066612184146184,
+        "consensusAccuracy": 0.6395939086294417,
+        "mlAccuracy": 0.6852791878172588
+      },
+      {
+        "name": "Mode: focus",
+        "category": "mode",
+        "n": 788,
+        "mlBrier": 0.2354891150991154,
+        "agentMarketBrier": 0.23657276235524813,
+        "consensusMarketBrier": 0.23601599560916314,
+        "fngBrier": 0.278739129459695,
+        "agentLiftVsMl": -0.0010836472561327193,
+        "consensusLiftVsMl": -0.0005268805100477336,
+        "consensusLiftVsAgentMarket": 0.0005567667460849857,
+        "consensusAccuracy": 0.6560913705583756,
+        "mlAccuracy": 0.6852791878172588
+      },
+      {
+        "name": "ML uncertainty 40-60",
+        "category": "uncertainty",
+        "n": 2359,
+        "mlBrier": 0.2354827899881728,
+        "agentMarketBrier": 0.23635844776584658,
+        "consensusMarketBrier": 0.23626630684844727,
+        "fngBrier": 0.28183935949650557,
+        "agentLiftVsMl": -0.0008756577776737884,
+        "consensusLiftVsMl": -0.0007835168602744746,
+        "consensusLiftVsAgentMarket": 0.00009214091739931374,
+        "consensusAccuracy": 0.6447647308181432,
+        "mlAccuracy": 0.685459940652819
+      },
+      {
+        "name": "ML uncertainty 35-65",
+        "category": "uncertainty",
+        "n": 2359,
+        "mlBrier": 0.2354827899881728,
+        "agentMarketBrier": 0.23635844776584658,
+        "consensusMarketBrier": 0.23626630684844727,
+        "fngBrier": 0.28183935949650557,
+        "agentLiftVsMl": -0.0008756577776737884,
+        "consensusLiftVsMl": -0.0007835168602744746,
+        "consensusLiftVsAgentMarket": 0.00009214091739931374,
+        "consensusAccuracy": 0.6447647308181432,
+        "mlAccuracy": 0.685459940652819
+      },
+      {
+        "name": "Stage: Negotiation",
+        "category": "stage",
+        "n": 869,
+        "mlBrier": 0.2506990398878817,
+        "agentMarketBrier": 0.25206513137679165,
+        "consensusMarketBrier": 0.25172007055501666,
+        "fngBrier": 0.2966648067540064,
+        "agentLiftVsMl": -0.0013660914889099263,
+        "consensusLiftVsMl": -0.0010210306671349367,
+        "consensusLiftVsAgentMarket": 0.00034506082177498953,
+        "consensusAccuracy": 0.5592635212888377,
+        "mlAccuracy": 0.716915995397008
+      },
+      {
+        "name": "Mode: silent",
+        "category": "mode",
+        "n": 783,
+        "mlBrier": 0.23547005898582113,
+        "agentMarketBrier": 0.23676904280604175,
+        "consensusMarketBrier": 0.2368296901467314,
+        "fngBrier": 0.2816794103533423,
+        "agentLiftVsMl": -0.0012989838202206172,
+        "consensusLiftVsMl": -0.0013596311609102574,
+        "consensusLiftVsAgentMarket": -0.00006064734068964017,
+        "consensusAccuracy": 0.6385696040868455,
+        "mlAccuracy": 0.685823754789272
+      },
+      {
+        "name": "Run length: 5",
+        "category": "setup",
+        "n": 798,
+        "mlBrier": 0.23551966296258015,
+        "agentMarketBrier": 0.23588316321215833,
+        "consensusMarketBrier": 0.23776252933956307,
+        "fngBrier": 0.27533266782832333,
+        "agentLiftVsMl": -0.0003635002495781803,
+        "consensusLiftVsMl": -0.002242866376982927,
+        "consensusLiftVsAgentMarket": -0.0018793661274047468,
+        "consensusAccuracy": 0.6478696741854637,
+        "mlAccuracy": 0.6842105263157895
+      },
+      {
+        "name": "Policy: follow_market",
+        "category": "policy",
+        "n": 342,
+        "mlBrier": 0.23551966296257912,
+        "agentMarketBrier": 0.23771779548957842,
+        "consensusMarketBrier": 0.23786894434353176,
+        "fngBrier": 0.24178062469446746,
+        "agentLiftVsMl": -0.002198132526999297,
+        "consensusLiftVsMl": -0.002349281380952639,
+        "consensusLiftVsAgentMarket": -0.00015114885395334232,
+        "consensusAccuracy": 0.6374269005847953,
+        "mlAccuracy": 0.6842105263157895
+      },
+      {
+        "name": "Forecast: Commit",
+        "category": "forecast",
+        "n": 992,
+        "mlBrier": 0.24233207124731035,
+        "agentMarketBrier": 0.2454201645288217,
+        "consensusMarketBrier": 0.24493411857224265,
+        "fngBrier": 0.2908082873052691,
+        "agentLiftVsMl": -0.003088093281511356,
+        "consensusLiftVsMl": -0.0026020473249322995,
+        "consensusLiftVsAgentMarket": 0.00048604595657905647,
+        "consensusAccuracy": 0.6068548387096774,
+        "mlAccuracy": 0.7520161290322581
+      },
+      {
+        "name": "Deal count: 10",
+        "category": "setup",
+        "n": 1230,
+        "mlBrier": 0.23792683460360056,
+        "agentMarketBrier": 0.24020270264913532,
+        "consensusMarketBrier": 0.24084214920276906,
+        "fngBrier": 0.2887149532616337,
+        "agentLiftVsMl": -0.002275868045534757,
+        "consensusLiftVsMl": -0.0029153145991684948,
+        "consensusLiftVsAgentMarket": -0.0006394465536337379,
+        "consensusAccuracy": 0.5967479674796748,
+        "mlAccuracy": 0.6
+      },
+      {
+        "name": "Stage: Procurement",
+        "category": "stage",
+        "n": 246,
+        "mlBrier": 0.2148602124009999,
+        "agentMarketBrier": 0.21896717330871232,
+        "consensusMarketBrier": 0.21778370475212472,
+        "fngBrier": 0.2631946723540851,
+        "agentLiftVsMl": -0.004106960907712426,
+        "consensusLiftVsMl": -0.0029234923511248234,
+        "consensusLiftVsAgentMarket": 0.0011834685565876024,
+        "consensusAccuracy": 0.9024390243902439,
+        "mlAccuracy": 1
+      },
+      {
+        "name": "Policy: noisy",
+        "category": "policy",
+        "n": 171,
+        "mlBrier": 0.23551966296257867,
+        "agentMarketBrier": 0.23506586698673823,
+        "consensusMarketBrier": 0.23901082727257486,
+        "fngBrier": 0.2570020404690941,
+        "agentLiftVsMl": 0.00045379597584044307,
+        "consensusLiftVsMl": -0.0034911643099961864,
+        "consensusLiftVsAgentMarket": -0.0039449602858366295,
+        "consensusAccuracy": 0.6432748538011696,
+        "mlAccuracy": 0.6842105263157895
+      },
+      {
+        "name": "Consensus disagrees with ML >= 3pp",
+        "category": "disagreement",
+        "n": 745,
+        "mlBrier": 0.23769173534597113,
+        "agentMarketBrier": 0.2423332410726907,
+        "consensusMarketBrier": 0.24402822675685484,
+        "fngBrier": 0.31321835722505625,
+        "agentLiftVsMl": -0.004641505726719564,
+        "consensusLiftVsMl": -0.006336491410883716,
+        "consensusLiftVsAgentMarket": -0.001694985684164152,
+        "consensusAccuracy": 0.5624161073825503,
+        "mlAccuracy": 0.6483221476510067
+      },
+      {
+        "name": "Deal count: 3",
+        "category": "setup",
+        "n": 378,
+        "mlBrier": 0.217930144448001,
+        "agentMarketBrier": 0.22522784329577267,
+        "consensusMarketBrier": 0.22438617776722053,
+        "fngBrier": 0.2633894520674103,
+        "agentLiftVsMl": -0.0072976988477716775,
+        "consensusLiftVsMl": -0.00645603331921954,
+        "consensusLiftVsAgentMarket": 0.0008416655285521379,
+        "consensusAccuracy": 0.753968253968254,
+        "mlAccuracy": 1
+      },
+      {
+        "name": "Policy: random",
+        "category": "policy",
+        "n": 171,
+        "mlBrier": 0.23551966296257867,
+        "agentMarketBrier": 0.23651494615785168,
+        "consensusMarketBrier": 0.24503953225806496,
+        "fngBrier": 0.3537251265945422,
+        "agentLiftVsMl": -0.0009952831952730057,
+        "consensusLiftVsMl": -0.009519869295486288,
+        "consensusLiftVsAgentMarket": -0.008524586100213283,
+        "consensusAccuracy": 0.5847953216374269,
+        "mlAccuracy": 0.6842105263157895
+      },
+      {
+        "name": "Target: closed_above_threshold",
+        "category": "target",
+        "n": 1117,
+        "mlBrier": 0.216308966930284,
+        "agentMarketBrier": 0.2280740777798807,
+        "consensusMarketBrier": 0.22663408628758563,
+        "fngBrier": 0.26329534754296946,
+        "agentLiftVsMl": -0.011765110849596694,
+        "consensusLiftVsMl": -0.010325119357301626,
+        "consensusLiftVsAgentMarket": 0.0014399914922950674,
+        "consensusAccuracy": 0.7081468218442256,
+        "mlAccuracy": 0.8898836168307968
+      },
+      {
+        "name": "Stage: Business Case",
+        "category": "stage",
+        "n": 748,
+        "mlBrier": 0.20217106432000148,
+        "agentMarketBrier": 0.2156695884906266,
+        "consensusMarketBrier": 0.21380600167321126,
+        "fngBrier": 0.24879452151285464,
+        "agentLiftVsMl": -0.013498524170625109,
+        "consensusLiftVsMl": -0.011634937353209779,
+        "consensusLiftVsAgentMarket": 0.0018635868174153303,
+        "consensusAccuracy": 0.7606951871657754,
+        "mlAccuracy": 1
+      },
+      {
+        "name": "Consensus disagrees with ML >= 5pp",
+        "category": "disagreement",
+        "n": 365,
+        "mlBrier": 0.23610432038794563,
+        "agentMarketBrier": 0.24145830314569638,
+        "consensusMarketBrier": 0.2494729168564495,
+        "fngBrier": 0.3383194334879753,
+        "agentLiftVsMl": -0.005353982757750758,
+        "consensusLiftVsMl": -0.013368596468503885,
+        "consensusLiftVsAgentMarket": -0.008014613710753127,
+        "consensusAccuracy": 0.5068493150684932,
+        "mlAccuracy": 0.673972602739726
+      },
+      {
+        "name": "High-value deals",
+        "category": "amount",
+        "n": 620,
+        "mlBrier": 0.22798693606956585,
+        "agentMarketBrier": 0.24658616696976435,
+        "consensusMarketBrier": 0.2441062899506561,
+        "fngBrier": 0.280796564206887,
+        "agentLiftVsMl": -0.018599230900198493,
+        "consensusLiftVsMl": -0.01611935388109026,
+        "consensusLiftVsAgentMarket": 0.002479877019108234,
+        "consensusAccuracy": 0.5580645161290323,
+        "mlAccuracy": 0.8016129032258065
+      },
+      {
+        "name": "Policy: optimistic",
+        "category": "policy",
+        "n": 171,
+        "mlBrier": 0.2355196629625787,
+        "agentMarketBrier": 0.2444332678302689,
+        "consensusMarketBrier": 0.25175355278690437,
+        "fngBrier": 0.5561894736842095,
+        "agentLiftVsMl": -0.008913604867690189,
+        "consensusLiftVsMl": -0.016233889824325665,
+        "consensusLiftVsAgentMarket": -0.0073202849566354755,
+        "consensusAccuracy": 0.5614035087719298,
+        "mlAccuracy": 0.6842105263157895
+      },
+      {
+        "name": "Human moved consensus >= 5pp",
+        "category": "human",
+        "n": 176,
+        "mlBrier": 0.2315945540761873,
+        "agentMarketBrier": 0.23281808583454094,
+        "consensusMarketBrier": 0.2482566320682585,
+        "fngBrier": 0.29743969385349806,
+        "agentLiftVsMl": -0.0012235317583536576,
+        "consensusLiftVsMl": -0.0166620779920712,
+        "consensusLiftVsAgentMarket": -0.015438546233717543,
+        "consensusAccuracy": 0.5681818181818182,
+        "mlAccuracy": 0.7386363636363636
+      }
+    ]
+  },
+  "calibration": {
+    "ml": [
+      {
+        "binStart": 0,
+        "binEnd": 0.1,
+        "n": 0,
+        "meanPredicted": null,
+        "meanActual": null
+      },
+      {
+        "binStart": 0.1,
+        "binEnd": 0.2,
+        "n": 0,
+        "meanPredicted": null,
+        "meanActual": null
+      },
+      {
+        "binStart": 0.2,
+        "binEnd": 0.3,
+        "n": 0,
+        "meanPredicted": null,
+        "meanActual": null
+      },
+      {
+        "binStart": 0.3,
+        "binEnd": 0.4,
+        "n": 0,
+        "meanPredicted": null,
+        "meanActual": null
+      },
+      {
+        "binStart": 0.4,
+        "binEnd": 0.5,
+        "n": 1862,
+        "meanPredicted": 0.4797459790547891,
+        "meanActual": 0.332438238453276
+      },
+      {
+        "binStart": 0.5,
+        "binEnd": 0.6,
+        "n": 497,
+        "meanPredicted": 0.5590099758551335,
+        "meanActual": 0.7525150905432596
+      },
+      {
+        "binStart": 0.6,
+        "binEnd": 0.7,
+        "n": 0,
+        "meanPredicted": null,
+        "meanActual": null
+      },
+      {
+        "binStart": 0.7,
+        "binEnd": 0.8,
+        "n": 0,
+        "meanPredicted": null,
+        "meanActual": null
+      },
+      {
+        "binStart": 0.8,
+        "binEnd": 0.9,
+        "n": 0,
+        "meanPredicted": null,
+        "meanActual": null
+      },
+      {
+        "binStart": 0.9,
+        "binEnd": 1,
+        "n": 0,
+        "meanPredicted": null,
+        "meanActual": null
+      }
+    ],
+    "market": [
+      {
+        "binStart": 0,
+        "binEnd": 0.1,
+        "n": 0,
+        "meanPredicted": null,
+        "meanActual": null
+      },
+      {
+        "binStart": 0.1,
+        "binEnd": 0.2,
+        "n": 0,
+        "meanPredicted": null,
+        "meanActual": null
+      },
+      {
+        "binStart": 0.2,
+        "binEnd": 0.3,
+        "n": 12,
+        "meanPredicted": 0.2565955020091452,
+        "meanActual": 0.25
+      },
+      {
+        "binStart": 0.3,
+        "binEnd": 0.4,
+        "n": 83,
+        "meanPredicted": 0.36971492198746597,
+        "meanActual": 0.3253012048192771
+      },
+      {
+        "binStart": 0.4,
+        "binEnd": 0.5,
+        "n": 1157,
+        "meanPredicted": 0.4753800591074284,
+        "meanActual": 0.28694900605012963
+      },
+      {
+        "binStart": 0.5,
+        "binEnd": 0.6,
+        "n": 1031,
+        "meanPredicted": 0.5386136441380579,
+        "meanActual": 0.5664403491755577
+      },
+      {
+        "binStart": 0.6,
+        "binEnd": 0.7,
+        "n": 66,
+        "meanPredicted": 0.6379129363521264,
+        "meanActual": 0.6818181818181818
+      },
+      {
+        "binStart": 0.7,
+        "binEnd": 0.8,
+        "n": 10,
+        "meanPredicted": 0.7317980685132971,
+        "meanActual": 0.2
+      },
+      {
+        "binStart": 0.8,
+        "binEnd": 0.9,
+        "n": 0,
+        "meanPredicted": null,
+        "meanActual": null
+      },
+      {
+        "binStart": 0.9,
+        "binEnd": 1,
+        "n": 0,
+        "meanPredicted": null,
+        "meanActual": null
+      }
+    ],
+    "fng": [
+      {
+        "binStart": 0,
+        "binEnd": 0.1,
+        "n": 186,
+        "meanPredicted": 0.024661992381874345,
+        "meanActual": 0.42473118279569894
+      },
+      {
+        "binStart": 0.1,
+        "binEnd": 0.2,
+        "n": 15,
+        "meanPredicted": 0.16274436561390757,
+        "meanActual": 0.5333333333333333
+      },
+      {
+        "binStart": 0.2,
+        "binEnd": 0.3,
+        "n": 89,
+        "meanPredicted": 0.27559833314694476,
+        "meanActual": 0.2696629213483146
+      },
+      {
+        "binStart": 0.3,
+        "binEnd": 0.4,
+        "n": 224,
+        "meanPredicted": 0.3440084459186991,
+        "meanActual": 0.33482142857142855
+      },
+      {
+        "binStart": 0.4,
+        "binEnd": 0.5,
+        "n": 772,
+        "meanPredicted": 0.4638015029147671,
+        "meanActual": 0.34196891191709844
+      },
+      {
+        "binStart": 0.5,
+        "binEnd": 0.6,
+        "n": 567,
+        "meanPredicted": 0.5448186677565192,
+        "meanActual": 0.48853615520282184
+      },
+      {
+        "binStart": 0.6,
+        "binEnd": 0.7,
+        "n": 189,
+        "meanPredicted": 0.6454499607606773,
+        "meanActual": 0.5978835978835979
+      },
+      {
+        "binStart": 0.7,
+        "binEnd": 0.8,
+        "n": 105,
+        "meanPredicted": 0.7373277445949306,
+        "meanActual": 0.638095238095238
+      },
+      {
+        "binStart": 0.8,
+        "binEnd": 0.9,
+        "n": 31,
+        "meanPredicted": 0.8473858995917329,
+        "meanActual": 0.41935483870967744
+      },
+      {
+        "binStart": 0.9,
+        "binEnd": 1,
+        "n": 181,
+        "meanPredicted": 0.9771068967288109,
+        "meanActual": 0.40331491712707185
+      }
+    ]
+  },
+  "failures": []
+}

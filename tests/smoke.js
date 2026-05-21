@@ -174,12 +174,12 @@ function attributionFixture(overrides) {
 }
 
 function testAttributionAndHeadline() {
-  assert(buildAttribution(attributionFixture()) === "You added information on Acme: your 90% beat the market's 70% - outcome True.", "You-best attribution matches template");
+  assert(buildAttribution(attributionFixture()) === "You added information on Acme: your 90% beat the consensus 70% - outcome True.", "You-best attribution matches template");
   assert(buildAttribution(attributionFixture({
     marketProbability: 0.9,
     fngProbability: 0.82,
     brier: { ml: 0.16, market: 0.01, fng: 0.0324 }
-  })) === "The market got Acme right (90%); you were close (82%).", "Market-best attribution matches template");
+  })) === "The consensus got Acme right (90%); you were close (82%).", "Market-best attribution matches template");
   assert(buildAttribution(attributionFixture({
     baselineProbability: 0.9,
     marketProbability: 0.65,
@@ -193,7 +193,7 @@ function testAttributionAndHeadline() {
     fngProbability: 0.51,
     brier: { ml: 0.2401, market: 0.25, fng: 0.2601 }
   })) === "Acme was a coin-flip; nobody's edge was clear (False).", "Tie attribution matches template");
-  assert(buildHeadline({ ml: 0.18, market: 0.15, fng: 0.2 }) === "Best calibration this run: Market. Market Brier 0.150 - beat ML by 0.030.", "Headline picks correct winner");
+  assert(buildHeadline({ ml: 0.18, market: 0.15, fng: 0.2 }) === "Best calibration this run: Consensus. Consensus Brier 0.150 - beat ML prior by 0.030.", "Headline picks correct winner");
   assert(buildHeadline({ ml: 0.1231, market: 0.1232, fng: 0.1233 }) === "Three-way tie within a hair: 0.123 across the board.", "Headline tie matches template");
 }
 
